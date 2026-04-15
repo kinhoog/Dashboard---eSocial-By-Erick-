@@ -901,3 +901,403 @@
             </section>
         </main>
     </div>
+
+    <script>
+        const defaultUsers = {
+            'erick.protege': { password: '1234', isMaster: true },
+            'flavia.protege': { password: '1234', isMaster: false },
+            'abner.protege': { password: '1234', isMaster: false },
+            'carol.protege': { password: '1234', isMaster: false }
+        };
+
+        function loadUsers() {
+            const savedUsers = localStorage.getItem('esocial_users');
+            if (savedUsers) return JSON.parse(savedUsers);
+            return JSON.parse(JSON.stringify(defaultUsers));
+        }
+
+        function saveUsers(users) {
+            localStorage.setItem('esocial_users', JSON.stringify(users));
+        }
+
+        function hasChangedPassword(username) {
+            const changedPasswords = JSON.parse(localStorage.getItem('esocial_changed_passwords') || '[]');
+            return changedPasswords.includes(username);
+        }
+
+        function markPasswordChanged(username) {
+            const changedPasswords = JSON.parse(localStorage.getItem('esocial_changed_passwords') || '[]');
+            if (!changedPasswords.includes(username)) {
+                changedPasswords.push(username);
+                localStorage.setItem('esocial_changed_passwords', JSON.stringify(changedPasswords));
+            }
+        }
+
+        function resetAllPasswords() {
+            localStorage.removeItem('esocial_users');
+            localStorage.removeItem('esocial_changed_passwords');
+            alert('Todas as senhas foram resetadas para o padrão (1234)');
+        }
+
+        let users = loadUsers();
+        let currentUser = null;
+        let pendingUsername = null;
+
+        const dataStore = {
+            empresasSemEnvio: [
+                { nome: "METALPAR", cnpj: "77.378.701/0001-93" },
+                { nome: "VITI", cnpj: "07.116.725/0001-99" },
+                { nome: "IANCO", cnpj: "04.873.132/0001-89" },
+                { nome: "USIFX", cnpj: "02.475.488/0001-39" },
+                { nome: "JARDMAQ", cnpj: "21.185.603/0001-85" },
+                { nome: "MECA", cnpj: "19.400.110/0001-79" },
+            ],
+            pendencias: [
+                { empresa: "Bahoma Serviços Ltda", funcionarios: 1 },
+                { empresa: "REDRAM CONSTRUTORA E ENGENHARIA LTDA", funcionarios: 1 },
+                { empresa: "Divisystem Materiais e Serviços Ltda", funcionarios: 3 },
+                { empresa: "Prefeitura Municipal de Rio Branco do Sul", funcionarios: 12 },
+                { empresa: "Telcabos Telecomunicações e Inf. Ltda - Campinas", funcionarios: 1 },
+                { empresa: "Comercial Lancare Ltda", funcionarios: 1 },
+                { empresa: "Câmara Municipal de Araucária", funcionarios: 3 },
+                { empresa: "RP Info Sistemas Ltda", funcionarios: 2 },
+                { empresa: "Hortigranjeira Paraiso LTDA", funcionarios: 41 },
+                { empresa: "MIG Atacado e Varejo LTDA - Pinheirinho", funcionarios: 1 },
+                { empresa: "Scribe Informática Ltda", funcionarios: 2 },
+                { empresa: "A.L. Hortifrutigranjeiros Ltda", funcionarios: 2 },
+                { empresa: "Comercial Hortifrutigranjeiros Pinhais Ltda - Rui Barbosa", funcionarios: 4 },
+                { empresa: "Dux Digital do Brasil Eireli", funcionarios: 1 },
+                { empresa: "Servico Distrital Do Tatuquara", funcionarios: 1 },
+                { empresa: "GASPARIN MERCHANDISING LTDA", funcionarios: 1 },
+                { empresa: "Foundever do Brasil Serviços e Tecnologia Ltda - SP", funcionarios: 1 },
+                { empresa: "Ianco Industria Metalurgica Ltda", funcionarios: 1 },
+                { empresa: "R.Agilidade Locação de Mão de Obra Temporária Ltda", funcionarios: 11 },
+                { empresa: "Associacao De Educacao Personalizada - Aep", funcionarios: 1 },
+                { empresa: "Renova JR Consultoria e Serviços de RH Ltda", funcionarios: 4 },
+                { empresa: "Sysmex do Brasil Industria e Comércio Ltda - São José dos Pinhais", funcionarios: 1 },
+            ],
+            xml: [
+                { empresa: "SCRIBE INFORMÁTICA LTDA", cnpj: "82.234.568/0001-31", dataEnvio: "", email: "dp@escriba.com.br", destinatario: "Adm e RH/DP", status: "Pendente" },
+                { empresa: "COMPANHIA DE HABITAÇÃO DO PARANÁ - COHAPAR", cnpj: "76.592.807/0001-22", dataEnvio: "", email: "sheilapsantos@cohapar.pr.gov.br", destinatario: "Sheila, DP", status: "Pendente" },
+            ],
+            prontuarios: [
+                { empresa: "BOVINO NOBRE", dataSolicitacao: "2026-04-01", status: "Organizando", observacao: "ASOs sendo preparados" },
+                { empresa: "INSTITUTO DE TECNOLOGIA DO PARANA (TECPAR)", dataSolicitacao: "2026-04-06", status: "Pendente", observacao: "Não começamos" },
+                { empresa: "UROCENTRO CLINICA DE UROLOGIA CURITIBA LTDA", dataSolicitacao: "2026-04-09", status: "Pendente", observacao: "Não começamos" },
+            ],
+            procuracoes: [
+                { razaoSocial: "Conselho Regional de Corretores de Imóveis do Paraná da 6. Região - CRECI/ PR", cnpjEmpresa: "76.693.910/0001-69", cnpjClinica: "32.952.557/0001-19", dataSolicitacao: "", status: "Pendente de resposta" },
+                { razaoSocial: "Tempanco Panificadora E Confeitaria Ltda.", cnpjEmpresa: "24.897.022/0001-64", cnpjClinica: "32.952.557/0001-19", dataSolicitacao: "", status: "Pendente de resposta" },
+                { razaoSocial: "Lion e Pasinato Central de Distribuição Ltda - ME", cnpjEmpresa: "29.284.070/0001-09", cnpjClinica: "32.952.557/0001-19", dataSolicitacao: "", status: "Pendente de resposta" },
+                { razaoSocial: "Wood Saldanha Natação e Atividades Aquáticas Ltda", cnpjEmpresa: "07.040.523/0001-00", cnpjClinica: "32.952.557/0001-19", dataSolicitacao: "", status: "Pendente de resposta" },
+                { razaoSocial: "Hidracine-Distr. De Equipamentos Hidráulicos Ltda", cnpjEmpresa: "78.544.970/0001-45", cnpjClinica: "32.952.557/0001-19", dataSolicitacao: "", status: "Pendente de resposta" },
+                { razaoSocial: "Servico Distrital Do Tatuquara", cnpjEmpresa: "49.269.107/0001-29", cnpjClinica: "32.952.557/0001-19", dataSolicitacao: "", status: "Pendente de resposta" },
+                { razaoSocial: "Anader Comércio de Condimentos - ME", cnpjEmpresa: "08.380.734/0001-55", cnpjClinica: "32.952.557/0001-19", dataSolicitacao: "", status: "Pendente de resposta" },
+                { razaoSocial: "Amanda da Silva Moreira Pinto", cnpjEmpresa: "16.656.086/0001-45", cnpjClinica: "32.952.557/0001-19", dataSolicitacao: "", status: "Pendente de resposta" },
+                { razaoSocial: "Gattinety - Marketing e Logistica Ltda", cnpjEmpresa: "26.361.814/0001-45", cnpjClinica: "62.055.891/0001-30", dataSolicitacao: "", status: "Pendente de resposta" },
+                { razaoSocial: "L & V Comércio de Alimentos LTDA", cnpjEmpresa: "15.740.242/0001-99", cnpjClinica: "62.055.891/0001-30", dataSolicitacao: "", status: "Pendente de resposta" },
+                { razaoSocial: "Pão e Vinho Comércio de Frutas Ltda", cnpjEmpresa: "61.787.790/0001-91", cnpjClinica: "62.055.891/0001-30", dataSolicitacao: "", status: "Pendente de resposta" },
+                { razaoSocial: "Garateia Comercial Ltda - Trapiche Pescados", cnpjEmpresa: "19.620.987/0001-75", cnpjClinica: "32.952.557/0001-19", dataSolicitacao: "", status: "Pendente de resposta" },
+                { razaoSocial: "Laercio Balaban Hortifrutigranjerios Eireli", cnpjEmpresa: "06.242.497/0001-30", cnpjClinica: "32.952.557/0001-19", dataSolicitacao: "", status: "Pendente de resposta" },
+                { razaoSocial: "Ais Transporte Rodoviario Ltda", cnpjEmpresa: "10.430.704/0001-58", cnpjClinica: "32.952.557/0001-19", dataSolicitacao: "", status: "Pendente de resposta" },
+                { razaoSocial: "Igi Integracao E Logistica Ltda", cnpjEmpresa: "05.584.207/0001-74", cnpjClinica: "32.952.557/0001-19", dataSolicitacao: "", status: "Pendente de resposta" },
+                { razaoSocial: "Higie & Clean Produtos De Higiene E Limpeza Ltda", cnpjEmpresa: "08.735.948/0001-05", cnpjClinica: "32.952.557/0001-19", dataSolicitacao: "", status: "Pendente de resposta" },
+                { razaoSocial: "Htec Tecnologia, Energia e Conexão Ltda", cnpjEmpresa: "44.636.346/0001-56", cnpjClinica: "32.952.557/0001-19", dataSolicitacao: "", status: "Pendente de resposta" },
+                { razaoSocial: "Allfix F&K Alpinismo Industrial Ltda", cnpjEmpresa: "24.184.037/0001-85", cnpjClinica: "32.952.557/0001-19", dataSolicitacao: "2026-04-15", status: "Concluído" },
+            ]
+        };
+
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value;
+            const errorDiv = document.getElementById('loginError');
+
+            users = loadUsers();
+
+            if (users[username] && users[username].password === password) {
+                if (!hasChangedPassword(username)) {
+                    pendingUsername = username;
+                    showChangePasswordForm();
+                } else {
+                    currentUser = username;
+                    enterSystem();
+                }
+            } else {
+                errorDiv.style.display = 'block';
+            }
+        });
+
+        function showChangePasswordForm() {
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('changePasswordForm').style.display = 'block';
+            document.getElementById('newPassword').value = '';
+            document.getElementById('confirmPassword').value = '';
+            document.getElementById('newPassword').focus();
+        }
+
+        document.getElementById('newPassword').addEventListener('input', function() {
+            const password = this.value;
+            const reqLength = document.getElementById('req-length');
+            if (password.length >= 4) {
+                reqLength.classList.remove('invalid');
+                reqLength.classList.add('valid');
+            } else {
+                reqLength.classList.remove('valid');
+                reqLength.classList.add('invalid');
+            }
+        });
+
+        document.getElementById('changePasswordForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const errorDiv = document.getElementById('changeError');
+            const errorText = document.getElementById('changeErrorText');
+
+            if (newPassword.length < 4) {
+                errorText.textContent = 'A senha deve ter pelo menos 4 caracteres!';
+                errorDiv.style.display = 'block';
+                return;
+            }
+
+            if (newPassword !== confirmPassword) {
+                errorText.textContent = 'As senhas não coincidem!';
+                errorDiv.style.display = 'block';
+                return;
+            }
+
+            if (newPassword === '1234') {
+                errorText.textContent = 'A nova senha não pode ser igual à senha padrão!';
+                errorDiv.style.display = 'block';
+                return;
+            }
+
+            users[pendingUsername].password = newPassword;
+            saveUsers(users);
+            markPasswordChanged(pendingUsername);
+
+            currentUser = pendingUsername;
+            pendingUsername = null;
+
+            alert('Senha alterada com sucesso! Bem-vindo ao sistema.');
+            enterSystem();
+        });
+
+        function enterSystem() {
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('appContainer').style.display = 'block';
+
+            document.getElementById('currentUser').textContent = currentUser;
+            if (users[currentUser].isMaster) {
+                document.getElementById('masterBadge').innerHTML = '<span class="master-badge">Master</span>';
+            }
+
+            initCharts();
+            loadAllData();
+        }
+
+        document.getElementById('logoutBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            location.reload();
+        });
+
+        document.querySelectorAll('.sidebar-menu a[data-section]').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const section = this.dataset.section;
+
+                document.querySelectorAll('.sidebar-menu a').forEach(a => a.classList.remove('active'));
+                this.classList.add('active');
+
+                document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+                document.getElementById(section).classList.add('active');
+            });
+        });
+
+        document.getElementById('menuToggle').addEventListener('click', function() {
+            document.getElementById('sidebar').classList.toggle('open');
+        });
+
+        function initCharts() {
+            const chartOptions = {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: { color: '#94a3b8', padding: 20, font: { size: 12 } }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const label = context.label || '';
+                                const value = context.parsed || 0;
+                                const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                const percentage = ((value / total) * 100).toFixed(1);
+                                return `${label}: ${percentage}%`;
+                            }
+                        }
+                    }
+                }
+            };
+
+            new Chart(document.getElementById('chartS2220'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['Concluído', 'Erro'],
+                    datasets: [{ data: [2741, 402], backgroundColor: ['#10b981', '#ef4444'], borderWidth: 0 }]
+                },
+                options: { ...chartOptions, cutout: '70%' }
+            });
+
+            new Chart(document.getElementById('chartS2240'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['Concluído', 'Erro'],
+                    datasets: [{ data: [1957, 797], backgroundColor: ['#10b981', '#ef4444'], borderWidth: 0 }]
+                },
+                options: { ...chartOptions, cutout: '70%' }
+            });
+
+            new Chart(document.getElementById('chartS2221'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['Concluído', 'Erro'],
+                    datasets: [{ data: [1, 6], backgroundColor: ['#10b981', '#ef4444'], borderWidth: 0 }]
+                },
+                options: { ...chartOptions, cutout: '70%' }
+            });
+        }
+
+        function loadAllData() {
+            loadEmpresasSemEnvio();
+            loadPendenciasTable();
+            loadXmlTable();
+            loadProntuariosTable();
+            loadProcuracoesTable();
+        }
+
+        function loadEmpresasSemEnvio() {
+            const container = document.getElementById('empresasSemEnvio');
+            container.innerHTML = dataStore.empresasSemEnvio.map(emp => `
+                <div class="empresa-tag" title="CNPJ: ${emp.cnpj}">
+                    <strong>${emp.nome}</strong>
+                    <small>${emp.cnpj}</small>
+                </div>
+            `).join('');
+        }
+
+        function loadPendenciasTable() {
+            const tbody = document.querySelector('#pendenciasTable tbody');
+            tbody.innerHTML = dataStore.pendencias.map(item => `
+                <tr>
+                    <td>${item.empresa}</td>
+                    <td>Descrição de atividade</td>
+                    <td>${item.funcionarios}</td>
+                    <td>Abner</td>
+                    <td><span class="badge badge-warning">Pendente</span></td>
+                    <td><input type="text" class="editable" value="Aguardando técnico"></td>
+                </tr>
+            `).join('');
+        }
+
+        function loadXmlTable() {
+            const tbody = document.querySelector('#xmlTable tbody');
+            tbody.innerHTML = dataStore.xml.map(item => {
+                let badgeClass = 'badge-gray';
+                if (item.status === 'Confirmado') badgeClass = 'badge-success';
+                else if (item.status === 'Enviado') badgeClass = 'badge-info';
+                else if (item.status === 'Pendente') badgeClass = 'badge-warning';
+
+                return `
+                    <tr>
+                        <td><strong>${item.empresa}</strong></td>
+                        <td>${item.cnpj}</td>
+                        <td><input type="date" class="editable" value="${item.dataEnvio}"></td>
+                        <td><a href="mailto:${item.email}" style="color: var(--accent-blue);">${item.email}</a></td>
+                        <td>${item.destinatario}</td>
+                        <td><span class="badge ${badgeClass}">${item.status}</span></td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function loadProntuariosTable() {
+            const tbody = document.querySelector('#prontuariosTable tbody');
+            const hoje = new Date('2026-04-15');
+
+            tbody.innerHTML = dataStore.prontuarios.map(item => {
+                const dataSol = new Date(item.dataSolicitacao);
+                const prazo = new Date(dataSol);
+                prazo.setDate(prazo.getDate() + 30);
+
+                const diffTime = prazo - hoje;
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+                let daysClass = 'days-success';
+                let daysText = `${diffDays} dias`;
+
+                if (diffDays < 0) {
+                    daysClass = 'days-danger';
+                    daysText = `${Math.abs(diffDays)} dias atrasado`;
+                } else if (diffDays <= 5) {
+                    daysClass = 'days-warning';
+                }
+
+                let badgeClass = 'badge-gray';
+                if (item.status === 'Concluído') badgeClass = 'badge-success';
+                else if (item.status === 'Organizando') badgeClass = 'badge-info';
+                else if (item.status === 'Pendente') badgeClass = 'badge-warning';
+                else if (item.status === 'Em andamento') badgeClass = 'badge-purple';
+
+                return `
+                    <tr>
+                        <td>${item.empresa}</td>
+                        <td>${item.dataSolicitacao.split('-').reverse().join('/')}</td>
+                        <td>${prazo.toISOString().split('T')[0].split('-').reverse().join('/')}</td>
+                        <td><span class="days-counter ${daysClass}">${daysText}</span></td>
+                        <td><span class="badge ${badgeClass}">${item.status}</span></td>
+                        <td><input type="text" class="editable" value="${item.observacao}"></td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function loadProcuracoesTable() {
+            const tbody = document.querySelector('#procuracoesTable tbody');
+
+            const sortedProcuracoes = [...dataStore.procuracoes].sort((a, b) => {
+                if (a.status === 'Concluído' && b.status !== 'Concluído') return -1;
+                if (b.status === 'Concluído' && a.status !== 'Concluído') return 1;
+                return a.razaoSocial.localeCompare(b.razaoSocial);
+            });
+
+            tbody.innerHTML = sortedProcuracoes.map(item => {
+                let badgeClass = 'badge-warning';
+                if (item.status === 'Concluído') badgeClass = 'badge-success';
+                else if (item.status === 'Em andamento') badgeClass = 'badge-info';
+                else if (item.status === 'Negado') badgeClass = 'badge-danger';
+
+                return `
+                    <tr>
+                        <td>${item.razaoSocial}</td>
+                        <td>${item.cnpjEmpresa}</td>
+                        <td>${item.cnpjClinica}</td>
+                        <td><input type="date" class="editable" value="${item.dataSolicitacao}"></td>
+                        <td><span class="badge ${badgeClass}">${item.status}</span></td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const total = 2741 + 1 + 1957;
+            document.getElementById('totalConcluidos').textContent = total.toLocaleString();
+        });
+
+        console.log('%c🔧 Comandos disponíveis:', 'color: #00a651; font-size: 14px; font-weight: bold;');
+        console.log('%cresetAllPasswords()', 'color: #3b82f6;', '- Reseta todas as senhas para 1234');
+    </script>
+</body>
+</html>
