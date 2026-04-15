@@ -1,0 +1,1532 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Operacional eSocial - Protege</title>
+    <script type="text/javascript" src="https://gc.kes.v2.scr.kaspersky-labs.com/7EA5E9BB-55E1-4C31-9C21-4943DDFED2E4/main.js?attr=Rerg6BWOKLYk2NQFuPqNQfQ5awLr445b3BOZg1BV48c7kePk6E937C1IrclhUSNvwCYIa-y-gCoy26pm2De9p8ueSgSWdMeF5UFmY_MT_p3jhOYZmZ645HZ89Mhu7pc9slsTTdGqpBQ04ZmHKV-3MSa7Z6iSFtHmORpwE4MqV2ilkH6ctHnw7IBciR51KOFO_XYGr_LJu9xWkUJbzBVRIhB8Ciq-46YztdrG3bIHiLWq076YvIlTL9F9CIWTZ9wmb8cOrdrsoJzsCLO29nKFgRFjWAWZabFhvEyqBNRZ4-gRUAHTS-Gz9s1qllCW3d0g1Fx7h81TczzE4u1Qy-B0KJPYJvEijws-eE6UFYjx4OSn922qYv3HM7TRv7U5ADz9tItjf0rzlzruncX2HU_aO6EAdYplhi_f6r8_XK4mZOPqLIhf63kWTDJ2wguAD0-kr-TdLjEId4s6YKPcTre3ox8O0FEojDQmWM4ScxSXNfM-DHCR_0uwmNAnTmt3CoQUsqULuZ0oZdGKtsJE2aXLRS7SYMJX4Fy6B8TeCYGGYdwt7GAaXVrLIIjLE9o_1jG5jTuAbvP2nDk7fZ_hhRJlgcaF_XSS3qGD9_5xpjdJQ23VaAImpCy5zwkZ0YV1UHv9RUujYSjboziXOJYKVx8JRi4vKUyOpOXsjU9hPD1_L4Q" charset="UTF-8"></script><script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-card: #334155;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --accent-green: #10b981;
+            --accent-red: #ef4444;
+            --accent-yellow: #f59e0b;
+            --accent-blue: #3b82f6;
+            --accent-purple: #8b5cf6;
+            --accent-gray: #6b7280;
+            --border-color: #475569;
+            --protege-green: #00a651;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+
+        /* Login Screen */
+        .login-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .login-container {
+            background: var(--bg-secondary);
+            padding: 3rem;
+            border-radius: 16px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            width: 100%;
+            max-width: 400px;
+            border: 1px solid var(--border-color);
+        }
+
+        .login-logo {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .login-logo img {
+            max-width: 180px;
+            height: auto;
+            margin-bottom: 1rem;
+        }
+
+        .login-logo h1 {
+            font-size: 1.5rem;
+            color: var(--text-primary);
+        }
+
+        .login-logo p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 0.875rem;
+            background: linear-gradient(135deg, var(--protege-green), #008f45);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 166, 81, 0.3);
+        }
+
+        .login-error {
+            color: var(--accent-red);
+            font-size: 0.875rem;
+            margin-top: 1rem;
+            text-align: center;
+            display: none;
+        }
+
+        .login-info {
+            color: var(--accent-blue);
+            font-size: 0.875rem;
+            margin-top: 1rem;
+            text-align: center;
+            display: none;
+        }
+
+        .first-access-banner {
+            background: rgba(0, 166, 81, 0.1);
+            border: 1px solid var(--protege-green);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .first-access-banner i {
+            color: var(--protege-green);
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .first-access-banner h3 {
+            color: var(--protege-green);
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .first-access-banner p {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
+        .user-info {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid var(--border-color);
+            margin-top: auto;
+        }
+
+        .user-info p {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .user-info strong {
+            color: var(--text-primary);
+        }
+
+        /* Main Layout */
+        .app-container {
+            display: none;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 260px;
+            height: 100vh;
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border-color);
+            padding: 1.5rem 0;
+            overflow-y: auto;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-header {
+            padding: 0 1.5rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 1rem;
+        }
+
+        .sidebar-header h2 {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.25rem;
+            color: var(--text-primary);
+        }
+
+        .sidebar-header h2 i {
+            color: var(--protege-green);
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            padding: 0 0.75rem;
+            flex: 1;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 0.25rem;
+        }
+
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.875rem 1rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .sidebar-menu a:hover,
+        .sidebar-menu a.active {
+            background: var(--bg-card);
+            color: var(--text-primary);
+        }
+
+        .sidebar-menu a.active {
+            background: linear-gradient(135deg, var(--protege-green), #008f45);
+            color: white;
+        }
+
+        .sidebar-menu a i {
+            width: 20px;
+            text-align: center;
+        }
+
+        .main-content {
+            margin-left: 260px;
+            padding: 2rem;
+            min-height: 100vh;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .page-header h1 {
+            font-size: 1.75rem;
+            font-weight: 600;
+        }
+
+        .last-update {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .last-update input {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-primary);
+            padding: 0.375rem 0.75rem;
+            font-size: 0.9rem;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .stat-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .stat-icon.green { background: rgba(16, 185, 129, 0.2); color: var(--accent-green); }
+        .stat-icon.red { background: rgba(239, 68, 68, 0.2); color: var(--accent-red); }
+        .stat-icon.yellow { background: rgba(245, 158, 11, 0.2); color: var(--accent-yellow); }
+        .stat-icon.blue { background: rgba(59, 130, 246, 0.2); color: var(--accent-blue); }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        /* Charts */
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 250px;
+        }
+
+        /* Tables */
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 0.875rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background: var(--bg-card);
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            color: var(--text-primary);
+        }
+
+        tr:hover td {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        /* Status Badges */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.375rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .badge-success {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--accent-green);
+        }
+
+        .badge-danger {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--accent-red);
+        }
+
+        .badge-warning {
+            background: rgba(245, 158, 11, 0.2);
+            color: var(--accent-yellow);
+        }
+
+        .badge-info {
+            background: rgba(59, 130, 246, 0.2);
+            color: var(--accent-blue);
+        }
+
+        .badge-purple {
+            background: rgba(139, 92, 246, 0.2);
+            color: var(--accent-purple);
+        }
+
+        .badge-gray {
+            background: rgba(107, 114, 128, 0.2);
+            color: var(--accent-gray);
+        }
+
+        /* Editable cells */
+        .editable {
+            background: transparent;
+            border: 1px solid transparent;
+            color: var(--text-primary);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            cursor: text;
+            min-width: 100px;
+        }
+
+        .editable:hover {
+            border-color: var(--border-color);
+        }
+
+        .editable:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+            background: var(--bg-card);
+        }
+
+        /* Days counter */
+        .days-counter {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.375rem 0.75rem;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        .days-danger {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--accent-red);
+        }
+
+        .days-warning {
+            background: rgba(245, 158, 11, 0.2);
+            color: var(--accent-yellow);
+        }
+
+        .days-success {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--accent-green);
+        }
+
+        /* Section */
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        /* Alert Box */
+        .alert-box {
+            background: rgba(245, 158, 11, 0.1);
+            border-left: 4px solid var(--accent-yellow);
+            padding: 1rem 1.25rem;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 1.5rem;
+        }
+
+        .alert-box h4 {
+            color: var(--accent-yellow);
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .alert-box p {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            line-height: 1.5;
+        }
+
+        /* Error Notes */
+        .error-notes {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .error-note {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 8px;
+            padding: 1rem;
+        }
+
+        .error-note h4 {
+            color: var(--accent-red);
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .error-note p {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            line-height: 1.4;
+        }
+
+        /* Empresas sem envio */
+        .empresas-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        .empresa-tag {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        /* Repasse info */
+        .repasse-info {
+            background: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid var(--accent-blue);
+            padding: 1rem 1.25rem;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 1.5rem;
+        }
+
+        .repasse-info h4 {
+            color: var(--accent-blue);
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .repasse-info p {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                transform: translateX(-100%);
+                transition: transform 0.3s;
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 1rem;
+            }
+
+            .menu-toggle {
+                display: block;
+                position: fixed;
+                top: 1rem;
+                left: 1rem;
+                z-index: 101;
+                background: var(--bg-secondary);
+                border: 1px solid var(--border-color);
+                color: var(--text-primary);
+                padding: 0.75rem;
+                border-radius: 8px;
+                cursor: pointer;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .menu-toggle {
+                display: none;
+            }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--bg-card);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--border-color);
+        }
+
+        /* Master badge */
+        .master-badge {
+            background: linear-gradient(135deg, var(--accent-yellow), #d97706);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-left: 0.5rem;
+        }
+
+        /* Password requirements */
+        .password-requirements {
+            margin-top: 0.5rem;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .password-requirements ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .password-requirements li {
+            margin: 0.25rem 0;
+        }
+
+        .password-requirements li.valid {
+            color: var(--accent-green);
+        }
+
+        .password-requirements li.valid::before {
+            content: "✓ ";
+        }
+
+        .password-requirements li.invalid::before {
+            content: "○ ";
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Screen -->
+    <div class="login-screen" id="loginScreen">
+        <div class="login-container">
+            <div class="login-logo">
+                <img src="https://www.protege.med.br/wp-content/webp-express/webp-images/uploads/2021/11/vertical.png.webp" alt="Protege Medicina do Trabalho">
+                <p>Sistema de Gestão Operacional</p>
+            </div>
+
+            <!-- Formulário de Login Normal -->
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">Usuário</label>
+                    <input type="text" id="username" placeholder="Digite seu usuário">
+                </div>
+                <div class="form-group">
+                    <label for="password">Senha</label>
+                    <input type="password" id="password" placeholder="Digite sua senha">
+                </div>
+                <button type="submit" class="btn-login">
+                    <i class="fas fa-sign-in-alt"></i> Entrar no Sistema
+                </button>
+                <div class="login-error" id="loginError">
+                    <i class="fas fa-exclamation-circle"></i> Usuário ou senha inválidos!
+                </div>
+            </form>
+
+            <!-- Formulário de Troca de Senha (Primeiro Acesso) -->
+            <form id="changePasswordForm" style="display: none;">
+                <div class="first-access-banner">
+                    <i class="fas fa-key"></i>
+                    <h3>Primeiro Acesso Detectado</h3>
+                    <p>Por segurança, você precisa alterar sua senha para continuar.</p>
+                </div>
+
+                <div class="form-group">
+                    <label for="newPassword">Nova Senha</label>
+                    <input type="password" id="newPassword" placeholder="Digite a nova senha">
+                    <div class="password-requirements">
+                        <ul>
+                            <li id="req-length" class="invalid">Mínimo 4 caracteres</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Confirmar Nova Senha</label>
+                    <input type="password" id="confirmPassword" placeholder="Confirme a nova senha">
+                </div>
+                <button type="submit" class="btn-login">
+                    <i class="fas fa-save"></i> Salvar Nova Senha
+                </button>
+                <div class="login-error" id="changeError">
+                    <i class="fas fa-exclamation-circle"></i> <span id="changeErrorText"></span>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main App -->
+    <div class="app-container" id="appContainer">
+        <button class="menu-toggle" id="menuToggle">
+            <i class="fas fa-bars"></i>
+        </button>
+
+        <!-- Sidebar -->
+        <nav class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h2>
+                    <i class="fas fa-shield-alt"></i>
+                    <span>eSocial Pro</span>
+                </h2>
+            </div>
+            <ul class="sidebar-menu">
+                <li><a href="#" class="active" data-section="dashboard">
+                    <i class="fas fa-chart-pie"></i>
+                    <span>Dashboard</span>
+                </a></li>
+                <li><a href="#" data-section="esocial">
+                    <i class="fas fa-file-alt"></i>
+                    <span>eSocial</span>
+                </a></li>
+                <li><a href="#" data-section="pendencias">
+                    <i class="fas fa-tools"></i>
+                    <span>Pendências Técnicos</span>
+                </a></li>
+                <li><a href="#" data-section="xml">
+                    <i class="fas fa-code"></i>
+                    <span>XML</span>
+                </a></li>
+                <li><a href="#" data-section="prontuarios">
+                    <i class="fas fa-folder-open"></i>
+                    <span>Prontuários</span>
+                </a></li>
+                <li><a href="#" data-section="procuracoes">
+                    <i class="fas fa-file-signature"></i>
+                    <span>Procurações eCAC</span>
+                </a></li>
+            </ul>
+            <div class="user-info">
+                <p>Logado como:<br><strong id="currentUser">-</strong> <span id="masterBadge"></span></p>
+                <a href="#" id="logoutBtn" style="color: var(--accent-red); text-decoration: none; font-size: 0.8rem; margin-top: 0.5rem; display: inline-block;">
+                    <i class="fas fa-sign-out-alt"></i> Sair
+                </a>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Dashboard Section -->
+            <section class="section active" id="dashboard">
+                <div class="page-header">
+                    <h1><i class="fas fa-chart-pie"></i> Dashboard</h1>
+                    <div class="last-update">
+                        <i class="fas fa-clock"></i>
+                        <span>Última atualização:</span>
+                        <input type="date" id="lastUpdateDate" value="2026-04-15">
+                    </div>
+                </div>
+
+                <!-- Stats -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-icon green">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <div>
+                                <div class="stat-value" id="totalConcluidos">4,699</div>
+                                <div class="stat-label">Total Concluídos</div>
+                            </div>
+                        </div>
+                        <small style="color: var(--text-secondary);">S-2220 + S-2221 + S-2240</small>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-icon red">
+                                <i class="fas fa-exclamation-circle"></i>
+                            </div>
+                            <div>
+                                <div class="stat-value" id="totalErros">1,205</div>
+                                <div class="stat-label">Total Erros</div>
+                            </div>
+                        </div>
+                        <small style="color: var(--text-secondary);">Requerem atenção</small>
+                    </div>
+                </div>
+
+                <!-- Charts -->
+                <div class="charts-grid">
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="card-title"><i class="fas fa-chart-pie"></i> S-2220</span>
+                            <span class="badge badge-info">ASO</span>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="chartS2220"></canvas>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="card-title"><i class="fas fa-chart-pie"></i> S-2240</span>
+                            <span class="badge badge-purple">Ambiente</span>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="chartS2240"></canvas>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="card-title"><i class="fas fa-chart-pie"></i> S-2221</span>
+                            <span class="badge badge-warning">Toxicológico</span>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="chartS2221"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Error Notes -->
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title"><i class="fas fa-exclamation-triangle"></i> Observações dos Erros</span>
+                    </div>
+                    <div class="error-notes">
+                        <div class="error-note">
+                            <h4><i class="fas fa-times-circle"></i> S-2221</h4>
+                            <p>"A estrutura do arquivo XML está em desconformidade com o esquema XSD. The element 'ideVinculo' has incomplete content. List of possible elements expected: 'cpfTrab, matricula'..."</p>
+                        </div>
+                        <div class="error-note">
+                            <h4><i class="fas fa-times-circle"></i> S-2220 & S-2240</h4>
+                            <p>"Funcionários não registrados no eSocial. Verificar se todos os colaboradores possuem vínculo ativo antes do envio dos eventos."</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- eSocial Section -->
+            <section class="section" id="esocial">
+                <div class="page-header">
+                    <h1><i class="fas fa-file-alt"></i> Módulo eSocial</h1>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title"><i class="fas fa-ban"></i> Isentos dos Eventos S-2240</span>
+                    </div>
+                    <div class="alert-box">
+                        <h4><i class="fas fa-info-circle"></i> Isenção de Envio</h4>
+                        <p>As seguintes empresas não possuem obrigatoriedade de envio do evento S-2240:</p>
+                    </div>
+                    <div class="empresas-list" id="empresasSemEnvio"></div>
+                </div>
+            </section>
+
+            <!-- Pendências Section -->
+            <section class="section" id="pendencias">
+                <div class="page-header">
+                    <h1><i class="fas fa-tools"></i> Pendências com Técnicos</h1>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title"><i class="fas fa-wrench"></i> Descrição de Atividade</span>
+                        <div style="display: flex; gap: 1rem; align-items: center;">
+                            <span style="color: var(--text-secondary);">
+                                <i class="fas fa-users"></i> Total: <strong>96 funcionários</strong>
+                            </span>
+                            <span style="color: var(--accent-blue);">
+                                <i class="fas fa-user-hard-hat"></i> Técnico: <strong>Abner</strong>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="repasse-info">
+                        <h4><i class="fas fa-share"></i> Data do Repasse</h4>
+                        <p><strong>Segunda-feira, 13/04/2026 12:20</strong></p>
+                    </div>
+
+                    <div class="table-container">
+                        <table id="pendenciasTable">
+                            <thead>
+                                <tr>
+                                    <th>Empresa</th>
+                                    <th>Tipo de Erro</th>
+                                    <th>Funcionários</th>
+                                    <th>Técnico</th>
+                                    <th>Status</th>
+                                    <th>Observação</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- XML Section -->
+            <section class="section" id="xml">
+                <div class="page-header">
+                    <h1><i class="fas fa-code"></i> Controle de XML</h1>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title"><i class="fas fa-calendar-alt"></i> Data de Envio dos XML's</span>
+                    </div>
+                    <div class="table-container">
+                        <table id="xmlTable">
+                            <thead>
+                                <tr>
+                                    <th>Empresa</th>
+                                    <th>CNPJ</th>
+                                    <th>Data de Envio</th>
+                                    <th>Email para Envio</th>
+                                    <th>Destinatário</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Prontuários Section -->
+            <section class="section" id="prontuarios">
+                <div class="page-header">
+                    <h1><i class="fas fa-folder-open"></i> Prontuários</h1>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title"><i class="fas fa-clipboard-list"></i> Controle de Prontuários</span>
+                    </div>
+                    <div class="table-container">
+                        <table id="prontuariosTable">
+                            <thead>
+                                <tr>
+                                    <th>Empresa</th>
+                                    <th>Data Solicitação</th>
+                                    <th>Prazo Final</th>
+                                    <th>Dias Restantes</th>
+                                    <th>Status</th>
+                                    <th>Observação</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Procurações Section -->
+            <section class="section" id="procuracoes">
+                <div class="page-header">
+                    <h1><i class="fas fa-file-signature"></i> Procurações eCAC</h1>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title"><i class="fas fa-stamp"></i> Controle de Procurações</span>
+                    </div>
+                    <div class="table-container">
+                        <table id="procuracoesTable">
+                            <thead>
+                                <tr>
+                                    <th>Razão Social</th>
+                                    <th>CNPJ Empresa</th>
+                                    <th>CNPJ Clínica</th>
+                                    <th>Data Solicitação</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        // Default users configuration
+        const defaultUsers = {
+            'erick.protege': { password: '1234', isMaster: true },
+            'flavia.protege': { password: '1234', isMaster: false },
+            'abner.protege': { password: '1234', isMaster: false },
+            'carol.protege': { password: '1234', isMaster: false }
+        };
+
+        // Load users from localStorage or use defaults
+        function loadUsers() {
+            const savedUsers = localStorage.getItem('esocial_users');
+            if (savedUsers) {
+                return JSON.parse(savedUsers);
+            }
+            return JSON.parse(JSON.stringify(defaultUsers));
+        }
+
+        // Save users to localStorage
+        function saveUsers(users) {
+            localStorage.setItem('esocial_users', JSON.stringify(users));
+        }
+
+        // Check if user has changed password
+        function hasChangedPassword(username) {
+            const changedPasswords = JSON.parse(localStorage.getItem('esocial_changed_passwords') || '[]');
+            return changedPasswords.includes(username);
+        }
+
+        // Mark password as changed
+        function markPasswordChanged(username) {
+            const changedPasswords = JSON.parse(localStorage.getItem('esocial_changed_passwords') || '[]');
+            if (!changedPasswords.includes(username)) {
+                changedPasswords.push(username);
+                localStorage.setItem('esocial_changed_passwords', JSON.stringify(changedPasswords));
+            }
+        }
+
+        // Reset all passwords (for testing)
+        function resetAllPasswords() {
+            localStorage.removeItem('esocial_users');
+            localStorage.removeItem('esocial_changed_passwords');
+            alert('Todas as senhas foram resetadas para o padrão (1234)');
+        }
+
+        let users = loadUsers();
+        let currentUser = null;
+        let pendingUsername = null;
+
+        // Data Store
+        const dataStore = {
+            empresasSemEnvio: [
+                { nome: "METALPAR", cnpj: "77.378.701/0001-93" },
+                { nome: "VITI", cnpj: "07.116.725/0001-99" },
+                { nome: "IANCO", cnpj: "04.873.132/0001-89" },
+                { nome: "USIFX", cnpj: "02.475.488/0001-39" },
+                { nome: "JARDMAQ", cnpj: "21.185.603/0001-85" },
+                { nome: "MECA", cnpj: "19.400.110/0001-79" },
+            ],
+            pendencias: [
+                { empresa: "Bahoma Serviços Ltda", funcionarios: 1 },
+                { empresa: "REDRAM CONSTRUTORA E ENGENHARIA LTDA", funcionarios: 1 },
+                { empresa: "Divisystem Materiais e Serviços Ltda", funcionarios: 3 },
+                { empresa: "Prefeitura Municipal de Rio Branco do Sul", funcionarios: 12 },
+                { empresa: "Telcabos Telecomunicações e Inf. Ltda - Campinas", funcionarios: 1 },
+                { empresa: "Comercial Lancare Ltda", funcionarios: 1 },
+                { empresa: "Câmara Municipal de Araucária", funcionarios: 3 },
+                { empresa: "RP Info Sistemas Ltda", funcionarios: 2 },
+                { empresa: "Hortigranjeira Paraiso LTDA", funcionarios: 41 },
+                { empresa: "MIG Atacado e Varejo LTDA - Pinheirinho", funcionarios: 1 },
+                { empresa: "Scribe Informática Ltda", funcionarios: 2 },
+                { empresa: "A.L. Hortifrutigranjeiros Ltda", funcionarios: 2 },
+                { empresa: "Comercial Hortifrutigranjeiros Pinhais Ltda - Rui Barbosa", funcionarios: 4 },
+                { empresa: "Dux Digital do Brasil Eireli", funcionarios: 1 },
+                { empresa: "Servico Distrital Do Tatuquara", funcionarios: 1 },
+                { empresa: "GASPARIN MERCHANDISING LTDA", funcionarios: 1 },
+                { empresa: "Foundever do Brasil Serviços e Tecnologia Ltda - SP", funcionarios: 1 },
+                { empresa: "Ianco Industria Metalurgica Ltda", funcionarios: 1 },
+                { empresa: "R.Agilidade Locação de Mão de Obra Temporária Ltda", funcionarios: 11 },
+                { empresa: "Associacao De Educacao Personalizada - Aep", funcionarios: 1 },
+                { empresa: "Renova JR Consultoria e Serviços de RH Ltda", funcionarios: 4 },
+                { empresa: "Sysmex do Brasil Industria e Comércio Ltda - São José dos Pinhais", funcionarios: 1 },
+            ],
+            xml: [
+                { 
+                    empresa: "SCRIBE INFORMÁTICA LTDA", 
+                    cnpj: "82.234.568/0001-31",
+                    dataEnvio: "", 
+                    email: "dp@escriba.com.br",
+                    destinatario: "Adm e RH/DP",
+                    status: "Pendente" 
+                },
+                { 
+                    empresa: "COMPANHIA DE HABITAÇÃO DO PARANÁ - COHAPAR", 
+                    cnpj: "76.592.807/0001-22",
+                    dataEnvio: "", 
+                    email: "sheilapsantos@cohapar.pr.gov.br",
+                    destinatario: "Sheila, DP",
+                    status: "Pendente" 
+                },
+            ],
+            prontuarios: [
+                { 
+                    empresa: "BOVINO NOBRE", 
+                    dataSolicitacao: "2026-04-01", 
+                    status: "Organizando", 
+                    observacao: "ASOs sendo preparados" 
+                },
+                { 
+                    empresa: "INSTITUTO DE TECNOLOGIA DO PARANA (TECPAR)", 
+                    dataSolicitacao: "2026-04-06", 
+                    status: "Pendente", 
+                    observacao: "Não começamos" 
+                },
+                { 
+                    empresa: "UROCENTRO CLINICA DE UROLOGIA CURITIBA LTDA", 
+                    dataSolicitacao: "2026-04-09", 
+                    status: "Pendente", 
+                    observacao: "Não começamos" 
+                },
+            ],
+            procuracoes: [
+                { razaoSocial: "Conselho Regional de Corretores de Imóveis do Paraná da 6. Região - CRECI/ PR", cnpjEmpresa: "76.693.910/0001-69", cnpjClinica: "32.952.557/0001-19", dataSolicitacao: "", status: "Pendente de resposta" },
+                { razaoSocial: "Tempanco Panificadora E Confeitaria Ltda.", cnpjEmpresa: "24.897.022/0001-64", cnpjClinica: "32.952.557/0001-19", dataSolicitacao: "", status: "Pendente de resposta" },
+                { razaoSocial: "Lion e Pasinato Central de Distribuição Ltda - ME", cnpjEmpresa: "29.284.070/0001-09", cnpjClinica: "32.952.557/0001-19", dataSolicitacao: "", status: "Pendente de resposta" },
+                { razaoSocial: "Wood Saldanha Natação e Atividades Aquáticas Ltda", cnpjEmpresa: "07.040.523/0001-00", cnpjClinica: "32.952.557/0001-19", dataSolicitacao: "", status: "Pendente de resposta" },
+                { razaoSocial: "Hidracine-Distr. De Equipamentos Hidráulicos Ltda", cnpjEmpresa: "78.544.970/0001-45", cnpjClinica: "32.952.557/0001-19", dataSolicitacao: "", status: "Pendente de resposta" },
+                { razaoSocial: "Servico Distrital Do Tatuquara", cnpjEmpresa: "49.269.107/0001-29", cnpjClinica: "32.952.557/0001-19", dataSolicitacao: "", status: "Pendente de resposta" },
+                { razaoSocial: "Anader Comércio de Condimentos - ME", cnpjEmpresa: "08.380.734/0001-55", cnpjClinica: "32.952.557/0001-19", dataSolicitacao: "", status: "Pendente de resposta" },
+                { razaoSocial: "Amanda da Silva Moreira Pinto", cnpjEmpresa: "16.656.086/0001-45", cnpjClinica: "32.952.557/0001-19", dataSolicitacao: "", status: "Pendente de resposta" },
+                { razaoSocial: "Gattinety - Marketing e Logistica Ltda", cnpjEmpresa: "26.361.814/0001-45", cnpjClinica: "62.055.891/0001-30", dataSolicitacao: "", status: "Pendente de resposta" },
+                { razaoSocial: "L & V Comércio de Alimentos LTDA", cnpjEmpresa: "15.740.242/0001-99", cnpjClinica: "62.055.891/0001-30", dataSolicitacao: "", status: "Pendente de resposta" },
+                { razaoSocial: "Pão e Vinho Comércio de Frutas Ltda", cnpjEmpresa: "61.787.790/0001-91", cnpjClinica: "62.055.891/0001-30", dataSolicitacao: "", status: "Pendente de resposta" },
+                { razaoSocial: "Garateia Comercial Ltda - Trapiche Pescados", cnpjEmpresa: "19.620.987/0001-75", cnpjClinica: "32.952.557/0001-19", dataSolicitacao: "", status: "Pendente de resposta" },
+                { razaoSocial: "Laercio Balaban Hortifrutigranjerios Eireli", cnpjEmpresa: "06.242.497/0001-30", cnpjClinica: "32.952.557/0001-19", dataSolicitacao: "", status: "Pendente de resposta" },
+                { razaoSocial: "Ais Transporte Rodoviario Ltda", cnpjEmpresa: "10.430.704/0001-58", cnpjClinica: "32.952.557/0001-19", dataSolicitacao: "", status: "Pendente de resposta" },
+                { razaoSocial: "Igi Integracao E Logistica Ltda", cnpjEmpresa: "05.584.207/0001-74", cnpjClinica: "32.952.557/0001-19", dataSolicitacao: "", status: "Pendente de resposta" },
+                { razaoSocial: "Higie & Clean Produtos De Higiene E Limpeza Ltda", cnpjEmpresa: "08.735.948/0001-05", cnpjClinica: "32.952.557/0001-19", dataSolicitacao: "", status: "Pendente de resposta" },
+                { razaoSocial: "Htec Tecnologia, Energia e Conexão Ltda", cnpjEmpresa: "44.636.346/0001-56", cnpjClinica: "32.952.557/0001-19", dataSolicitacao: "", status: "Pendente de resposta" },
+                { razaoSocial: "Allfix F&K Alpinismo Industrial Ltda", cnpjEmpresa: "24.184.037/0001-85", cnpjClinica: "32.952.557/0001-19", dataSolicitacao: "2026-04-15", status: "Concluído" },
+            ]
+        };
+
+        // Login Handler
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value;
+            const errorDiv = document.getElementById('loginError');
+
+            // Reload users to get latest changes
+            users = loadUsers();
+
+            if (users[username] && users[username].password === password) {
+                // Check if it's first access (hasn't changed default password)
+                if (!hasChangedPassword(username)) {
+                    pendingUsername = username;
+                    showChangePasswordForm();
+                } else {
+                    // Normal login
+                    currentUser = username;
+                    enterSystem();
+                }
+            } else {
+                errorDiv.style.display = 'block';
+            }
+        });
+
+        // Show change password form
+        function showChangePasswordForm() {
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('changePasswordForm').style.display = 'block';
+            document.getElementById('newPassword').value = '';
+            document.getElementById('confirmPassword').value = '';
+            document.getElementById('newPassword').focus();
+        }
+
+        // Password validation
+        document.getElementById('newPassword').addEventListener('input', function() {
+            const password = this.value;
+            const reqLength = document.getElementById('req-length');
+
+            if (password.length >= 4) {
+                reqLength.classList.remove('invalid');
+                reqLength.classList.add('valid');
+            } else {
+                reqLength.classList.remove('valid');
+                reqLength.classList.add('invalid');
+            }
+        });
+
+        // Change Password Handler
+        document.getElementById('changePasswordForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const errorDiv = document.getElementById('changeError');
+            const errorText = document.getElementById('changeErrorText');
+
+            // Validate
+            if (newPassword.length < 4) {
+                errorText.textContent = 'A senha deve ter pelo menos 4 caracteres!';
+                errorDiv.style.display = 'block';
+                return;
+            }
+
+            if (newPassword !== confirmPassword) {
+                errorText.textContent = 'As senhas não coincidem!';
+                errorDiv.style.display = 'block';
+                return;
+            }
+
+            if (newPassword === '1234') {
+                errorText.textContent = 'A nova senha não pode ser igual à senha padrão!';
+                errorDiv.style.display = 'block';
+                return;
+            }
+
+            // Save new password
+            users[pendingUsername].password = newPassword;
+            saveUsers(users);
+            markPasswordChanged(pendingUsername);
+
+            // Login with new credentials
+            currentUser = pendingUsername;
+            pendingUsername = null;
+
+            alert('Senha alterada com sucesso! Bem-vindo ao sistema.');
+            enterSystem();
+        });
+
+        // Enter system
+        function enterSystem() {
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('appContainer').style.display = 'block';
+
+            // Update user info
+            document.getElementById('currentUser').textContent = currentUser;
+            if (users[currentUser].isMaster) {
+                document.getElementById('masterBadge').innerHTML = '<span class="master-badge">Master</span>';
+            }
+
+            initCharts();
+            loadAllData();
+        }
+
+        // Logout Handler
+        document.getElementById('logoutBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            location.reload();
+        });
+
+        // Navigation
+        document.querySelectorAll('.sidebar-menu a[data-section]').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const section = this.dataset.section;
+
+                document.querySelectorAll('.sidebar-menu a').forEach(a => a.classList.remove('active'));
+                this.classList.add('active');
+
+                document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+                document.getElementById(section).classList.add('active');
+            });
+        });
+
+        // Mobile Menu Toggle
+        document.getElementById('menuToggle').addEventListener('click', function() {
+            document.getElementById('sidebar').classList.toggle('open');
+        });
+
+        // Initialize Charts
+        function initCharts() {
+            const chartOptions = {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            color: '#94a3b8',
+                            padding: 20,
+                            font: { size: 12 }
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const label = context.label || '';
+                                const value = context.parsed || 0;
+                                const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                const percentage = ((value / total) * 100).toFixed(1);
+                                return `${label}: ${percentage}%`;
+                            }
+                        }
+                    }
+                }
+            };
+
+            // S-2220 Chart
+            new Chart(document.getElementById('chartS2220'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['Concluído', 'Erro'],
+                    datasets: [{
+                        data: [2741, 402],
+                        backgroundColor: ['#10b981', '#ef4444'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    ...chartOptions,
+                    cutout: '70%'
+                }
+            });
+
+            // S-2240 Chart
+            new Chart(document.getElementById('chartS2240'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['Concluído', 'Erro'],
+                    datasets: [{
+                        data: [1957, 797],
+                        backgroundColor: ['#10b981', '#ef4444'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    ...chartOptions,
+                    cutout: '70%'
+                }
+            });
+
+            // S-2221 Chart
+            new Chart(document.getElementById('chartS2221'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['Concluído', 'Erro'],
+                    datasets: [{
+                        data: [1, 6],
+                        backgroundColor: ['#10b981', '#ef4444'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    ...chartOptions,
+                    cutout: '70%'
+                }
+            });
+        }
+
+        // Load All Data
+        function loadAllData() {
+            loadEmpresasSemEnvio();
+            loadPendenciasTable();
+            loadXmlTable();
+            loadProntuariosTable();
+            loadProcuracoesTable();
+        }
+
+        // Load Empresas sem Envio
+        function loadEmpresasSemEnvio() {
+            const container = document.getElementById('empresasSemEnvio');
+            container.innerHTML = dataStore.empresasSemEnvio.map(emp => `
+                <div class="empresa-tag" title="CNPJ: ${emp.cnpj}">
+                    <strong>${emp.nome}</strong><br>
+                    <small>${emp.cnpj}</small>
+                </div>
+            `).join('');
+        }
+
+        // Load Pendências Table
+        function loadPendenciasTable() {
+            const tbody = document.querySelector('#pendenciasTable tbody');
+            tbody.innerHTML = dataStore.pendencias.map(item => `
+                <tr>
+                    <td>${item.empresa}</td>
+                    <td>Descrição de atividade</td>
+                    <td>${item.funcionarios}</td>
+                    <td>Abner</td>
+                    <td><span class="badge badge-warning">Pendente</span></td>
+                    <td><input type="text" class="editable" value="Aguardando técnico"></td>
+                </tr>
+            `).join('');
+        }
+
+        // Load XML Table
+        function loadXmlTable() {
+            const tbody = document.querySelector('#xmlTable tbody');
+            tbody.innerHTML = dataStore.xml.map(item => {
+                let badgeClass = 'badge-gray';
+                if (item.status === 'Confirmado') badgeClass = 'badge-success';
+                else if (item.status === 'Enviado') badgeClass = 'badge-info';
+                else if (item.status === 'Pendente') badgeClass = 'badge-warning';
+
+                return `
+                    <tr>
+                        <td><strong>${item.empresa}</strong></td>
+                        <td>${item.cnpj}</td>
+                        <td><input type="date" class="editable" value="${item.dataEnvio}"></td>
+                        <td><a href="mailto:${item.email}" style="color: var(--accent-blue);">${item.email}</a></td>
+                        <td>${item.destinatario}</td>
+                        <td><span class="badge ${badgeClass}">${item.status}</span></td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // Load Prontuários Table
+        function loadProntuariosTable() {
+            const tbody = document.querySelector('#prontuariosTable tbody');
+            const hoje = new Date('2026-04-15'); // Data atual do sistema
+
+            tbody.innerHTML = dataStore.prontuarios.map(item => {
+                const dataSol = new Date(item.dataSolicitacao);
+                const prazo = new Date(dataSol);
+                prazo.setDate(prazo.getDate() + 30);
+
+                const diffTime = prazo - hoje;
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+                let daysClass = 'days-success';
+                let daysText = `${diffDays} dias`;
+
+                if (diffDays < 0) {
+                    daysClass = 'days-danger';
+                    daysText = `${Math.abs(diffDays)} dias atrasado`;
+                } else if (diffDays <= 5) {
+                    daysClass = 'days-warning';
+                }
+
+                let badgeClass = 'badge-gray';
+                if (item.status === 'Concluído') badgeClass = 'badge-success';
+                else if (item.status === 'Organizando') badgeClass = 'badge-info';
+                else if (item.status === 'Pendente') badgeClass = 'badge-warning';
+                else if (item.status === 'Em andamento') badgeClass = 'badge-purple';
+
+                return `
+                    <tr>
+                        <td>${item.empresa}</td>
+                        <td>${item.dataSolicitacao.split('-').reverse().join('/')}</td>
+                        <td>${prazo.toISOString().split('T')[0].split('-').reverse().join('/')}</td>
+                        <td><span class="days-counter ${daysClass}">${daysText}</span></td>
+                        <td><span class="badge ${badgeClass}">${item.status}</span></td>
+                        <td><input type="text" class="editable" value="${item.observacao}"></td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // Load Procurações Table
+        function loadProcuracoesTable() {
+            const tbody = document.querySelector('#procuracoesTable tbody');
+            tbody.innerHTML = dataStore.procuracoes.map(item => {
+                let badgeClass = 'badge-warning';
+                if (item.status === 'Concluído') badgeClass = 'badge-success';
+                else if (item.status === 'Em andamento') badgeClass = 'badge-info';
+                else if (item.status === 'Negado') badgeClass = 'badge-danger';
+
+                return `
+                    <tr>
+                        <td>${item.razaoSocial}</td>
+                        <td>${item.cnpjEmpresa}</td>
+                        <td>${item.cnpjClinica}</td>
+                        <td><input type="date" class="editable" value="${item.dataSolicitacao}"></td>
+                        <td><span class="badge ${badgeClass}">${item.status}</span></td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // Update total on load
+        document.addEventListener('DOMContentLoaded', function() {
+            const total = 2741 + 1 + 1957;
+            document.getElementById('totalConcluidos').textContent = total.toLocaleString();
+        });
+
+        // Console command to reset passwords (for testing)
+        console.log('%c🔧 Comandos disponíveis:', 'color: #00a651; font-size: 14px; font-weight: bold;');
+        console.log('%cresetAllPasswords()', 'color: #3b82f6;', '- Reseta todas as senhas para 1234');
+    </script>
+</body>
+</html>
