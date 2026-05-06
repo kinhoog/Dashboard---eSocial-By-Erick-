@@ -7,31 +7,44 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-primary: #0f172a;
-            --bg-secondary: #1e293b;
-            --bg-card: #334155;
-            --text-primary: #f1f5f9;
-            --text-secondary: #94a3b8;
-            --accent-green: #10b981;
-            --accent-red: #ef4444;
-            --accent-yellow: #f59e0b;
-            --accent-blue: #3b82f6;
-            --accent-purple: #8b5cf6;
+            --bg-primary: #080f1e;
+            --bg-secondary: #0f1a2e;
+            --bg-card: #162236;
+            --bg-card-hover: #1c2d44;
+            --text-primary: #e8f0fe;
+            --text-secondary: #7a92b4;
+            --text-muted: #4a6080;
+            --accent-green: #00d68f;
+            --accent-red: #ff4757;
+            --accent-yellow: #ffc948;
+            --accent-blue: #4e8cff;
+            --accent-purple: #a66cff;
             --accent-gray: #6b7280;
-            --border-color: #475569;
-            --protege-green: #00a651;
+            --border-color: #1e3250;
+            --border-light: #253d5e;
+            --protege-green: #00c261;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.3);
+            --shadow-md: 0 4px 20px rgba(0,0,0,0.4);
+            --shadow-lg: 0 8px 40px rgba(0,0,0,0.5);
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 20px;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         html, body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Inter', 'Segoe UI', sans-serif;
             background-color: var(--bg-primary);
             color: var(--text-primary);
             min-height: 100vh;
             height: 100%;
+            font-size: 15px;
+            -webkit-font-smoothing: antialiased;
         }
 
         /* TELA DE LOGIN - AJUSTADA PARA NÃO CORTAR */
@@ -39,7 +52,7 @@
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100%;
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            background: radial-gradient(ellipse at 30% 50%, #0a1628 0%, #080f1e 70%);
             display: flex;
             justify-content: center;
             align-items: flex-start;
@@ -50,11 +63,11 @@
 
         .login-container {
             background: var(--bg-secondary);
-            padding: 2rem;
-            border-radius: 16px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            padding: 2.25rem;
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-lg), 0 0 0 1px rgba(0,194,97,0.08);
             width: 100%;
-            max-width: 400px;
+            max-width: 420px;
             border: 1px solid var(--border-color);
             margin: auto;
             flex-shrink: 0;
@@ -77,49 +90,55 @@
         }
 
         .form-group {
-            margin-bottom: 1rem;
+            margin-bottom: 1.1rem;
         }
 
         .form-group label {
             display: block;
             margin-bottom: 0.4rem;
             color: var(--text-secondary);
-            font-size: 0.85rem;
+            font-size: 0.82rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
         }
 
         .form-group input {
             width: 100%;
-            padding: 0.65rem 1rem;
+            padding: 0.7rem 1rem;
             background: var(--bg-card);
             border: 1px solid var(--border-color);
-            border-radius: 8px;
+            border-radius: var(--radius-sm);
             color: var(--text-primary);
             font-size: 0.95rem;
-            transition: all 0.3s;
+            font-family: inherit;
+            transition: all 0.2s;
         }
 
         .form-group input:focus {
             outline: none;
-            border-color: var(--accent-blue);
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+            border-color: var(--protege-green);
+            box-shadow: 0 0 0 3px rgba(0, 194, 97, 0.12);
         }
 
         .btn-login {
             width: 100%;
-            padding: 0.75rem;
+            padding: 0.8rem;
             background: linear-gradient(135deg, var(--protege-green), #008f45);
             border: none;
-            border-radius: 8px;
+            border-radius: var(--radius-sm);
             color: white;
             font-size: 0.95rem;
-            font-weight: 600;
+            font-weight: 700;
+            font-family: inherit;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.2s;
+            letter-spacing: 0.3px;
         }
 
         .btn-login:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(0, 166, 81, 0.3);
+            box-shadow: 0 10px 24px rgba(0, 194, 97, 0.35);
         }
 
         .login-error {
@@ -242,7 +261,7 @@
             position: fixed;
             left: 0;
             top: 0;
-            width: 260px;
+            width: 268px;
             height: 100vh;
             background: var(--bg-secondary);
             border-right: 1px solid var(--border-color);
@@ -262,20 +281,21 @@
         .logo-esocial {
             display: flex;
             align-items: center;
-            gap: 0.75rem;
+            gap: 0.85rem;
         }
 
         .logo-esocial-icon {
-            width: 42px;
-            height: 42px;
+            width: 44px;
+            height: 44px;
             background: linear-gradient(135deg, var(--protege-green), #008f45);
-            border-radius: 10px;
+            border-radius: var(--radius-sm);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.25rem;
+            font-size: 1.2rem;
             color: white;
-            box-shadow: 0 4px 12px rgba(0, 166, 81, 0.3);
+            box-shadow: 0 4px 16px rgba(0, 194, 97, 0.4);
+            flex-shrink: 0;
         }
 
         .logo-esocial-text {
@@ -284,15 +304,15 @@
         }
 
         .logo-esocial-title {
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             font-weight: 700;
             color: var(--text-primary);
             line-height: 1.2;
         }
 
         .logo-esocial-subtitle {
-            font-size: 0.7rem;
-            color: var(--text-secondary);
+            font-size: 0.68rem;
+            color: var(--text-muted);
             text-transform: uppercase;
             letter-spacing: 1px;
         }
@@ -304,19 +324,20 @@
         }
 
         .sidebar-menu li {
-            margin-bottom: 0.25rem;
+            margin-bottom: 0.2rem;
         }
 
         .sidebar-menu a {
             display: flex;
             align-items: center;
             gap: 0.75rem;
-            padding: 0.875rem 1rem;
+            padding: 0.8rem 1rem;
             color: var(--text-secondary);
             text-decoration: none;
-            border-radius: 8px;
-            transition: all 0.3s;
+            border-radius: var(--radius-sm);
+            transition: all 0.2s;
             cursor: pointer;
+            font-size: 0.9rem;
         }
 
         .sidebar-menu a:hover,
@@ -326,41 +347,51 @@
         }
 
         .sidebar-menu a.active {
-            background: linear-gradient(135deg, var(--protege-green), #008f45);
-            color: white;
+            background: linear-gradient(135deg, rgba(0,194,97,0.2), rgba(0,143,69,0.1));
+            color: var(--protege-green);
+            border: 1px solid rgba(0,194,97,0.2);
         }
 
         .sidebar-menu a i {
             width: 20px;
             text-align: center;
+            font-size: 0.95rem;
         }
 
         .main-content {
-            margin-left: 260px;
-            padding: 2rem;
+            margin-left: 268px;
+            padding: 2.5rem;
             min-height: 100vh;
+            background: var(--bg-primary);
         }
 
         .page-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 2rem;
-            padding-bottom: 1rem;
+            margin-bottom: 2.5rem;
+            padding-bottom: 1.25rem;
             border-bottom: 1px solid var(--border-color);
             flex-wrap: wrap;
             gap: 1rem;
         }
 
         .page-header h1 {
-            font-size: 1.75rem;
-            font-weight: 600;
+            font-size: 2rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            color: var(--text-primary);
+        }
+
+        .page-header h1 i {
+            color: var(--protege-green);
+            margin-right: 0.4rem;
         }
 
         .header-controls {
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 0.75rem;
             flex-wrap: wrap;
         }
 
@@ -368,82 +399,87 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            padding: 0.5rem 1rem;
-            background: var(--bg-card);
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
-            color: var(--text-primary);
-            font-size: 0.9rem;
-            font-weight: 600;
+            padding: 0.6rem 1.1rem;
+            background: linear-gradient(135deg, rgba(0,194,97,0.15), rgba(0,143,69,0.08));
+            border-radius: var(--radius-sm);
+            border: 1px solid rgba(0,194,97,0.3);
+            color: var(--protege-green);
+            font-size: 0.95rem;
+            font-weight: 700;
+            letter-spacing: 0.3px;
         }
 
         .month-badge i {
-            color: var(--protege-green);
+            font-size: 0.9rem;
         }
 
         .btn-export {
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            padding: 0.625rem 1.25rem;
+            padding: 0.6rem 1.2rem;
             background: linear-gradient(135deg, var(--accent-blue), #2563eb);
             border: none;
-            border-radius: 8px;
+            border-radius: var(--radius-sm);
             color: white;
-            font-size: 0.9rem;
+            font-size: 0.88rem;
             font-weight: 600;
+            font-family: inherit;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.2s;
         }
 
         .btn-export:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 16px rgba(59, 130, 246, 0.3);
+            box-shadow: 0 8px 20px rgba(78, 140, 255, 0.4);
         }
 
         .btn-edit {
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            padding: 0.625rem 1.25rem;
+            padding: 0.6rem 1.2rem;
             background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            color: var(--text-primary);
-            font-size: 0.9rem;
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-sm);
+            color: var(--text-secondary);
+            font-size: 0.88rem;
             font-weight: 600;
+            font-family: inherit;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.2s;
         }
 
         .btn-edit:hover {
             background: var(--border-color);
+            color: var(--text-primary);
         }
 
         .last-update {
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            color: var(--text-secondary);
-            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-size: 0.85rem;
         }
 
         .last-update-value {
             background: var(--bg-card);
             border: 1px solid var(--border-color);
-            border-radius: 6px;
-            color: var(--text-primary);
-            padding: 0.375rem 0.75rem;
-            font-size: 0.9rem;
+            border-radius: var(--radius-sm);
+            color: var(--text-secondary);
+            padding: 0.35rem 0.75rem;
+            font-size: 0.85rem;
             font-weight: 500;
         }
 
         .card {
             background: var(--bg-secondary);
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
+            border-radius: var(--radius-lg);
+            padding: 1.75rem;
+            margin-bottom: 2rem;
             border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-sm);
         }
 
         .card-header {
@@ -454,67 +490,79 @@
         }
 
         .card-title {
-            font-size: 1.125rem;
-            font-weight: 600;
+            font-size: 1.05rem;
+            font-weight: 700;
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .card-title i {
+            color: var(--protege-green);
         }
 
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
             gap: 1.5rem;
-            margin-bottom: 2rem;
+            margin-bottom: 2.5rem;
         }
 
         .stat-card {
             background: var(--bg-secondary);
-            border-radius: 12px;
-            padding: 1.5rem;
+            border-radius: var(--radius-lg);
+            padding: 1.75rem;
             border: 1px solid var(--border-color);
-            transition: all 0.3s;
+            transition: all 0.25s;
+            box-shadow: var(--shadow-sm);
         }
 
         .stat-card:hover {
             transform: translateY(-4px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border-color: var(--border-light);
+            box-shadow: var(--shadow-md);
         }
 
         .stat-header {
             display: flex;
             align-items: center;
-            gap: 0.75rem;
-            margin-bottom: 1rem;
+            gap: 1rem;
+            margin-bottom: 1.1rem;
         }
 
         .stat-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
+            width: 52px;
+            height: 52px;
+            border-radius: var(--radius-md);
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 1.5rem;
+            flex-shrink: 0;
         }
 
-        .stat-icon.green { background: rgba(16, 185, 129, 0.2); color: var(--accent-green); }
-        .stat-icon.red { background: rgba(239, 68, 68, 0.2); color: var(--accent-red); }
+        .stat-icon.green { background: rgba(0, 214, 143, 0.15); color: var(--accent-green); }
+        .stat-icon.red { background: rgba(255, 71, 87, 0.15); color: var(--accent-red); }
 
         .stat-value {
-            font-size: 2rem;
-            font-weight: 700;
+            font-size: 2.25rem;
+            font-weight: 800;
             color: var(--text-primary);
+            letter-spacing: -0.5px;
+            line-height: 1;
         }
 
         .stat-label {
             color: var(--text-secondary);
-            font-size: 0.875rem;
+            font-size: 0.85rem;
+            margin-top: 0.2rem;
+            font-weight: 500;
         }
 
         .stat-percentage {
-            margin-top: 0.75rem;
-            padding-top: 0.75rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
             border-top: 1px solid var(--border-color);
         }
 
@@ -526,46 +574,58 @@
         }
 
         .stat-percentage-value {
-            font-size: 1.5rem;
-            font-weight: 700;
+            font-size: 1.6rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
         }
 
         .stat-percentage-value.success { color: var(--accent-green); }
         .stat-percentage-value.danger { color: var(--accent-red); }
 
         .stat-percentage-label {
-            font-size: 0.8rem;
+            font-size: 0.78rem;
             color: var(--text-secondary);
-            line-height: 1.2;
+            line-height: 1.3;
         }
 
         .charts-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 1.5rem;
-            margin-bottom: 2rem;
+            margin-bottom: 2.5rem;
         }
 
         .chart-card {
             background: var(--bg-secondary);
-            border-radius: 12px;
-            padding: 1.5rem;
+            border-radius: var(--radius-lg);
+            padding: 1.75rem;
             border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-sm);
+            transition: all 0.25s;
+        }
+
+        .chart-card:hover {
+            border-color: var(--border-light);
         }
 
         .chart-card-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 1rem;
+            margin-bottom: 1.1rem;
         }
 
         .chart-card-title {
-            font-size: 1.125rem;
-            font-weight: 600;
+            font-size: 1.05rem;
+            font-weight: 700;
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .chart-card-title i {
+            color: var(--protege-green);
         }
 
         .chart-container {
@@ -588,39 +648,347 @@
 
         .chart-stat-value {
             font-size: 1.5rem;
-            font-weight: 700;
+            font-weight: 800;
+            letter-spacing: -0.5px;
         }
 
         .chart-stat-value.success { color: var(--accent-green); }
         .chart-stat-value.danger { color: var(--accent-red); }
 
         .chart-stat-label {
-            font-size: 0.8rem;
+            font-size: 0.78rem;
             color: var(--text-secondary);
             margin-top: 0.25rem;
+            font-weight: 500;
         }
 
         .chart-percentage {
             text-align: center;
             padding: 1rem;
-            background: rgba(16, 185, 129, 0.1);
-            border-radius: 8px;
+            background: rgba(0, 214, 143, 0.08);
+            border: 1px solid rgba(0, 214, 143, 0.15);
+            border-radius: var(--radius-md);
             margin-top: 1rem;
         }
 
         .chart-percentage-value {
             font-size: 2rem;
-            font-weight: 700;
+            font-weight: 800;
             color: var(--accent-green);
+            letter-spacing: -0.5px;
         }
 
         .chart-percentage-label {
-            font-size: 0.85rem;
+            font-size: 0.82rem;
             color: var(--text-secondary);
             margin-top: 0.25rem;
         }
 
-        .table-container {
+        /* ======================== KPI BANNER ======================== */
+        .kpi-banner {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.25rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .kpi-card {
+            background: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem 1.75rem;
+            border: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+            box-shadow: var(--shadow-sm);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.25s;
+        }
+
+        .kpi-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+        }
+
+        .kpi-card.kpi-errors::before { background: var(--accent-red); }
+        .kpi-card.kpi-success::before { background: var(--accent-green); }
+        .kpi-card.kpi-rate::before { background: var(--accent-blue); }
+        .kpi-card.kpi-month::before { background: var(--protege-green); }
+
+        .kpi-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .kpi-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--text-muted);
+        }
+
+        .kpi-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+            line-height: 1;
+        }
+
+        .kpi-card.kpi-errors .kpi-value { color: var(--accent-red); }
+        .kpi-card.kpi-success .kpi-value { color: var(--accent-green); }
+        .kpi-card.kpi-rate .kpi-value { color: var(--accent-blue); }
+        .kpi-card.kpi-month .kpi-value {
+            font-size: 1.6rem;
+            color: var(--protege-green);
+        }
+
+        .kpi-sub {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        /* ======================== ALERT HIGHLIGHT ======================== */
+        .alert-highlight-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.25rem;
+            margin-bottom: 2.5rem;
+        }
+
+        @media (max-width: 900px) {
+            .alert-highlight-grid { grid-template-columns: 1fr; }
+        }
+
+        .alert-highlight-card {
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            border: 1px solid;
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .alert-highlight-card.alert-red {
+            background: rgba(255, 71, 87, 0.07);
+            border-color: rgba(255, 71, 87, 0.3);
+        }
+
+        .alert-highlight-card.alert-orange {
+            background: rgba(255, 165, 0, 0.07);
+            border-color: rgba(255, 165, 0, 0.3);
+        }
+
+        .alert-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .alert-highlight-card.alert-red .alert-icon {
+            background: rgba(255, 71, 87, 0.15);
+            color: var(--accent-red);
+        }
+
+        .alert-highlight-card.alert-orange .alert-icon {
+            background: rgba(255, 165, 0, 0.15);
+            color: var(--accent-yellow);
+        }
+
+        .alert-content-title {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 0.3rem;
+        }
+
+        .alert-highlight-card.alert-red .alert-content-title { color: var(--accent-red); }
+        .alert-highlight-card.alert-orange .alert-content-title { color: var(--accent-yellow); }
+
+        .alert-content-name {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .alert-content-detail {
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+        }
+
+        /* ======================== ACCORDION EMPRESA ======================== */
+        .empresa-accordion {
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            margin-bottom: 0.75rem;
+            transition: all 0.2s;
+        }
+
+        .empresa-accordion:hover {
+            border-color: var(--border-light);
+        }
+
+        .empresa-accordion-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.1rem 1.5rem;
+            background: var(--bg-card);
+            cursor: pointer;
+            user-select: none;
+            transition: background 0.2s;
+        }
+
+        .empresa-accordion-header:hover {
+            background: var(--bg-card-hover);
+        }
+
+        .empresa-accordion-header.open {
+            background: var(--bg-card-hover);
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .empresa-accordion-left {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .empresa-accordion-name {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .empresa-accordion-pills {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-shrink: 0;
+        }
+
+        .empresa-pill {
+            padding: 0.25rem 0.7rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .empresa-pill.pill-success {
+            background: rgba(0, 214, 143, 0.15);
+            color: var(--accent-green);
+        }
+
+        .empresa-pill.pill-danger {
+            background: rgba(255, 71, 87, 0.15);
+            color: var(--accent-red);
+        }
+
+        .empresa-pill.pill-rate {
+            background: rgba(78, 140, 255, 0.15);
+            color: var(--accent-blue);
+        }
+
+        .empresa-accordion-chevron {
+            color: var(--text-muted);
+            transition: transform 0.3s;
+            font-size: 0.85rem;
+            flex-shrink: 0;
+        }
+
+        .empresa-accordion-chevron.open {
+            transform: rotate(180deg);
+        }
+
+        .empresa-accordion-body {
+            display: none;
+            padding: 1.25rem 1.5rem;
+            background: var(--bg-secondary);
+        }
+
+        .empresa-accordion-body.open {
+            display: block;
+        }
+
+        .empresa-detail-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        @media (max-width: 700px) {
+            .empresa-detail-row { grid-template-columns: 1fr; }
+        }
+
+        .empresa-detail-block {
+            background: var(--bg-card);
+            border-radius: var(--radius-sm);
+            padding: 1rem 1.25rem;
+        }
+
+        .empresa-detail-block.block-error {
+            border-left: 3px solid var(--accent-red);
+        }
+
+        .empresa-detail-block.block-resolve {
+            border-left: 3px solid var(--accent-blue);
+        }
+
+        .empresa-detail-block-title {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.7px;
+            margin-bottom: 0.6rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .empresa-detail-block.block-error .empresa-detail-block-title { color: var(--accent-red); }
+        .empresa-detail-block.block-resolve .empresa-detail-block-title { color: var(--accent-blue); }
+
+        .empresa-detail-block-text {
+            font-size: 0.87rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* ======================== EMPTY STATE ======================== */
+        .empty-state {
+            text-align: center;
+            padding: 3rem 2rem;
+            color: var(--text-muted);
+        }
+
+        .empty-state i {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+            display: block;
+        }
+
+        .empty-state p {
+            font-size: 1rem;
+            font-weight: 500;
+        }
             overflow-x: auto;
         }
 
@@ -1066,7 +1434,421 @@
             color: #64748b;
             font-size: 11px;
         }
-    </style>
+    
+        .btn-month-dropdown {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1.1rem;
+            background: linear-gradient(135deg, rgba(0,194,97,0.15), rgba(0,143,69,0.08));
+            border: 1px solid rgba(0,194,97,0.3);
+            border-radius: var(--radius-sm);
+            color: var(--protege-green);
+            font-size: 0.88rem;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.2s;
+            letter-spacing: 0.3px;
+        }
+        .btn-month-dropdown:hover {
+            box-shadow: 0 4px 12px rgba(0,194,97,0.2);
+        }
+        /* Category filter styles */
+        .category-filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            margin-bottom: 1.5rem;
+        }
+        .btn-category {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.45rem 0.9rem;
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-card);
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-category:hover { border-color: var(--border-light); color: var(--text-primary); }
+        .btn-category.active { color: white; border-color: transparent; }
+        .btn-category.cat-all.active { background: #374151; }
+        .btn-category.cat-naocad.active { background: #dc2626; }
+        .btn-category.cat-desist.active { background: #d97706; }
+        .btn-category.cat-admfut.active { background: #2563eb; }
+        .btn-category.cat-proc.active { background: #7c3aed; }
+        .btn-category.cat-cancel.active { background: #374151; }
+        .btn-category.cat-tecnico.active { background: #ea580c; }
+
+        .cat-dot {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        .dot-naocad { background: #ef4444; }
+        .dot-desist { background: #f59e0b; }
+        .dot-admfut { background: #3b82f6; }
+        .dot-proc { background: #8b5cf6; }
+        .dot-cancel { background: #6b7280; }
+        .dot-tecnico { background: #f97316; }
+
+        .categoria-section {
+            margin-bottom: 1.5rem;
+        }
+        .categoria-header {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.75rem 1rem;
+            border-radius: var(--radius-sm);
+            margin-bottom: 0.75rem;
+            font-size: 0.9rem;
+            font-weight: 700;
+        }
+        .cat-naocad-header { background: rgba(239,68,68,0.12); color: #ef4444; border: 1px solid rgba(239,68,68,0.25); }
+        .cat-desist-header { background: rgba(245,158,11,0.12); color: #f59e0b; border: 1px solid rgba(245,158,11,0.25); }
+        .cat-admfut-header { background: rgba(59,130,246,0.12); color: #60a5fa; border: 1px solid rgba(59,130,246,0.25); }
+        .cat-proc-header { background: rgba(139,92,246,0.12); color: #a78bfa; border: 1px solid rgba(139,92,246,0.25); }
+        .cat-cancel-header { background: rgba(107,114,128,0.12); color: #9ca3af; border: 1px solid rgba(107,114,128,0.25); }
+        .cat-tecnico-header { background: rgba(249,115,22,0.12); color: #fb923c; border: 1px solid rgba(249,115,22,0.25); }
+
+        .empresa-item-clickable {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.75rem 1.1rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            margin-bottom: 0.4rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .empresa-item-clickable:hover {
+            border-color: var(--border-light);
+            background: var(--bg-card-hover);
+        }
+        .empresa-item-left { display: flex; align-items: center; gap: 0.6rem; flex: 1; min-width: 0; }
+        .empresa-item-name { font-size: 0.88rem; font-weight: 600; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .empresa-item-pills { display: flex; gap: 0.4rem; flex-shrink: 0; }
+
+        .empty-month-msg {
+            text-align: center;
+            padding: 3rem 2rem;
+            color: var(--text-muted);
+        }
+        .empty-month-msg i { font-size: 3rem; margin-bottom: 1rem; display: block; opacity: 0.4; }
+        .empty-month-msg h3 { font-size: 1.1rem; color: var(--text-secondary); margin-bottom: 0.5rem; }
+        .empty-month-msg p { font-size: 0.85rem; }
+
+        #maioNotice { display: none; }
+
+        .drill-down-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(8px);
+            z-index: 200;
+            display: none;
+            justify-content: center;
+            align-items: flex-start;
+            overflow-y: auto;
+            padding: 2rem;
+        }
+
+        .drill-down-overlay.active {
+            display: flex;
+        }
+
+        .drill-down-container {
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            width: 100%;
+            max-width: 1200px;
+            margin: auto;
+            padding: 2rem;
+            position: relative;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .drill-down-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--protege-green);
+        }
+
+        .drill-down-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .drill-down-title .event-badge {
+            background: linear-gradient(135deg, var(--protege-green), #008f45);
+            color: white;
+            padding: 0.375rem 0.875rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+
+        .btn-close-drill {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 0.625rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+        }
+
+        .btn-close-drill:hover {
+            background: var(--accent-red);
+            color: white;
+            border-color: var(--accent-red);
+        }
+
+        .drill-down-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .drill-summary-card {
+            background: var(--bg-primary);
+            border-radius: 12px;
+            padding: 1.25rem;
+            text-align: center;
+            border: 1px solid var(--border-color);
+        }
+
+        .drill-summary-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .drill-summary-value.success { color: var(--accent-green); }
+        .drill-summary-value.danger { color: var(--accent-red); }
+
+        .drill-summary-label {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
+        .empresa-detail-card {
+            background: var(--bg-primary);
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .empresa-detail-card:hover {
+            border-color: var(--protege-green);
+            box-shadow: 0 8px 24px rgba(0, 166, 81, 0.1);
+        }
+
+        .empresa-detail-header {
+            padding: 1.25rem 1.5rem;
+            background: linear-gradient(135deg, rgba(0, 166, 81, 0.1), rgba(0, 143, 69, 0.05));
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .empresa-detail-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .empresa-detail-name i {
+            color: var(--protege-green);
+        }
+
+        .empresa-detail-stats {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .empresa-stat {
+            text-align: center;
+            padding: 0.5rem 1rem;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+        }
+
+        .empresa-stat-value {
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        .empresa-stat-value.success { color: var(--accent-green); }
+        .empresa-stat-value.danger { color: var(--accent-red); }
+
+        .empresa-stat-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .empresa-detail-body {
+            padding: 1.5rem;
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 1.5rem;
+            align-items: start;
+        }
+
+        .empresa-chart-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .empresa-chart-container {
+            width: 220px;
+            height: 220px;
+            position: relative;
+        }
+
+        .empresa-chart-percent {
+            text-align: center;
+            margin-top: 0.75rem;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--accent-green);
+        }
+
+        .empresa-chart-sublabel {
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .empresa-analysis {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .analysis-block {
+            background: var(--bg-secondary);
+            border-radius: 10px;
+            padding: 1rem 1.25rem;
+            border-left: 4px solid var(--accent-yellow);
+        }
+
+        .analysis-block.resolution {
+            border-left-color: var(--accent-blue);
+        }
+
+        .analysis-block h4 {
+            font-size: 0.85rem;
+            color: var(--accent-yellow);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .analysis-block.resolution h4 {
+            color: var(--accent-blue);
+        }
+
+        .analysis-block p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .chart-clickable {
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .chart-clickable:hover {
+            transform: scale(1.02);
+        }
+
+        .chart-card.clickable-card {
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .chart-card.clickable-card:hover {
+            border-color: var(--protege-green);
+            box-shadow: 0 8px 24px rgba(0, 166, 81, 0.2);
+        }
+
+        .chart-card.clickable-card::after {
+            content: "Clique para detalhar";
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 166, 81, 0.9);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .chart-card.clickable-card:hover::after {
+            opacity: 1;
+        }
+
+        @media (max-width: 768px) {
+            .empresa-detail-body {
+                grid-template-columns: 1fr;
+            }
+            .empresa-chart-container {
+                width: 180px;
+                height: 180px;
+                margin: 0 auto;
+            }
+            .drill-down-container {
+                padding: 1rem;
+                margin: 0.5rem;
+            }
+        }
+</style>
+<base target="_blank">
+<base target="_blank">
 <base target="_blank">
 </head>
 <body>
@@ -1131,7 +1913,7 @@
                         <span>Realizado por <strong>Kimi IA</strong></span>
                     </div>
                 </div>
-                <div class="version-tag">v1.0.0 • Abril/2026</div>
+                <div class="version-tag">v1.0.1 • Maio/2026</div>
             </div>
         </div>
     </div>
@@ -1170,20 +1952,58 @@
                 <div class="page-header">
                     <h1><i class="fas fa-chart-pie"></i> Dashboard</h1>
                     <div class="header-controls">
-                        <div class="month-badge">
-                            <i class="fas fa-calendar-alt"></i>
-                            <span>Abril/2026</span>
+                        <div style="position: relative;">
+                            <button class="btn-month-dropdown" id="btnMonthSelector" onclick="toggleMonthMenu()">
+                                <i class="fas fa-calendar-alt"></i>
+                                <span id="monthSelectorLabel">Maio/2026</span>
+                                <i class="fas fa-chevron-down" style="margin-left: 5px; font-size: 0.75rem;"></i>
+                            </button>
+                            <div id="monthMenu" style="display: none; position: absolute; top: 100%; left: 0; margin-top: 8px; background: #0f1a2e; border: 1px solid #1e3250; border-radius: 8px; padding: 0.5rem 0; min-width: 160px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); z-index: 50;">
+                                <div onclick="switchMonth('2026-05')" id="optMaio" style="display: flex; align-items: center; gap: 0.6rem; width: 100%; padding: 0.65rem 1rem; background: #0f1a2e; color: #e8f0fe; font-size: 0.88rem; font-weight: 600; cursor: pointer; font-family: inherit; box-sizing: border-box;">
+                                    <i class="fas fa-calendar-alt" style="color: #00c261; width: 16px;"></i> Maio/2026
+                                </div>
+                                <div onclick="switchMonth('2026-04')" id="optAbril" style="display: flex; align-items: center; gap: 0.6rem; width: 100%; padding: 0.65rem 1rem; background: #0f1a2e; color: #e8f0fe; font-size: 0.88rem; font-weight: 600; cursor: pointer; font-family: inherit; box-sizing: border-box;">
+                                    <i class="fas fa-calendar-alt" style="color: #00c261; width: 16px;"></i> Abril/2026
+                                </div>
+                            </div>
                         </div>
                         <button class="btn-edit" id="btnEditData" style="display: none;">
                             <i class="fas fa-edit"></i> Editar Dados
                         </button>
-                        <button class="btn-export" id="btnExportReport">
-                            <i class="fas fa-file-pdf"></i> Exportar PDF
-                        </button>
+                        <div style="position: relative;">
+                            <button class="btn-export" id="btnExportReport" onclick="toggleExportMenu()">
+                                <i class="fas fa-file-pdf"></i> Exportar PDF <i class="fas fa-chevron-down" style="margin-left: 5px; font-size: 0.75rem;"></i>
+                            </button>
+                            <div id="exportMenu" style="display: none; position: absolute; top: 100%; right: 0; margin-top: 8px; background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 8px; padding: 0.5rem 0; min-width: 280px; box-shadow: 0 10px 30px rgba(0,0,0,0.4); z-index: 50;">
+                                <button onclick="generatePDFReport('resumido')" style="display: flex; align-items: center; gap: 0.75rem; width: 100%; padding: 0.75rem 1rem; background: none; border: none; color: var(--text-primary); font-size: 0.9rem; cursor: pointer; text-align: left; transition: background 0.2s;">
+                                    <i class="fas fa-chart-pie" style="color: var(--accent-blue); width: 20px;"></i>
+                                    <div>
+                                        <div style="font-weight: 600;">Relatório Resumido</div>
+                                        <div style="font-size: 0.75rem; color: var(--text-secondary);">Visão geral de todos os eventos</div>
+                                    </div>
+                                </button>
+                                <div style="height: 1px; background: var(--border-color); margin: 0.25rem 0;"></div>
+                                <button onclick="generatePDFReport('empresas-s2220')" style="display: flex; align-items: center; gap: 0.75rem; width: 100%; padding: 0.75rem 1rem; background: none; border: none; color: var(--text-primary); font-size: 0.9rem; cursor: pointer; text-align: left; transition: background 0.2s;">
+                                    <i class="fas fa-building" style="color: var(--protege-green); width: 20px;"></i>
+                                    <div>
+                                        <div style="font-weight: 600;">Relatório por Empresa (S-2220)</div>
+                                        <div style="font-size: 0.75rem; color: var(--text-secondary);">Detalhamento ASO por empresa</div>
+                                    </div>
+                                </button>
+                                <div style="height: 1px; background: var(--border-color); margin: 0.25rem 0;"></div>
+                                <button onclick="generatePDFReport('empresas-s2240')" style="display: flex; align-items: center; gap: 0.75rem; width: 100%; padding: 0.75rem 1rem; background: none; border: none; color: var(--text-primary); font-size: 0.9rem; cursor: pointer; text-align: left; transition: background 0.2s;">
+                                    <i class="fas fa-building" style="color: var(--accent-purple); width: 20px;"></i>
+                                    <div>
+                                        <div style="font-weight: 600;">Relatório por Empresa (S-2240)</div>
+                                        <div style="font-size: 0.75rem; color: var(--text-secondary);">Detalhamento Ambiente por empresa</div>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
                         <div class="last-update">
                             <i class="fas fa-clock"></i>
                             <span>Atualizado em:</span>
-                            <span class="last-update-value" id="lastUpdateDate">15/04/2026</span>
+                            <span class="last-update-value" id="lastUpdateDate">04/05/2026</span>
                         </div>
                     </div>
                 </div>
@@ -1289,6 +2109,12 @@
                     </div>
                 </div>
 
+                <div id="maioNotice" class="empty-month-msg" style="display:none;">
+                    <i class="fas fa-calendar-times"></i>
+                    <h3>Sem dados registrados ainda</h3>
+                    <p>O mês de Maio/2026 não possui registros disponíveis.<br>Os dados serão atualizados ao longo do mês.</p>
+                </div>
+
                 <div class="card">
                     <div class="card-header">
                         <span class="card-title"><i class="fas fa-exclamation-triangle"></i> Observações dos Erros</span>
@@ -1305,6 +2131,36 @@
                     </div>
                 </div>
             </section>
+
+            
+            <!-- DRILL-DOWN OVERLAY -->
+            <div class="drill-down-overlay" id="drillDownOverlay">
+                <div class="drill-down-container">
+                    <div class="drill-down-header">
+                        <div class="drill-down-title">
+                            <i class="fas fa-search-plus"></i>
+                            <span>Detalhamento por Empresa</span>
+                            <span class="event-badge" id="drillDownEventBadge">S-2220</span>
+                        </div>
+                        <button class="btn-close-drill" id="btnCloseDrill">
+                            <i class="fas fa-times"></i> Fechar
+                        </button>
+                    </div>
+
+                    <div class="drill-down-summary" id="drillDownSummary">
+                        <!-- Summary cards will be injected here -->
+                    </div>
+
+                    <div id="drillCategoryFilters" class="category-filters" style="padding: 0 0 0.5rem 0;">
+                        <!-- Category filters injected here -->
+                    </div>
+
+                    <div id="drillDownEmpresas">
+                        <!-- Empresa cards will be injected here -->
+                    </div>
+                </div>
+            </div>
+
 
             <section class="section" id="esocial">
                 <div class="page-header">
@@ -1330,7 +2186,7 @@
                     <div class="card-header">
                         <span class="card-title"><i class="fas fa-wrench"></i> Descrição de Atividade</span>
                         <div style="display: flex; gap: 1rem; align-items: center;">
-                            <span style="color: var(--text-secondary);"><i class="fas fa-users"></i> Total: <strong>96 funcionários</strong></span>
+                            <span style="color: var(--text-secondary);"><i class="fas fa-users"></i> Total: <strong>97 funcionários</strong></span>
                             <span style="color: var(--accent-blue);"><i class="fas fa-user-hard-hat"></i> Técnico: <strong>Abner</strong></span>
                         </div>
                     </div>
@@ -1521,14 +2377,113 @@
         let currentUser = null;
         let pendingUsername = null;
 
-        // ==================== DADOS DO DASHBOARD - ABRIL/2026 ====================
+        // ==================== DADOS DO DASHBOARD ====================
         const dashboardData = {
+            '2026-05': {
+                s2220: { concluidos: 0, erros: 0 },
+                s2240: { concluidos: 0, erros: 0 },
+                s2221: { concluidos: 1, erros: 6 }
+            },
             '2026-04': {
-                s2220: { concluidos: 2741, erros: 402 },
-                s2240: { concluidos: 1957, erros: 797 },
+                s2220: { concluidos: 2432, erros: 314 },
+                s2240: { concluidos: 2211, erros: 804 },
                 s2221: { concluidos: 1, erros: 6 }
             }
         };
+
+        // ==================== CLASSIFICAÇÃO AUTOMÁTICA DE CATEGORIA ====================
+        function classificarEmpresa(motivo) {
+            const m = motivo.toLowerCase();
+            if (m.includes('contrato cancelado') || m.includes('empresa cancelou')) return 'cancel';
+            if (m.includes('não possui assinatura') || m.includes('procuração') || m.includes('não identificados')) return 'proc';
+            if (m.includes('campo') || m.includes('tabela') || m.includes('obrigatório') || m.includes('faltante')) return 'tecnico';
+            if (m.includes('não cadastrado no esocial') || m.includes('não estão cadastrados no esocial') || m.includes('funcionários não estão cadastrados') || m.includes('funcionários não estão cadastrado') || m.includes('funcionário não estão cadastrado')) return 'naocad';
+            if (m.includes('admissão prevista') || m.includes('mês subsequente') || m.includes('admissões previstas')) return 'admfut';
+            if (m.includes('desistência') || m.includes('não efetivado') || m.includes('sem posterior registro') || m.includes('provável desistência') || m.includes('desistências')) return 'desist';
+            return 'tecnico'; // fallback
+        }
+
+        const CAT_CONFIG = {
+            naocad:  { label: '🔴 Não cadastrados no eSocial',     dotClass: 'dot-naocad',  headerClass: 'cat-naocad-header',  btnClass: 'cat-naocad',  icon: 'fas fa-user-times' },
+            desist:  { label: '🟡 Possível desistência de vaga',   dotClass: 'dot-desist',  headerClass: 'cat-desist-header',  btnClass: 'cat-desist',  icon: 'fas fa-user-slash' },
+            admfut:  { label: '🔵 Admissão prevista (mês seguinte)',dotClass: 'dot-admfut',  headerClass: 'cat-admfut-header',  btnClass: 'cat-admfut',  icon: 'fas fa-calendar-plus' },
+            proc:    { label: '🟣 Falta de procuração / assinatura',dotClass: 'dot-proc',    headerClass: 'cat-proc-header',    btnClass: 'cat-proc',    icon: 'fas fa-file-signature' },
+            cancel:  { label: '⚫ Contrato cancelado / inativa',   dotClass: 'dot-cancel',  headerClass: 'cat-cancel-header',  btnClass: 'cat-cancel',  icon: 'fas fa-ban' },
+            tecnico: { label: '🟠 Erros técnicos (campos)',        dotClass: 'dot-tecnico', headerClass: 'cat-tecnico-header', btnClass: 'cat-tecnico', icon: 'fas fa-wrench' }
+        };
+
+        // ==================== DADOS DRILL-DOWN POR EMPRESA (ABRIL) ====================
+        const drillDownData = {
+            'S-2220': [
+                { nome: "Foundever do Brasil Curitiba Serviços e Tecnologia LTDA", concluidos: 453, erros: 78, motivo: "Colaboradores com exame admissional realizado, porém ainda não cadastrados no eSocial. Parte dos casos refere-se a admissões previstas para o mês subsequente, enquanto outros indicam possíveis desistências no processo admissional.", resolucao: "Acompanhamento contínuo e intensivo, com validação no mês seguinte (Maio) para identificação de admissões efetivadas e regularização dos registros no eSocial." },
+                { nome: "Renova JR Consultoria e Serviços de RH Ltda", concluidos: 249, erros: 22, motivo: "Colaboradores com exame admissional realizado, sem posterior registro no eSocial. Considerando o padrão da empresa de admissão imediata, os casos referem-se majoritariamente a desistências no processo seletivo, concentradas no mês anterior (Março).", resolucao: "Acompanhamento pontual. Os registros serão mantidos como erro, sem possibilidade de correção operacional, por ausência de vínculo efetivado no eSocial." },
+                { nome: "R.Agilidade Locação de Mão de Obra Temporária Ltda", concluidos: 138, erros: 14, motivo: "Situação equivalente à empresa Renova JR, com colaboradores não efetivados após exame admissional, indicando desistências no processo de contratação.", resolucao: "Acompanhamento pontual. Os registros permanecerão como erro, sem ação corretiva aplicável." },
+                { nome: "Recicla Serviços Gestão Ambiental Eireli", concluidos: 7, erros: 15, motivo: "Empresa cancelou contrato.", resolucao: "N/A" },
+                { nome: "GASPARIN MERCHANDISING LTDA", concluidos: 0, erros: 11, motivo: "Não identificados, pois a empresa não possui assinatura eletrônica", resolucao: "Solicitar liberação da procuração." },
+                { nome: "Pr Logística Engenharia Ltda.", concluidos: 0, erros: 9, motivo: "Colaboradores com exame admissional realizado, porém ainda não cadastrados no eSocial.", resolucao: "Acompanhamento pontual. Os registros permanecerão como erro, sem ação corretiva aplicável." },
+                { nome: "Urbanenge Engenharia e Construções Civis Ltda", concluidos: 0, erros: 8, motivo: "Não identificados, pois a empresa não possui assinatura eletrônica", resolucao: "Solicitar liberação da procuração." },
+                { nome: "Gel Construções Ltda", concluidos: 0, erros: 6, motivo: "Não identificados, pois a empresa não possui assinatura eletrônica", resolucao: "Solicitar liberação da procuração." },
+                { nome: "Servico Distrital Do Tatuquara", concluidos: 4, erros: 5, motivo: "Não identificados, pois a empresa não possui assinatura eletrônica", resolucao: "Solicitar liberação da procuração." },
+                { nome: "Casa do Mamão Comércio de Frutas e Verduras LTDA", concluidos: 0, erros: 5, motivo: "Colaboradores com exames realizados, porém ainda não cadastrados no eSocial, provável desistência da vaga.", resolucao: "Acompanhamento pontual. Os registros permanecerão como erro, sem ação corretiva aplicável." },
+                { nome: "Consilux Tecnologia Ltda - São Paulo", concluidos: 5, erros: 4, motivo: "Colaboradores com exames realizados, porém ainda não cadastrados no eSocial, provável desistência da vaga.", resolucao: "Acompanhamento pontual. Os registros permanecerão como erro, sem ação corretiva aplicável." },
+                { nome: "Bianco Comercio de Peças Ltda", concluidos: 0, erros: 4, motivo: "Não identificados, pois a empresa não possui assinatura eletrônica", resolucao: "Solicitar liberação da procuração." },
+                { nome: "Leon Cezar da Costa Bento Comercial", concluidos: 0, erros: 4, motivo: "Não identificados, pois a empresa não possui assinatura eletrônica", resolucao: "Solicitar liberação da procuração." },
+                { nome: "Faturi e Diniz Odontologia Ltda", concluidos: 3, erros: 3, motivo: "Colaboradores com exames realizados, porém ainda não cadastrados no eSocial, provável desistência da vaga.", resolucao: "Acompanhamento pontual. Os registros permanecerão como erro, sem ação corretiva aplicável." },
+                { nome: "Associacao De Educacao Personalizada - Aep", concluidos: 11, erros: 3, motivo: "Colaboradores com exames realizados, porém ainda não cadastrados no eSocial, provável desistência da vaga.", resolucao: "Acompanhamento pontual. Os registros permanecerão como erro, sem ação corretiva aplicável." },
+                { nome: "A.L. Hortifrutigranjeiros Ltda", concluidos: 3, erros: 2, motivo: "Colaboradores com exames realizados, porém ainda não cadastrados no eSocial, provável desistência da vaga.", resolucao: "Acompanhamento pontual. Os registros permanecerão como erro, sem ação corretiva aplicável." },
+                { nome: "Fruticola Costa Mello LTDA", concluidos: 0, erros: 2, motivo: "Colaboradores com exames realizados, porém ainda não cadastrados no eSocial, provável desistência da vaga.", resolucao: "Acompanhamento pontual. Os registros permanecerão como erro, sem ação corretiva aplicável." },
+                { nome: "Bentevi Bar e Lanches LTDA", concluidos: 2, erros: 2, motivo: "Colaboradores com exames realizados, porém ainda não cadastrados no eSocial, provável desistência da vaga.", resolucao: "Acompanhamento pontual. Os registros permanecerão como erro, sem ação corretiva aplicável." },
+                { nome: "Ianco Industria Metalurgica Ltda", concluidos: 11, erros: 2, motivo: "Colaboradores com exame admissional realizado, porém ainda não cadastrados no eSocial. Parte dos casos refere-se a admissões previstas para o mês subsequente, enquanto outros indicam possíveis desistências no processo admissional.", resolucao: "Acompanhamento contínuo e intensivo, com validação no mês seguinte (Maio) para identificação de admissões efetivadas e regularização dos registros no eSocial." },
+                { nome: "Prefeitura Municipal de Quatro Barras", concluidos: 435, erros: 1, motivo: "Colaborador com exame realizado, porém ainda não cadastrado no eSocial. Admissão prevista para o mês subsequente", resolucao: "Acompanhamento contínuo e intensivo, com validação no mês seguinte (Maio) para identificação de admissões efetivadas e regularização dos registros no eSocial." },
+                { nome: "Consórcio Alto Tatuquara", concluidos: 43, erros: 1, motivo: "Colaborador com exame realizado, porém ainda não cadastrado no eSocial. Admissão prevista para o mês subsequente", resolucao: "Acompanhamento contínuo e intensivo, com validação no mês seguinte (Maio) para identificação de admissões efetivadas e regularização dos registros no eSocial." },
+                { nome: "Belterra Agroflorestas Ltda - BA Filial", concluidos: 19, erros: 1, motivo: "Colaborador com exame realizado, porém ainda não cadastrado no eSocial. Admissão prevista para o mês subsequente", resolucao: "Acompanhamento contínuo e intensivo, com validação no mês seguinte (Maio) para identificação de admissões efetivadas e regularização dos registros no eSocial." },
+                { nome: "Sipolly Construtora de Obras Ltda", concluidos: 17, erros: 1, motivo: "Colaborador com exame admissional realizado, porém ainda não cadastrado no eSocial. Admissão prevista para o mês subsequente", resolucao: "Acompanhamento contínuo e intensivo, com validação no mês seguinte (Maio) para identificação de admissões efetivadas e regularização dos registros no eSocial." },
+                { nome: "Belterra Agroflorestas Ltda - PA Filial", concluidos: 16, erros: 1, motivo: "Colaborador com exame admissional realizado, porém ainda não cadastrado no eSocial. Admissão prevista para o mês subsequente", resolucao: "Acompanhamento contínuo e intensivo, com validação no mês seguinte (Maio) para identificação de admissões efetivadas e regularização dos registros no eSocial." },
+                { nome: "Clinicao Clinica Veterinária Popular Ltda", concluidos: 13, erros: 1, motivo: "Colaborador com exame admissional realizado, porém ainda não cadastrado no eSocial. Admissão prevista para o mês subsequente", resolucao: "Acompanhamento contínuo e intensivo, com validação no mês seguinte (Maio) para identificação de admissões efetivadas e regularização dos registros no eSocial." },
+                { nome: "Fruticola Luana Ltda", concluidos: 12, erros: 1, motivo: "Colaborador com exame realizado, porém ainda não cadastrados no eSocial. Admissão prevista para o mês subsequente.", resolucao: "Acompanhamento contínuo e intensivo, com validação no mês seguinte (Maio) para identificação de admissões efetivadas e regularização dos registros no eSocial." },
+                { nome: "Yesco Administradora de Bens S/A - SJP", concluidos: 8, erros: 1, motivo: "Colaborador com exame realizado, porém ainda não cadastrado no eSocial, provável desistência da vaga.", resolucao: "Acompanhamento pontual. Os registros permanecerão como erro, sem ação corretiva aplicável." },
+                { nome: "Bahoma Serviços Ltda", concluidos: 8, erros: 1, motivo: "Colaborador com exame admissional realizado, porém ainda não cadastrado no eSocial. Admissão prevista para o mês subsequente", resolucao: "Acompanhamento contínuo e intensivo, com validação no mês seguinte (Maio) para identificação de admissões efetivadas e regularização dos registros no eSocial." },
+                { nome: "M M Autopeças Ltda", concluidos: 4, erros: 1, motivo: "Colaborador com exame realizado, porém ainda não cadastrado no eSocial, provável desistência da vaga.", resolucao: "Acompanhamento pontual. Os registros permanecerão como erro, sem ação corretiva aplicável." },
+                { nome: "Itos Brasil Ltda", concluidos: 3, erros: 1, motivo: "Colaborador com exame realizado, porém ainda não cadastrado no eSocial, provável desistência da vaga.", resolucao: "Acompanhamento pontual. Os registros permanecerão como erro, sem ação corretiva aplicável." },
+                { nome: "M6 Comércio de Confecções Ltda - Shopping Muelller", concluidos: 3, erros: 1, motivo: "Colaborador com exame realizado, porém ainda não cadastrado no eSocial, provável desistência da vaga.", resolucao: "Acompanhamento pontual. Os registros permanecerão como erro, sem ação corretiva aplicável." },
+                { nome: "Básico São José Comercio de Confecções Ltda - Londrina", concluidos: 3, erros: 1, motivo: "Colaborador com exame realizado, porém ainda não cadastrado no eSocial, provável desistência da vaga.", resolucao: "Acompanhamento pontual. Os registros permanecerão como erro, sem ação corretiva aplicável." },
+                { nome: "Sysmex do Brasil Industria e Comércio Ltda - Curitiba", concluidos: 3, erros: 1, motivo: "Colaborador com exame realizado, porém ainda não cadastrado no eSocial, provável desistência da vaga.", resolucao: "Acompanhamento pontual. Os registros permanecerão como erro, sem ação corretiva aplicável." },
+                { nome: "Top-In Br Solucoes Em Genetica Suina Ltda", concluidos: 3, erros: 1, motivo: "Colaborador com exame realizado, porém ainda não cadastrado no eSocial, provável desistência da vaga.", resolucao: "Acompanhamento pontual. Os registros permanecerão como erro, sem ação corretiva aplicável." },
+                { nome: "CS Ristow Ltda", concluidos: 2, erros: 1, motivo: "Colaborador com exame realizado, porém ainda não cadastrado no eSocial, provável desistência da vaga.", resolucao: "Acompanhamento pontual. Os registros permanecerão como erro, sem ação corretiva aplicável." },
+                { nome: "Usifix - Industria E Comercio Ltda", concluidos: 2, erros: 1, motivo: "Colaborador com exame realizado, porém ainda não cadastrado no eSocial, provável desistência da vaga.", resolucao: "Acompanhamento pontual. Os registros permanecerão como erro, sem ação corretiva aplicável." },
+                { nome: "MVV Hortifrutigranjeiros Ltda", concluidos: 0, erros: 1, motivo: "Colaborador com exame realizado, porém ainda não cadastrado no eSocial, provável desistência da vaga.", resolucao: "Acompanhamento pontual. Os registros permanecerão como erro, sem ação corretiva aplicável." },
+                { nome: "Itos - International Technology Outsourcing Solutions Ltda", concluidos: 0, erros: 1, motivo: "Colaborador com exame admissional realizado, porém ainda não cadastrado no eSocial. Admissão prevista para o mês subsequente", resolucao: "Acompanhamento contínuo e intensivo, com validação no mês seguinte (Maio) para identificação de admissões efetivadas e regularização dos registros no eSocial." }
+            ],
+            'S-2240': [
+                { nome: "Foundever do Brasil Curitiba Serviços e Tecnologia LTDA", concluidos: 499, erros: 303, motivo: "Funcionários não estão cadastrados no eSocial", resolucao: "Acompanhamento de rotina intensa" },
+                { nome: "Renova JR Consultoria e Serviços de RH Ltda", concluidos: 269, erros: 148, motivo: "Funcionários não estão cadastrados no eSocial", resolucao: "Acompanhamento de rotina intensa" },
+                { nome: "R.Agilidade Locação de Mão de Obra Temporária Ltda", concluidos: 231, erros: 129, motivo: "Funcionários não estão cadastrados no eSocial", resolucao: "Acompanhamento de rotina intensa" },
+                { nome: "Clinicao Clinica Veterinária Popular Ltda", concluidos: 8, erros: 11, motivo: "Campo Agente Nocivo e Atividades eSocial (Tabela 24) faltante.", resolucao: "Registrar campo" },
+                { nome: "GASPARIN MERCHANDISING LTDA", concluidos: 0, erros: 11, motivo: "Não identificados, pois a empresa não possui assinatura eletrônica", resolucao: "Solicitar liberação da procuração." },
+                { nome: "Sacolão Popular Capão Raso Ltda", concluidos: 25, erros: 9, motivo: "Funcionários não estão cadastrados no eSocial", resolucao: "Acompanhamento pontual." },
+                { nome: "Comercial Hortifrutigranjeiros Pinhais Ltda - Boqueirão", concluidos: 9, erros: 8, motivo: "Funcionários não estão cadastrados no eSocial", resolucao: "Acompanhamento pontual." },
+                { nome: "Divisystem Materiais e Serviços Ltda", concluidos: 5, erros: 7, motivo: "Funcionários não estão cadastrados no eSocial", resolucao: "Acompanhamento pontual." },
+                { nome: "Recicla Serviços Gestão Ambiental Eireli", concluidos: 0, erros: 6, motivo: "Contrato cancelado.", resolucao: "N/A" },
+                { nome: "Consórcio Alto Tatuquara", concluidos: 16, erros: 6, motivo: "Não identificados, pois a empresa não possui assinatura eletrônica", resolucao: "Solicitar liberação da procuração." },
+                { nome: "Belterra Agroflorestas Ltda - PA Filial", concluidos: 16, erros: 5, motivo: "Funcionários não estão cadastrados no eSocial", resolucao: "Acompanhamento pontual." },
+                { nome: "Servico Distrital Do Tatuquara", concluidos: 0, erros: 5, motivo: "Não identificados, pois a empresa não possui assinatura eletrônica", resolucao: "Solicitar liberação da procuração." },
+                { nome: "Associacao De Educacao Personalizada - Aep", concluidos: 8, erros: 5, motivo: "Funcionários não estão cadastrados no eSocial", resolucao: "Acompanhamento pontual." },
+                { nome: "Instituto Curitiba de Saúde - ICS", concluidos: 229, erros: 4, motivo: "Funcionários não estão cadastrados no eSocial, admissão prevista para o mês subsequente.", resolucao: "Acompanhamento contínuo e pontual, com validação no mês seguinte (Maio) para identificação de admissões efetivadas e regularização dos registros no eSocial." },
+                { nome: "Casa do Mamão Comércio de Frutas e Verduras LTDA", concluidos: 0, erros: 4, motivo: "Funcionários não estão cadastrados no eSocial", resolucao: "Acompanhamento pontual." },
+                { nome: "Faturi e Diniz Odontologia Ltda", concluidos: 3, erros: 3, motivo: "Funcionários não estão cadastrados no eSocial", resolucao: "Acompanhamento pontual." },
+                { nome: "Allfix F&K Alpinismo Industrial Ltda", concluidos: 2, erros: 3, motivo: "Funcionários não estão cadastrados no eSocial", resolucao: "Acompanhamento pontual." },
+                { nome: "Telcabos Telecomunicações e Inf. Ltda - São Paulo", concluidos: 2, erros: 3, motivo: "Funcionários não estão cadastrados no eSocial", resolucao: "Acompanhamento pontual." },
+                { nome: "Divisystem Materiais e Serviços Ltda - Filial", concluidos: 2, erros: 3, motivo: "Funcionários não estão cadastrados no eSocial", resolucao: "Acompanhamento pontual." },
+                { nome: "Sysmex do Brasil Industria e Comércio Ltda - São Paulo", concluidos: 1, erros: 3, motivo: "Funcionários não estão cadastrado no eSocial", resolucao: "Acompanhamento pontual." },
+                { nome: "Comercial Hortifrutigranjeiros Pinhais Ltda - Rui Barbosa", concluidos: 21, erros: 3, motivo: "Funcionários não estão cadastrado no eSocial", resolucao: "Acompanhamento pontual." },
+                { nome: "Fruticola Luana Ltda", concluidos: 10, erros: 2, motivo: "Funcionários não estão cadastrado no eSocial", resolucao: "Acompanhamento pontual." },
+                { nome: "CEGT Academia de Alta Gastronomia Ltda", concluidos: 0, erros: 2, motivo: "Funcionários não estão cadastrado no eSocial", resolucao: "Acompanhamento pontual." },
+                { nome: "Prefeitura Municipal de Quatro Barras", concluidos: 41, erros: 1, motivo: "Funcionário não estão cadastrado no eSocial", resolucao: "Acompanhamento pontual." },
+                { nome: "Hospital Union Ltda.", concluidos: 21, erros: 1, motivo: "Funcionário não estão cadastrado no eSocial", resolucao: "Acompanhamento pontual." },
+                { nome: "Sipolly Construtora de Obras Ltda", concluidos: 67, erros: 1, motivo: "Funcionário não estão cadastrado no eSocial", resolucao: "Acompanhamento pontual." }
+            ]
+        };
+
 
         let charts = {};
 
@@ -1623,7 +2578,8 @@
 
             initCharts();
             loadAllData();
-            updateDashboardUI(dashboardData['2026-04']);
+            switchMonth('2026-05'); // Maio como padrão
+            initDrillDownHandlers();
         }
 
         document.getElementById('logoutBtn').addEventListener('click', function(e) {
@@ -1751,13 +2707,35 @@
         }
 
         // ==================== EXPORTAR RELATÓRIO PDF ====================
-        document.getElementById('btnExportReport').addEventListener('click', function() {
-            generatePDFReport();
+        function toggleExportMenu() {
+            const menu = document.getElementById('exportMenu');
+            menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+        }
+
+        document.addEventListener('click', function(e) {
+            const menu = document.getElementById('exportMenu');
+            const btn = document.getElementById('btnExportReport');
+            if (menu && btn && !btn.contains(e.target) && !menu.contains(e.target)) {
+                menu.style.display = 'none';
+            }
         });
 
-        function generatePDFReport() {
-            const data = dashboardData['2026-04'];
+        function generatePDFReport(type) {
+            document.getElementById('exportMenu').style.display = 'none';
+            if (type === 'empresas-s2220') {
+                generateEmpresasPDFReport('S-2220');
+            } else if (type === 'empresas-s2240') {
+                generateEmpresasPDFReport('S-2240');
+            } else {
+                generateResumidoPDFReport();
+            }
+        }
+
+        function generateResumidoPDFReport() {
+            const data = dashboardData[currentMonth];
             const lastUpdate = document.getElementById('lastUpdateDate').textContent;
+            const mesLabel = currentMonth === '2026-04' ? 'Abril/2026' : 'Maio/2026';
+            const filenameMes = currentMonth === '2026-04' ? 'Abril' : 'Maio';
             
             const s2220Total = data.s2220.concluidos + data.s2220.erros;
             const s2240Total = data.s2240.concluidos + data.s2240.erros;
@@ -1774,6 +2752,9 @@
 
             document.getElementById('reportLastUpdate').textContent = lastUpdate;
             document.getElementById('reportGenerated').textContent = new Date().toLocaleString('pt-BR');
+            
+            // Update period in report
+            document.querySelector('#reportContainer .report-info .report-info-value').textContent = mesLabel;
             
             document.getElementById('reportTotalConcluidos').textContent = totalConcluidos.toLocaleString();
             document.getElementById('reportTotalErros').textContent = totalErros.toLocaleString();
@@ -1797,7 +2778,7 @@
 
             const opt = {
                 margin: [10, 10, 10, 10],
-                filename: `Relatorio_eSocial_Abril_2026.pdf`,
+                filename: `Relatorio_eSocial_${filenameMes}_2026_Resumido.pdf`,
                 image: { type: 'jpeg', quality: 0.98 },
                 html2canvas: { 
                     scale: 2,
@@ -1815,6 +2796,144 @@
 
             html2pdf().set(opt).from(reportContainer).save().then(() => {
                 reportContainer.style.display = 'none';
+            });
+        }
+
+        function generateEmpresasPDFReport(eventoFiltro) {
+            const lastUpdate = document.getElementById('lastUpdateDate').textContent;
+            const mesLabel = currentMonth === '2026-04' ? 'Abril/2026' : 'Maio/2026';
+            const filenameMes = currentMonth === '2026-04' ? 'Abril' : 'Maio';
+            
+            let empresasHTML = '';
+            
+            const eventos = eventoFiltro ? [eventoFiltro] : ['S-2220', 'S-2240'];
+            
+            eventos.forEach(evento => {
+                const empresas = drillDownData[evento];
+                if (!empresas) return;
+                
+                const totalConcluidos = empresas.reduce((sum, emp) => sum + emp.concluidos, 0);
+                const totalErros = empresas.reduce((sum, emp) => sum + emp.erros, 0);
+                const totalGeral = totalConcluidos + totalErros;
+                const percent = totalGeral > 0 ? ((totalConcluidos / totalGeral) * 100).toFixed(1) : 0;
+                
+                empresasHTML += `
+                <h2 class="report-section-title" style="margin-top: 25px;">${evento} - Detalhamento por Empresa</h2>
+                <div class="report-info" style="margin-bottom: 15px;">
+                    <div class="report-info-row">
+                        <span class="report-info-label">Total Concluídos:</span>
+                        <span class="report-info-value" style="color: #10b981;">${totalConcluidos.toLocaleString()}</span>
+                    </div>
+                    <div class="report-info-row">
+                        <span class="report-info-label">Total Erros:</span>
+                        <span class="report-info-value" style="color: #ef4444;">${totalErros.toLocaleString()}</span>
+                    </div>
+                    <div class="report-info-row">
+                        <span class="report-info-label">Taxa de Sucesso:</span>
+                        <span class="report-info-value" style="color: #10b981;">${percent}%</span>
+                    </div>
+                </div>
+                `;
+                
+                empresas.forEach(emp => {
+                    const empTotal = emp.concluidos + emp.erros;
+                    const empPercent = empTotal > 0 ? ((emp.concluidos / empTotal) * 100).toFixed(1) : 0;
+                    
+                    empresasHTML += `
+                    <div class="report-card" style="margin-bottom: 15px; text-align: left;">
+                        <div style="font-weight: 700; color: #f1f5f9; margin-bottom: 10px; font-size: 14px; border-bottom: 1px solid #334155; padding-bottom: 8px;">
+                            <i class="fas fa-building" style="color: #00a651; margin-right: 8px;"></i>${emp.nome}
+                        </div>
+                        <div class="report-cards-grid" style="grid-template-columns: 1fr 1fr 1fr; gap: 10px;">
+                            <div style="text-align: center; padding: 10px; background: rgba(16, 185, 129, 0.1); border-radius: 8px;">
+                                <div style="font-size: 24px; font-weight: 700; color: #10b981;">${emp.concluidos}</div>
+                                <div style="font-size: 11px; color: #94a3b8;">Concluídos</div>
+                            </div>
+                            <div style="text-align: center; padding: 10px; background: rgba(239, 68, 68, 0.1); border-radius: 8px;">
+                                <div style="font-size: 24px; font-weight: 700; color: #ef4444;">${emp.erros}</div>
+                                <div style="font-size: 11px; color: #94a3b8;">Erros</div>
+                            </div>
+                            <div style="text-align: center; padding: 10px; background: rgba(59, 130, 246, 0.1); border-radius: 8px;">
+                                <div style="font-size: 24px; font-weight: 700; color: #3b82f6;">${empPercent}%</div>
+                                <div style="font-size: 11px; color: #94a3b8;">Sucesso</div>
+                            </div>
+                        </div>
+                        <div style="margin-top: 12px; padding: 10px; background: #0f172a; border-radius: 8px; border-left: 3px solid #f59e0b;">
+                            <div style="font-size: 11px; color: #f59e0b; font-weight: 600; margin-bottom: 4px;"><i class="fas fa-exclamation-triangle" style="margin-right: 5px;"></i>Motivo dos Erros</div>
+                            <div style="font-size: 12px; color: #94a3b8; line-height: 1.5;">${emp.motivo}</div>
+                        </div>
+                        <div style="margin-top: 8px; padding: 10px; background: #0f172a; border-radius: 8px; border-left: 3px solid #3b82f6;">
+                            <div style="font-size: 11px; color: #3b82f6; font-weight: 600; margin-bottom: 4px;"><i class="fas fa-wrench" style="margin-right: 5px;"></i>Resolução</div>
+                            <div style="font-size: 12px; color: #94a3b8; line-height: 1.5;">${emp.resolucao}</div>
+                        </div>
+                    </div>
+                    `;
+                });
+            });
+            
+            const reportHTML = `
+            <div id="empresasReportContainer" style="display: block; background: #0f172a; color: #f1f5f9; padding: 30px 40px; font-family: 'Segoe UI', Arial, sans-serif; min-height: 100vh; box-sizing: border-box;">
+                <div class="report-header-section">
+                    <div class="report-logo-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div class="report-header-text">
+                        <h1>Gestão eSocial</h1>
+                        <div class="subtitle">Relatório Detalhado por Empresa</div>
+                    </div>
+                </div>
+                
+                <div class="report-info">
+                    <div class="report-info-row">
+                        <span class="report-info-label">Período:</span>
+                        <span class="report-info-value">${mesLabel}</span>
+                    </div>
+                    <div class="report-info-row">
+                        <span class="report-info-label">Última Atualização:</span>
+                        <span class="report-info-value">${lastUpdate}</span>
+                    </div>
+                    <div class="report-info-row">
+                        <span class="report-info-label">Gerado em:</span>
+                        <span class="report-info-value">${new Date().toLocaleString('pt-BR')}</span>
+                    </div>
+                </div>
+                
+                ${empresasHTML}
+                
+                <div class="report-footer">
+                    Relatório gerado pelo Dashboard Operacional eSocial<br>
+                    Protege Medicina do Trabalho
+                </div>
+            </div>
+            `;
+            
+            // Create temporary container
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = reportHTML;
+            document.body.appendChild(tempDiv);
+            
+            const container = tempDiv.querySelector('#empresasReportContainer');
+            
+            const opt = {
+                margin: [10, 10, 10, 10],
+                filename: `Relatorio_eSocial_Empresas_${eventoFiltro || 'Geral'}_${filenameMes}_2026.pdf`,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { 
+                    scale: 2,
+                    backgroundColor: '#0f172a',
+                    useCORS: true,
+                    logging: false
+                },
+                jsPDF: { 
+                    unit: 'mm', 
+                    format: 'a4', 
+                    orientation: 'portrait'
+                },
+                pagebreak: { mode: 'css', avoid: '.report-card' }
+            };
+            
+            html2pdf().set(opt).from(container).save().then(() => {
+                document.body.removeChild(tempDiv);
             });
         }
 
@@ -1853,25 +2972,26 @@
                 { empresa: "Divisystem Materiais e Serviços Ltda", funcionarios: 3, status: "Concluído", observacao: "Realizado dia 16/04/2026" },
                 { empresa: "Prefeitura Municipal de Rio Branco do Sul", funcionarios: 12, status: "Concluído", observacao: "Realizado dia 13/04/2026" },
                 { empresa: "Telcabos Telecomunicações e Inf. Ltda - Campinas", funcionarios: 1, status: "Concluído", observacao: "Realizado dia 13/04/2026" },
-                { empresa: "Bahoma Serviços Ltda", funcionarios: 1, status: "Pendente", observacao: "Aguardando técnico" },
-                { empresa: "REDRAM CONSTRUTORA E ENGENHARIA LTDA", funcionarios: 1, status: "Pendente", observacao: "Aguardando técnico" },
-                { empresa: "Comercial Lancare Ltda", funcionarios: 1, status: "Pendente", observacao: "Aguardando técnico" },
-                { empresa: "Câmara Municipal de Araucária", funcionarios: 3, status: "Pendente", observacao: "Aguardando técnico" },
-                { empresa: "RP Info Sistemas Ltda", funcionarios: 2, status: "Pendente", observacao: "Aguardando técnico" },
-                { empresa: "Hortigranjeira Paraiso LTDA", funcionarios: 41, status: "Pendente", observacao: "Aguardando técnico" },
-                { empresa: "MIG Atacado e Varejo LTDA - Pinheirinho", funcionarios: 1, status: "Pendente", observacao: "Aguardando técnico" },
-                { empresa: "Scribe Informática Ltda", funcionarios: 2, status: "Pendente", observacao: "Aguardando técnico" },
-                { empresa: "A.L. Hortifrutigranjeiros Ltda", funcionarios: 2, status: "Pendente", observacao: "Aguardando técnico" },
-                { empresa: "Comercial Hortifrutigranjeiros Pinhais Ltda - Rui Barbosa", funcionarios: 4, status: "Pendente", observacao: "Aguardando técnico" },
-                { empresa: "Dux Digital do Brasil Eireli", funcionarios: 1, status: "Pendente", observacao: "Aguardando técnico" },
-                { empresa: "Servico Distrital Do Tatuquara", funcionarios: 1, status: "Pendente", observacao: "Aguardando técnico" },
-                { empresa: "GASPARIN MERCHANDISING LTDA", funcionarios: 1, status: "Pendente", observacao: "Aguardando técnico" },
-                { empresa: "Foundever do Brasil Serviços e Tecnologia Ltda - SP", funcionarios: 1, status: "Pendente", observacao: "Aguardando técnico" },
-                { empresa: "Ianco Industria Metalurgica Ltda", funcionarios: 1, status: "Pendente", observacao: "Aguardando técnico" },
-                { empresa: "R.Agilidade Locação de Mão de Obra Temporária Ltda", funcionarios: 11, status: "Pendente", observacao: "Aguardando técnico" },
-                { empresa: "Associacao De Educacao Personalizada - Aep", funcionarios: 1, status: "Pendente", observacao: "Aguardando técnico" },
-                { empresa: "Renova JR Consultoria e Serviços de RH Ltda", funcionarios: 4, status: "Pendente", observacao: "Aguardando técnico" },
-                { empresa: "Sysmex do Brasil Industria e Comércio Ltda - São José dos Pinhais", funcionarios: 1, status: "Pendente", observacao: "Aguardando técnico" },
+                { empresa: "Bahoma Serviços Ltda", funcionarios: 1, status: "Concluído", observacao: "Realizado dia 20/04/2026" },
+                { empresa: "REDRAM CONSTRUTORA E ENGENHARIA LTDA", funcionarios: 1, status: "Concluído", observacao: "Realizado dia 20/04/2026" },
+                { empresa: "Comercial Lancare Ltda", funcionarios: 1, status: "Concluído", observacao: "Realizado dia 20/04/2026" },
+                { empresa: "Câmara Municipal de Araucária", funcionarios: 3, status: "Concluído", observacao: "Realizado dia 20/04/2026" },
+                { empresa: "RP Info Sistemas Ltda", funcionarios: 2, status: "Concluído", observacao: "Realizado dia 20/04/2026" },
+                { empresa: "Hortigranjeira Paraiso LTDA", funcionarios: 41, status: "Concluído", observacao: "Realizado dia 20/04/2026" },
+                { empresa: "MIG Atacado e Varejo LTDA - Pinheirinho", funcionarios: 1, status: "Concluído", observacao: "Realizado dia 20/04/2026" },
+                { empresa: "Scribe Informática Ltda", funcionarios: 2, status: "Concluído", observacao: "Realizado dia 20/04/2026" },
+                { empresa: "A.L. Hortifrutigranjeiros Ltda", funcionarios: 2, status: "Concluído", observacao: "Realizado dia 20/04/2026" },
+                { empresa: "Comercial Hortifrutigranjeiros Pinhais Ltda - Rui Barbosa", funcionarios: 4, status: "Concluído", observacao: "Realizado dia 20/04/2026" },
+                { empresa: "Dux Digital do Brasil Eireli", funcionarios: 1, status: "Concluído", observacao: "Realizado dia 20/04/2026" },
+                { empresa: "Servico Distrital Do Tatuquara", funcionarios: 1, status: "Concluído", observacao: "Realizado dia 20/04/2026" },
+                { empresa: "GASPARIN MERCHANDISING LTDA", funcionarios: 1, status: "Concluído", observacao: "Realizado dia 20/04/2026" },
+                { empresa: "Foundever do Brasil Serviços e Tecnologia Ltda - SP", funcionarios: 1, status: "Concluído", observacao: "Realizado dia 20/04/2026" },
+                { empresa: "Ianco Industria Metalurgica Ltda", funcionarios: 1, status: "Concluído", observacao: "Realizado dia 20/04/2026" },
+                { empresa: "R.Agilidade Locação de Mão de Obra Temporária Ltda", funcionarios: 11, status: "Concluído", observacao: "Realizado dia 20/04/2026" },
+                { empresa: "Associacao De Educacao Personalizada - Aep", funcionarios: 1, status: "Concluído", observacao: "Realizado dia 20/04/2026" },
+                { empresa: "Renova JR Consultoria e Serviços de RH Ltda", funcionarios: 4, status: "Concluído", observacao: "Realizado dia 20/04/2026" },
+                { empresa: "Sysmex do Brasil Industria e Comércio Ltda - São José dos Pinhais", funcionarios: 1, status: "Concluído", observacao: "Realizado dia 20/04/2026" },
+                { empresa: "Rocha Segurança do Trabalho eProtege Ltda", funcionarios: 1, status: "Concluído", observacao: "Realizado dia 20/04/2026" },
             ];
 
             // Ordena: Concluídos primeiro, depois Pendentes
@@ -1925,7 +3045,7 @@
             const tbody = document.querySelector('#prontuariosTable tbody');
             const hoje = new Date('2026-04-15');
             const prontuarios = [
-                { empresa: "BOVINO NOBRE", dataSolicitacao: "2026-04-01", status: "Organizando", observacao: "ASOs sendo preparados" },
+                { empresa: "BOVINO NOBRE", dataSolicitacao: "2026-04-01", status: "Aguardando coleta", observacao: "ASOs sendo preparados" },
                 { empresa: "INSTITUTO DE TECNOLOGIA DO PARANA (TECPAR)", dataSolicitacao: "2026-04-06", status: "Pendente", observacao: "Não começamos" },
                 { empresa: "UROCENTRO CLINICA DE UROLOGIA CURITIBA LTDA", dataSolicitacao: "2026-04-09", status: "Pendente", observacao: "Não começamos" },
             ];
@@ -1938,6 +3058,7 @@
                 let badgeClass = 'badge-gray';
                 if (item.status === 'Concluído') badgeClass = 'badge-success';
                 else if (item.status === 'Organizando') badgeClass = 'badge-info';
+                else if (item.status === 'Aguardando coleta') badgeClass = 'badge-purple';
                 else if (item.status === 'Pendente') badgeClass = 'badge-warning';
                 else if (item.status === 'Em andamento') badgeClass = 'badge-purple';
 
@@ -2002,6 +3123,262 @@
 
         console.log('%c🔧 Comandos disponíveis:', 'color: #00a651; font-size: 14px; font-weight: bold;');
         console.log('%cresetAllPasswords()', 'color: #3b82f6;', '- Reseta todas as senhas para 1234');
-    </script>
+    
+        // ==================== CONTROLE DE MÊS ====================
+        let currentMonth = '2026-05';
+
+        function toggleMonthMenu() {
+            const menu = document.getElementById('monthMenu');
+            menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+        }
+
+        document.addEventListener('click', function(e) {
+            const menu = document.getElementById('monthMenu');
+            const btn = document.getElementById('btnMonthSelector');
+            if (menu && btn && !btn.contains(e.target) && !menu.contains(e.target)) {
+                menu.style.display = 'none';
+            }
+        });
+
+        function switchMonth(month) {
+            currentMonth = month;
+            document.getElementById('monthMenu').style.display = 'none';
+
+            const label = month === '2026-04' ? 'Abril/2026' : 'Maio/2026';
+            document.getElementById('monthSelectorLabel').textContent = label;
+
+            // Highlight active option
+            document.getElementById('optMaio').style.background = month === '2026-05' ? 'rgba(0,194,97,0.1)' : '';
+            document.getElementById('optAbril').style.background = month === '2026-04' ? 'rgba(0,194,97,0.1)' : '';
+
+            const data = dashboardData[month];
+            const isMaio = month === '2026-05';
+
+            document.querySelector('.charts-grid').style.display = isMaio ? 'none' : '';
+            document.querySelector('.stats-grid').style.display = isMaio ? 'none' : '';
+            document.getElementById('maioNotice').style.display = isMaio ? 'block' : 'none';
+            document.getElementById('btnExportReport').style.display = 'flex';
+
+            if (!isMaio) {
+                updateDashboardUI(data);
+                updateCharts(data);
+            }
+        }
+
+        // ==================== DRILL-DOWN FUNCTIONALITY ====================
+        let drillDownCharts = {};
+        let currentDrillEvento = null;
+
+        function openDrillDown(evento) {
+            if (currentMonth === '2026-05') return; // Maio não tem drill-down
+            const overlay = document.getElementById('drillDownOverlay');
+            const badge = document.getElementById('drillDownEventBadge');
+            const summaryContainer = document.getElementById('drillDownSummary');
+            const empresasContainer = document.getElementById('drillDownEmpresas');
+            const filtersContainer = document.getElementById('drillCategoryFilters');
+
+            const data = drillDownData[evento];
+            if (!data) return;
+
+            currentDrillEvento = evento;
+            badge.textContent = evento;
+
+            // Classify all companies
+            data.forEach(emp => { emp._cat = classificarEmpresa(emp.motivo); });
+
+            // Calculate totals
+            const totalConcluidos = data.reduce((sum, emp) => sum + emp.concluidos, 0);
+            const totalErros = data.reduce((sum, emp) => sum + emp.erros, 0);
+            const totalGeral = totalConcluidos + totalErros;
+            const percent = totalGeral > 0 ? ((totalConcluidos / totalGeral) * 100).toFixed(1) : 0;
+
+            summaryContainer.innerHTML = `
+                <div class="drill-summary-card">
+                    <div class="drill-summary-value success">${totalConcluidos.toLocaleString()}</div>
+                    <div class="drill-summary-label">Total Concluídos</div>
+                </div>
+                <div class="drill-summary-card">
+                    <div class="drill-summary-value danger">${totalErros.toLocaleString()}</div>
+                    <div class="drill-summary-label">Total Erros</div>
+                </div>
+                <div class="drill-summary-card">
+                    <div class="drill-summary-value success">${percent}%</div>
+                    <div class="drill-summary-label">Taxa de Sucesso</div>
+                </div>
+                <div class="drill-summary-card">
+                    <div class="drill-summary-value" style="color: var(--accent-blue);">${data.length}</div>
+                    <div class="drill-summary-label">Empresas</div>
+                </div>
+            `;
+
+            // Build category filters
+            const cats = ['all', ...Object.keys(CAT_CONFIG)];
+            const catCounts = {};
+            data.forEach(e => { catCounts[e._cat] = (catCounts[e._cat] || 0) + 1; });
+
+            filtersContainer.innerHTML = cats.map(cat => {
+                if (cat === 'all') {
+                    return `<button class="btn-category cat-all active" onclick="filterDrillDown('all', '${evento}')"><i class="fas fa-list"></i> Todos (${data.length})</button>`;
+                }
+                const cfg = CAT_CONFIG[cat];
+                const count = catCounts[cat] || 0;
+                if (count === 0) return '';
+                return `<button class="btn-category ${cfg.btnClass}" onclick="filterDrillDown('${cat}', '${evento}')"><span class="cat-dot ${cfg.dotClass}"></span> ${cfg.label.replace(/^[🔴🟡🔵🟣⚫🟠] /, '')} (${count})</button>`;
+            }).join('');
+
+            renderDrillEmpresas(data, 'all', evento);
+
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function filterDrillDown(cat, evento) {
+            // Update active button
+            document.querySelectorAll('#drillCategoryFilters .btn-category').forEach(b => b.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+
+            const data = drillDownData[evento];
+            renderDrillEmpresas(data, cat, evento);
+        }
+
+        function renderDrillEmpresas(data, catFilter, evento) {
+            const empresasContainer = document.getElementById('drillDownEmpresas');
+
+            // Destroy old charts
+            Object.values(drillDownCharts).forEach(c => c.destroy());
+            drillDownCharts = {};
+
+            const filtered = catFilter === 'all' ? data : data.filter(e => e._cat === catFilter);
+
+            if (filtered.length === 0) {
+                empresasContainer.innerHTML = '<div class="empty-state"><i class="fas fa-filter"></i><p>Nenhuma empresa nesta categoria.</p></div>';
+                return;
+            }
+
+            // Group by category when showing all
+            let html = '';
+            if (catFilter === 'all') {
+                const catOrder = ['cancel','proc','tecnico','naocad','admfut','desist'];
+                catOrder.forEach(cat => {
+                    const group = filtered.filter(e => e._cat === cat);
+                    if (group.length === 0) return;
+                    const cfg = CAT_CONFIG[cat];
+                    html += `<div class="categoria-section">
+                        <div class="categoria-header ${cfg.headerClass}"><i class="${cfg.icon}"></i> ${cfg.label} (${group.length})</div>
+                        <div id="catGroup_${cat}">${renderEmpresaItems(group, cat)}</div>
+                    </div>`;
+                });
+            } else {
+                html = renderEmpresaItems(filtered, catFilter);
+            }
+
+            empresasContainer.innerHTML = html;
+
+            // Init charts for expanded cards
+            setTimeout(() => { initAllDrillCharts(filtered, evento); }, 100);
+        }
+
+        function renderEmpresaItems(empresas, catKey) {
+            return empresas.map((empresa, idx) => {
+                const total = empresa.concluidos + empresa.erros;
+                const empPercent = total > 0 ? ((empresa.concluidos / total) * 100).toFixed(1) : 0;
+                const chartId = `drillChart_${catKey}_${idx}_${Math.random().toString(36).substr(2,5)}`;
+                empresa._chartId = chartId;
+
+                return `
+                    <div class="empresa-detail-card">
+                        <div class="empresa-detail-header">
+                            <div class="empresa-detail-name"><i class="fas fa-building"></i><span>${empresa.nome}</span></div>
+                            <div class="empresa-detail-stats">
+                                <div class="empresa-stat"><div class="empresa-stat-value success">${empresa.concluidos}</div><div class="empresa-stat-label">Concluídos</div></div>
+                                <div class="empresa-stat"><div class="empresa-stat-value danger">${empresa.erros}</div><div class="empresa-stat-label">Erros</div></div>
+                            </div>
+                        </div>
+                        <div class="empresa-detail-body">
+                            <div class="empresa-chart-wrapper">
+                                <div class="empresa-chart-container"><canvas id="${chartId}"></canvas></div>
+                                <div class="empresa-chart-percent">${empPercent}%</div>
+                                <div class="empresa-chart-sublabel">concluído</div>
+                            </div>
+                            <div class="empresa-analysis">
+                                <div class="analysis-block"><h4><i class="fas fa-exclamation-triangle"></i> Motivo dos Erros</h4><p>${empresa.motivo}</p></div>
+                                <div class="analysis-block resolution"><h4><i class="fas fa-wrench"></i> Resolução</h4><p>${empresa.resolucao}</p></div>
+                            </div>
+                        </div>
+                    </div>`;
+            }).join('');
+        }
+
+        function initAllDrillCharts(empresas, evento) {
+            empresas.forEach(empresa => {
+                const chartId = empresa._chartId;
+                if (!chartId) return;
+                const ctx = document.getElementById(chartId);
+                if (ctx) {
+                    if (drillDownCharts[chartId]) drillDownCharts[chartId].destroy();
+                    drillDownCharts[chartId] = new Chart(ctx, {
+                        type: 'doughnut',
+                        data: {
+                            labels: ['Concluído', 'Erro'],
+                            datasets: [{ data: [empresa.concluidos, empresa.erros], backgroundColor: ['#10b981', '#ef4444'], borderWidth: 0 }]
+                        },
+                        options: {
+                            responsive: true, maintainAspectRatio: false, cutout: '65%',
+                            plugins: {
+                                legend: { position: 'bottom', labels: { color: '#94a3b8', padding: 10, font: { size: 11 } } },
+                                tooltip: { callbacks: { label: function(ctx) {
+                                    const v = ctx.parsed || 0;
+                                    const t = ctx.dataset.data.reduce((a, b) => a + b, 0);
+                                    return `${ctx.label}: ${v} (${t > 0 ? ((v/t)*100).toFixed(1) : 0}%)`;
+                                }}}
+                            }
+                        }
+                    });
+                }
+            });
+        }
+
+
+
+        function closeDrillDown() {
+            const overlay = document.getElementById('drillDownOverlay');
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+
+            // Destroy charts to free memory
+            Object.values(drillDownCharts).forEach(chart => chart.destroy());
+            drillDownCharts = {};
+        }
+
+        // Event listeners for drill-down
+        document.getElementById('btnCloseDrill').addEventListener('click', closeDrillDown);
+
+        document.getElementById('drillDownOverlay').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeDrillDown();
+            }
+        });
+
+        // Add click handlers to chart cards
+        function initDrillDownHandlers() {
+            // Make S-2220 and S-2240 cards clickable
+            const chartCards = document.querySelectorAll('.chart-card');
+            chartCards.forEach((card, index) => {
+                if (index === 0) { // S-2220
+                    card.classList.add('clickable-card');
+                    card.addEventListener('click', function() {
+                        openDrillDown('S-2220');
+                    });
+                } else if (index === 1) { // S-2240
+                    card.classList.add('clickable-card');
+                    card.addEventListener('click', function() {
+                        openDrillDown('S-2240');
+                    });
+                }
+            });
+        }
+
+
+        </script>
 </body>
 </html>
