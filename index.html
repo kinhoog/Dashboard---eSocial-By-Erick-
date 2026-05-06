@@ -1847,7 +1847,8 @@
             }
         }
 </style>
-<base target="_self">
+<base target="_blank">
+<base target="_blank">
 <base target="_blank">
 </head>
 <body>
@@ -2343,11 +2344,11 @@
     <script>
         // ==================== CONFIGURAÇÃO DE USUÁRIOS ====================
         const defaultUsers = {
-            'erick.protege': { password: '1234', isMaster: true, canEdit: true },
-            'flavia.protege': { password: '1234', isMaster: false, canEdit: false },
-            'abner.protege': { password: '1234', isMaster: false, canEdit: false },
-            'carol.protege': { password: '1234', isMaster: false, canEdit: false },
-    'wagner.protege': { password: '1234', isMaster: false, canEdit: false }
+            'erick.protege':  { password: '1234', isMaster: true,  canEdit: true,  cargo: 'Usuário Master' },
+            'abner.protege':  { password: '1234', isMaster: false, canEdit: false, cargo: 'Técnico de Segurança do Trabalho' },
+            'flavia.protege': { password: '1234', isMaster: false, canEdit: false, cargo: 'Gerente' },
+            'brenda.protege': { password: '1234', isMaster: false, canEdit: false, cargo: 'Chefe' },
+            'wagner.protege': { password: '1234', isMaster: false, canEdit: false, cargo: 'Gerente' }
         };
 
         function loadUsers() {
@@ -2570,10 +2571,13 @@
             document.getElementById('appContainer').style.display = 'block';
 
             document.getElementById('currentUser').textContent = currentUser;
-            
+
+            const cargo = users[currentUser].cargo || '';
             if (users[currentUser].canEdit) {
                 document.getElementById('masterBadge').innerHTML = '<span class="master-badge">Admin</span>';
                 document.getElementById('btnEditData').style.display = 'flex';
+            } else if (cargo) {
+                document.getElementById('masterBadge').innerHTML = `<span class="master-badge" style="background: rgba(99,102,241,0.15); color: #818cf8; border: 1px solid rgba(99,102,241,0.3); font-size: 0.7rem;">${cargo}</span>`;
             }
 
             initCharts();
