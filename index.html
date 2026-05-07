@@ -1967,9 +1967,6 @@
                                 </div>
                             </div>
                         </div>
-                        <button class="btn-edit" id="btnEditData" style="display: none;">
-                            <i class="fas fa-edit"></i> Editar Dados
-                        </button>
                         <div style="position: relative;">
                             <button class="btn-export" id="btnExportReport" onclick="toggleExportMenu()">
                                 <i class="fas fa-file-pdf"></i> Exportar PDF <i class="fas fa-chevron-down" style="margin-left: 5px; font-size: 0.75rem;"></i>
@@ -2186,13 +2183,28 @@
                     <div class="card-header">
                         <span class="card-title"><i class="fas fa-wrench"></i> Descrição de Atividade</span>
                         <div style="display: flex; gap: 1rem; align-items: center;">
-                            <span style="color: var(--text-secondary);"><i class="fas fa-users"></i> Total: <strong>97 funcionários</strong></span>
-                            <span style="color: var(--accent-blue);"><i class="fas fa-user-hard-hat"></i> Técnico: <strong>Abner</strong></span>
+                            <span style="color: var(--text-secondary);"><i class="fas fa-users"></i> Total: <strong id="pendTotal">142</strong> funcionários</span>
+                            <span style="color: var(--accent-blue);"><i class="fas fa-user-hard-hat"></i> Técnico: <strong id="pendTecnico">Layanne</strong></span>
+                            <div style="position: relative;">
+                                <button id="btnPendMonth" onclick="togglePendMonthMenu()" style="display:flex;align-items:center;gap:0.5rem;padding:0.6rem 1.1rem;background:linear-gradient(135deg,rgba(0,194,97,0.15),rgba(0,143,69,0.08));border:1px solid rgba(0,194,97,0.3);border-radius:6px;color:#00c261;font-size:0.88rem;font-weight:700;font-family:inherit;cursor:pointer;">
+                                    <i class="fas fa-calendar-alt"></i>
+                                    <span id="pendMonthLabel">Maio/2026</span>
+                                    <i class="fas fa-chevron-down" style="font-size:0.75rem;"></i>
+                                </button>
+                                <div id="pendMonthMenu" style="display:none;position:absolute;top:100%;right:0;margin-top:8px;background:#0f1a2e;border:1px solid #1e3250;border-radius:8px;padding:0.5rem 0;min-width:160px;box-shadow:0 10px 30px rgba(0,0,0,0.5);z-index:50;">
+                                    <div onclick="switchPendMonth('2026-05')" id="pendOptMaio" style="display:flex;align-items:center;gap:0.6rem;padding:0.65rem 1rem;background:rgba(0,194,97,0.15);color:#e8f0fe;font-size:0.88rem;font-weight:600;cursor:pointer;box-sizing:border-box;">
+                                        <i class="fas fa-calendar-alt" style="color:#00c261;width:16px;"></i> Maio/2026
+                                    </div>
+                                    <div onclick="switchPendMonth('2026-04')" id="pendOptAbril" style="display:flex;align-items:center;gap:0.6rem;padding:0.65rem 1rem;background:#0f1a2e;color:#e8f0fe;font-size:0.88rem;font-weight:600;cursor:pointer;box-sizing:border-box;">
+                                        <i class="fas fa-calendar-alt" style="color:#00c261;width:16px;"></i> Abril/2026
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="repasse-info">
                         <h4><i class="fas fa-share"></i> Data do Repasse</h4>
-                        <p><strong>Segunda-feira, 13/04/2026 12:20</strong></p>
+                        <p id="pendRepasseData"><strong>Segunda-feira, 04/05/2026 15:29</strong></p>
                     </div>
                     <div class="table-container">
                         <table id="pendenciasTable">
@@ -2575,39 +2587,53 @@
             const cargo = users[currentUser].cargo || '';
             if (users[currentUser].canEdit) {
                 document.getElementById('masterBadge').innerHTML = '<span class="master-badge">Admin</span>';
-                document.getElementById('btnEditData').style.display = 'flex';
             } else if (cargo) {
                 document.getElementById('masterBadge').innerHTML = `<span class="master-badge" style="background: rgba(99,102,241,0.15); color: #818cf8; border: 1px solid rgba(99,102,241,0.3); font-size: 0.7rem;">${cargo}</span>`;
             }
 
+            document.getElementById('logoutBtn').addEventListener('click', function(e) {
+                e.preventDefault();
+                location.reload();
+            });
+
+            document.querySelectorAll('.sidebar-menu a[data-section]').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const section = this.dataset.section;
+                    document.querySelectorAll('.sidebar-menu a').forEach(a => a.classList.remove('active'));
+                    this.classList.add('active');
+                    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+                    document.getElementById(section).classList.add('active');
+                });
+            });
+
+            document.getElementById('menuToggle').addEventListener('click', function() {
+                document.getElementById('sidebar').classList.toggle('open');
+            });
+
+            document.addEventListener('click', function(e) {
+                const exportMenu = document.getElementById('exportMenu');
+                const exportBtn = document.getElementById('btnExportReport');
+                if (exportMenu && exportBtn && !exportBtn.contains(e.target) && !exportMenu.contains(e.target)) {
+                    exportMenu.style.display = 'none';
+                }
+                const monthMenu = document.getElementById('monthMenu');
+                const monthBtn = document.getElementById('btnMonthSelector');
+                if (monthMenu && monthBtn && !monthBtn.contains(e.target) && !monthMenu.contains(e.target)) {
+                    monthMenu.style.display = 'none';
+                }
+                const pendMenu = document.getElementById('pendMonthMenu');
+                const pendBtn = document.getElementById('btnPendMonth');
+                if (pendMenu && pendBtn && !pendBtn.contains(e.target) && !pendMenu.contains(e.target)) {
+                    pendMenu.style.display = 'none';
+                }
+            });
+
             initCharts();
             loadAllData();
-            switchMonth('2026-05'); // Maio como padrão
+            switchMonth('2026-05');
             initDrillDownHandlers();
         }
-
-        document.getElementById('logoutBtn').addEventListener('click', function(e) {
-            e.preventDefault();
-            location.reload();
-        });
-
-        // ==================== NAVEGAÇÃO ====================
-        document.querySelectorAll('.sidebar-menu a[data-section]').forEach(link => {
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
-                const section = this.dataset.section;
-
-                document.querySelectorAll('.sidebar-menu a').forEach(a => a.classList.remove('active'));
-                this.classList.add('active');
-
-                document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-                document.getElementById(section).classList.add('active');
-            });
-        });
-
-        document.getElementById('menuToggle').addEventListener('click', function() {
-            document.getElementById('sidebar').classList.toggle('open');
-        });
 
         // ==================== DASHBOARD ====================
         function updateDashboardUI(data) {
@@ -2715,14 +2741,6 @@
             const menu = document.getElementById('exportMenu');
             menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
         }
-
-        document.addEventListener('click', function(e) {
-            const menu = document.getElementById('exportMenu');
-            const btn = document.getElementById('btnExportReport');
-            if (menu && btn && !btn.contains(e.target) && !menu.contains(e.target)) {
-                menu.style.display = 'none';
-            }
-        });
 
         function generatePDFReport(type) {
             document.getElementById('exportMenu').style.display = 'none';
@@ -2968,56 +2986,115 @@
             `).join('');
         }
 
-        function loadPendenciasTable() {
+        const pendenciasData = {
+            '2026-04': {
+                repasse: 'Segunda-feira, 13/04/2026 12:20', total: 97, tecnico: 'Abner',
+                empresas: [
+                    { empresa: "Divisystem Materiais e Serviços Ltda", funcionarios: 3, status: "Concluído", observacao: "Realizado dia 16/04/2026" },
+                    { empresa: "Prefeitura Municipal de Rio Branco do Sul", funcionarios: 12, status: "Concluído", observacao: "Realizado dia 13/04/2026" },
+                    { empresa: "Telcabos Telecomunicações e Inf. Ltda - Campinas", funcionarios: 1, status: "Concluído", observacao: "Realizado dia 13/04/2026" },
+                    { empresa: "Bahoma Serviços Ltda", funcionarios: 1, status: "Concluído", observacao: "Realizado dia 20/04/2026" },
+                    { empresa: "REDRAM CONSTRUTORA E ENGENHARIA LTDA", funcionarios: 1, status: "Concluído", observacao: "Realizado dia 20/04/2026" },
+                    { empresa: "Comercial Lancare Ltda", funcionarios: 1, status: "Concluído", observacao: "Realizado dia 20/04/2026" },
+                    { empresa: "Câmara Municipal de Araucária", funcionarios: 3, status: "Concluído", observacao: "Realizado dia 20/04/2026" },
+                    { empresa: "RP Info Sistemas Ltda", funcionarios: 2, status: "Concluído", observacao: "Realizado dia 20/04/2026" },
+                    { empresa: "Hortigranjeira Paraiso LTDA", funcionarios: 41, status: "Concluído", observacao: "Realizado dia 20/04/2026" },
+                    { empresa: "MIG Atacado e Varejo LTDA - Pinheirinho", funcionarios: 1, status: "Concluído", observacao: "Realizado dia 20/04/2026" },
+                    { empresa: "Scribe Informática Ltda", funcionarios: 2, status: "Concluído", observacao: "Realizado dia 20/04/2026" },
+                    { empresa: "A.L. Hortifrutigranjeiros Ltda", funcionarios: 2, status: "Concluído", observacao: "Realizado dia 20/04/2026" },
+                    { empresa: "Comercial Hortifrutigranjeiros Pinhais Ltda - Rui Barbosa", funcionarios: 4, status: "Concluído", observacao: "Realizado dia 20/04/2026" },
+                    { empresa: "Dux Digital do Brasil Eireli", funcionarios: 1, status: "Concluído", observacao: "Realizado dia 20/04/2026" },
+                    { empresa: "Servico Distrital Do Tatuquara", funcionarios: 1, status: "Concluído", observacao: "Realizado dia 20/04/2026" },
+                    { empresa: "GASPARIN MERCHANDISING LTDA", funcionarios: 1, status: "Concluído", observacao: "Realizado dia 20/04/2026" },
+                    { empresa: "Foundever do Brasil Serviços e Tecnologia Ltda - SP", funcionarios: 1, status: "Concluído", observacao: "Realizado dia 20/04/2026" },
+                    { empresa: "Ianco Industria Metalurgica Ltda", funcionarios: 1, status: "Concluído", observacao: "Realizado dia 20/04/2026" },
+                    { empresa: "R.Agilidade Locação de Mão de Obra Temporária Ltda", funcionarios: 11, status: "Concluído", observacao: "Realizado dia 20/04/2026" },
+                    { empresa: "Associacao De Educacao Personalizada - Aep", funcionarios: 1, status: "Concluído", observacao: "Realizado dia 20/04/2026" },
+                    { empresa: "Renova JR Consultoria e Serviços de RH Ltda", funcionarios: 4, status: "Concluído", observacao: "Realizado dia 20/04/2026" },
+                    { empresa: "Sysmex do Brasil Industria e Comércio Ltda - São José dos Pinhais", funcionarios: 1, status: "Concluído", observacao: "Realizado dia 20/04/2026" },
+                    { empresa: "Rocha Segurança do Trabalho eProtege Ltda", funcionarios: 1, status: "Concluído", observacao: "Realizado dia 20/04/2026" },
+                ]
+            },
+            '2026-05': {
+                repasse: 'Segunda-feira, 04/05/2026 15:29', total: 142, tecnico: 'Layanne',
+                empresas: [
+                    { empresa: "Bahoma Serviços Ltda", funcionarios: 1, status: "Concluído", observacao: "Realizado dia 06/05/2026" },
+                    { empresa: "Suzamara Selivan Fernandes & Cia Ltda", funcionarios: 2, status: "Concluído", observacao: "Realizado dia 06/05/2026" },
+                    { empresa: "Fundação Estatal de Atenção em Saúde do Paraná - FUNEAS", funcionarios: 3, status: "Concluído", observacao: "Realizado dia 06/05/2026" },
+                    { empresa: "Quero Bar e Lanches Ltda", funcionarios: 1, status: "Concluído", observacao: "Realizado dia 06/05/2026" },
+                    { empresa: "Paraná Parafusos e Ferragens Ltda", funcionarios: 1, status: "Concluído", observacao: "Realizado dia 06/05/2026" },
+                    { empresa: "ARENA BEACH CLUB CWB LTDA", funcionarios: 1, status: "Concluído", observacao: "Realizado dia 06/05/2026" },
+                    { empresa: "COSTA MELLO HORTIFRUTI LTDA", funcionarios: 1, status: "Concluído", observacao: "Realizado dia 06/05/2026" },
+                    { empresa: "Inovação Comércio de Livros Didáticos Ltda", funcionarios: 2, status: "Concluído", observacao: "Realizado dia 06/05/2026" },
+                    { empresa: "Dudu Loterias Ltda", funcionarios: 1, status: "Concluído", observacao: "Realizado dia 06/05/2026" },
+                    { empresa: "Comercial Hortifrutigranjeiros Pinhais Ltda - Boqueirão", funcionarios: 10, status: "Concluído", observacao: "Realizado dia 06/05/2026" },
+                    { empresa: "Meca Metalurgica E Industria De Maquinas Ltda", funcionarios: 1, status: "Concluído", observacao: "Realizado dia 06/05/2026" },
+                    { empresa: "Planeta Cao", funcionarios: 3, status: "Concluído", observacao: "Realizado dia 06/05/2026" },
+                    { empresa: "Liga das Senhoras Católicas de Curitiba - DAPI", funcionarios: 2, status: "Concluído", observacao: "Realizado dia 06/05/2026" },
+                    { empresa: "Império Das Frutas Ltda", funcionarios: 1, status: "Concluído", observacao: "Realizado dia 06/05/2026" },
+                    { empresa: "Value Consultoria e Contabilidade Ltda", funcionarios: 1, status: "Concluído", observacao: "Realizado dia 06/05/2026" },
+                    { empresa: "Telcabos Telecomunicações e Inf. Ltda - Curitiba", funcionarios: 1, status: "Concluído", observacao: "Realizado dia 06/05/2026" },
+                    { empresa: "RP Info Sistemas Ltda", funcionarios: 7, status: "Concluído", observacao: "Realizado dia 06/05/2026" },
+                    { empresa: "Hortigranjeira Paraiso LTDA", funcionarios: 2, status: "Concluído", observacao: "Realizado dia 06/05/2026" },
+                    { empresa: "BEAUTYOU COSMETICOS LTDA", funcionarios: 5, status: "Concluído", observacao: "Realizado dia 06/05/2026" },
+                    { empresa: "MIG Atacado e Varejo LTDA - Pinheirinho", funcionarios: 5, status: "Concluído", observacao: "Realizado dia 06/05/2026" },
+                    { empresa: "Scribe Informática Ltda", funcionarios: 1, status: "Concluído", observacao: "Realizado dia 06/05/2026" },
+                    { empresa: "Conselho Regional de Medicina do Parana - CRM", funcionarios: 1, status: "Concluído", observacao: "Realizado dia 06/05/2026" },
+                    { empresa: "J. Santos Confecções Ltda", funcionarios: 1, status: "Concluído", observacao: "Realizado dia 06/05/2026" },
+                    { empresa: "JR COMERCIO DE COMPENSADOS LTDA", funcionarios: 2, status: "Concluído", observacao: "Realizado dia 06/05/2026" },
+                    { empresa: "Servico Distrital Do Tatuquara", funcionarios: 1, status: "Concluído", observacao: "Realizado dia 06/05/2026" },
+                    { empresa: "FRUVIL FRUTA LTDA", funcionarios: 14, status: "Concluído", observacao: "Realizado dia 06/05/2026" },
+                    { empresa: "Foundever do Brasil Serviços e Tecnologia Ltda - SP", funcionarios: 17, status: "Concluído", observacao: "Realizado dia 06/05/2026" },
+                    { empresa: "Ianco Industria Metalurgica Ltda", funcionarios: 3, status: "Concluído", observacao: "Realizado dia 06/05/2026" },
+                    { empresa: "R.Agilidade Locação de Mão de Obra Temporária Ltda", funcionarios: 1, status: "Concluído", observacao: "Realizado dia 06/05/2026" },
+                    { empresa: "Yesco Administradora de Bens S/A - SJP", funcionarios: 1, status: "Concluído", observacao: "Realizado dia 06/05/2026" },
+                    { empresa: "Associacao De Educacao Personalizada - Aep", funcionarios: 2, status: "Concluído", observacao: "Realizado dia 06/05/2026" },
+                    { empresa: "Aliança Hortifrutigranjeira LTDA", funcionarios: 15, status: "Concluído", observacao: "Realizado dia 06/05/2026" },
+                    { empresa: "Armazém do Coco Caiobá Ltda", funcionarios: 1, status: "Concluído", observacao: "Realizado dia 06/05/2026" },
+                    { empresa: "Renova JR Consultoria e Serviços de RH Ltda", funcionarios: 17, status: "Concluído", observacao: "Realizado dia 06/05/2026" },
+                    { empresa: "Renova Clean Higienização de Produtos de Limpeza Eireli", funcionarios: 1, status: "Concluído", observacao: "Realizado dia 06/05/2026" },
+                    { empresa: "Sysmex do Brasil Industria e Comércio Ltda - São José dos Pinhais", funcionarios: 3, status: "Concluído", observacao: "Realizado dia 06/05/2026" },
+                    { empresa: "Telcabos Telecomunicações e Informática Ltda - Rio de Janeiro", funcionarios: 1, status: "Concluído", observacao: "Realizado dia 06/05/2026" },
+                    { empresa: "Lucro Rural Ltda", funcionarios: 1, status: "Concluído", observacao: "Realizado dia 06/05/2026" },
+                    { empresa: "Sysmex do Brasil Industria e Comércio Ltda - São Paulo", funcionarios: 1, status: "Concluído", observacao: "Realizado dia 06/05/2026" },
+                    { empresa: "Landis Gyr Equipamentos de Medição", funcionarios: 5, status: "Concluído", observacao: "Realizado dia 06/05/2026" },
+                    { empresa: "Biogénesis Bagó Saúde Animal Ltda - Filial", funcionarios: 2, status: "Concluído", observacao: "Realizado dia 06/05/2026" },
+                ]
+            }
+        };
+
+        let currentPendMonth = '2026-05';
+
+        function togglePendMonthMenu() {
+            const menu = document.getElementById('pendMonthMenu');
+            menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function switchPendMonth(month) {
+            currentPendMonth = month;
+            document.getElementById('pendMonthMenu').style.display = 'none';
+            document.getElementById('pendMonthLabel').textContent = month === '2026-04' ? 'Abril/2026' : 'Maio/2026';
+            document.getElementById('pendOptMaio').style.background = month === '2026-05' ? 'rgba(0,194,97,0.15)' : '#0f1a2e';
+            document.getElementById('pendOptAbril').style.background = month === '2026-04' ? 'rgba(0,194,97,0.15)' : '#0f1a2e';
+            renderPendenciasTable(month);
+        }
+
+        function renderPendenciasTable(month) {
+            const data = pendenciasData[month];
+            if (!data) return;
+            document.getElementById('pendTotal').textContent = data.total;
+            document.getElementById('pendTecnico').textContent = data.tecnico;
+            document.getElementById('pendRepasseData').innerHTML = '<strong>' + data.repasse + '</strong>';
             const tbody = document.querySelector('#pendenciasTable tbody');
-            
-            // Dados das pendências com status
-            const pendencias = [
-                { empresa: "Divisystem Materiais e Serviços Ltda", funcionarios: 3, status: "Concluído", observacao: "Realizado dia 16/04/2026" },
-                { empresa: "Prefeitura Municipal de Rio Branco do Sul", funcionarios: 12, status: "Concluído", observacao: "Realizado dia 13/04/2026" },
-                { empresa: "Telcabos Telecomunicações e Inf. Ltda - Campinas", funcionarios: 1, status: "Concluído", observacao: "Realizado dia 13/04/2026" },
-                { empresa: "Bahoma Serviços Ltda", funcionarios: 1, status: "Concluído", observacao: "Realizado dia 20/04/2026" },
-                { empresa: "REDRAM CONSTRUTORA E ENGENHARIA LTDA", funcionarios: 1, status: "Concluído", observacao: "Realizado dia 20/04/2026" },
-                { empresa: "Comercial Lancare Ltda", funcionarios: 1, status: "Concluído", observacao: "Realizado dia 20/04/2026" },
-                { empresa: "Câmara Municipal de Araucária", funcionarios: 3, status: "Concluído", observacao: "Realizado dia 20/04/2026" },
-                { empresa: "RP Info Sistemas Ltda", funcionarios: 2, status: "Concluído", observacao: "Realizado dia 20/04/2026" },
-                { empresa: "Hortigranjeira Paraiso LTDA", funcionarios: 41, status: "Concluído", observacao: "Realizado dia 20/04/2026" },
-                { empresa: "MIG Atacado e Varejo LTDA - Pinheirinho", funcionarios: 1, status: "Concluído", observacao: "Realizado dia 20/04/2026" },
-                { empresa: "Scribe Informática Ltda", funcionarios: 2, status: "Concluído", observacao: "Realizado dia 20/04/2026" },
-                { empresa: "A.L. Hortifrutigranjeiros Ltda", funcionarios: 2, status: "Concluído", observacao: "Realizado dia 20/04/2026" },
-                { empresa: "Comercial Hortifrutigranjeiros Pinhais Ltda - Rui Barbosa", funcionarios: 4, status: "Concluído", observacao: "Realizado dia 20/04/2026" },
-                { empresa: "Dux Digital do Brasil Eireli", funcionarios: 1, status: "Concluído", observacao: "Realizado dia 20/04/2026" },
-                { empresa: "Servico Distrital Do Tatuquara", funcionarios: 1, status: "Concluído", observacao: "Realizado dia 20/04/2026" },
-                { empresa: "GASPARIN MERCHANDISING LTDA", funcionarios: 1, status: "Concluído", observacao: "Realizado dia 20/04/2026" },
-                { empresa: "Foundever do Brasil Serviços e Tecnologia Ltda - SP", funcionarios: 1, status: "Concluído", observacao: "Realizado dia 20/04/2026" },
-                { empresa: "Ianco Industria Metalurgica Ltda", funcionarios: 1, status: "Concluído", observacao: "Realizado dia 20/04/2026" },
-                { empresa: "R.Agilidade Locação de Mão de Obra Temporária Ltda", funcionarios: 11, status: "Concluído", observacao: "Realizado dia 20/04/2026" },
-                { empresa: "Associacao De Educacao Personalizada - Aep", funcionarios: 1, status: "Concluído", observacao: "Realizado dia 20/04/2026" },
-                { empresa: "Renova JR Consultoria e Serviços de RH Ltda", funcionarios: 4, status: "Concluído", observacao: "Realizado dia 20/04/2026" },
-                { empresa: "Sysmex do Brasil Industria e Comércio Ltda - São José dos Pinhais", funcionarios: 1, status: "Concluído", observacao: "Realizado dia 20/04/2026" },
-                { empresa: "Rocha Segurança do Trabalho eProtege Ltda", funcionarios: 1, status: "Concluído", observacao: "Realizado dia 20/04/2026" },
-            ];
-
-            // Ordena: Concluídos primeiro, depois Pendentes
-            const sortedPendencias = pendencias.sort((a, b) => {
-                if (a.status === 'Concluído' && b.status !== 'Concluído') return -1;
-                if (b.status === 'Concluído' && a.status !== 'Concluído') return 1;
-                return a.empresa.localeCompare(b.empresa);
-            });
-
-            tbody.innerHTML = sortedPendencias.map(item => {
+            const sorted = [...data.empresas].sort((a, b) => a.empresa.localeCompare(b.empresa));
+            tbody.innerHTML = sorted.map(item => {
                 const badgeClass = item.status === 'Concluído' ? 'badge-success' : 'badge-warning';
-                return `
-                    <tr>
-                        <td>${item.empresa}</td>
-                        <td>Descrição de atividade</td>
-                        <td>${item.funcionarios}</td>
-                        <td>Abner</td>
-                        <td><span class="badge ${badgeClass}">${item.status}</span></td>
-                        <td><input type="text" class="editable" value="${item.observacao}"></td>
-                    </tr>
-                `;
+                return '<tr><td>' + item.empresa + '</td><td>Descrição de atividade</td><td>' + item.funcionarios + '</td><td>' + data.tecnico + '</td><td><span class="badge ' + badgeClass + '">' + item.status + '</span></td><td><input type="text" class="editable" value="' + item.observacao + '"></td></tr>';
             }).join('');
+        }
+
+        function loadPendenciasTable() {
+            renderPendenciasTable('2026-05');
         }
 
         function loadXmlTable() {
@@ -3135,14 +3212,6 @@
             const menu = document.getElementById('monthMenu');
             menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
         }
-
-        document.addEventListener('click', function(e) {
-            const menu = document.getElementById('monthMenu');
-            const btn = document.getElementById('btnMonthSelector');
-            if (menu && btn && !btn.contains(e.target) && !menu.contains(e.target)) {
-                menu.style.display = 'none';
-            }
-        });
 
         function switchMonth(month) {
             currentMonth = month;
@@ -3354,30 +3423,19 @@
             drillDownCharts = {};
         }
 
-        // Event listeners for drill-down
-        document.getElementById('btnCloseDrill').addEventListener('click', closeDrillDown);
-
-        document.getElementById('drillDownOverlay').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeDrillDown();
-            }
-        });
-
-        // Add click handlers to chart cards
         function initDrillDownHandlers() {
-            // Make S-2220 and S-2240 cards clickable
+            document.getElementById('btnCloseDrill').addEventListener('click', closeDrillDown);
+            document.getElementById('drillDownOverlay').addEventListener('click', function(e) {
+                if (e.target === this) closeDrillDown();
+            });
             const chartCards = document.querySelectorAll('.chart-card');
             chartCards.forEach((card, index) => {
-                if (index === 0) { // S-2220
+                if (index === 0) {
                     card.classList.add('clickable-card');
-                    card.addEventListener('click', function() {
-                        openDrillDown('S-2220');
-                    });
-                } else if (index === 1) { // S-2240
+                    card.addEventListener('click', function() { openDrillDown('S-2220'); });
+                } else if (index === 1) {
                     card.classList.add('clickable-card');
-                    card.addEventListener('click', function() {
-                        openDrillDown('S-2240');
-                    });
+                    card.addEventListener('click', function() { openDrillDown('S-2240'); });
                 }
             });
         }
