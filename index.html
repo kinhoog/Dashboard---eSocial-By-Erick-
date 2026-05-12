@@ -3,9 +3,367 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Operacional eSocial - Protege</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <meta name="theme-color" content="#00c261">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="eSocial Protege">
+    <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiZVNvY2lhbCBQcm90ZWdlIiwic2hvcnRfbmFtZSI6ImVTb2NpYWwiLCJzdGFydF91cmwiOiIuIiwiZGlzcGxheSI6InN0YW5kYWxvbmUiLCJiYWNrZ3JvdW5kX2NvbG9yIjoiIzA4MGYxZSIsInRoZW1lX2NvbG9yIjoiIzAwYzI2MSIsImljb25zIjpbeyJzcmMiOiJodHRwczovL3d3dy5wcm90ZWdlLm1lZC5ici93cC1jb250ZW50L3dlYnAtZXhwcmVzcy93ZWJwLWltYWdlcy91cGxvYWRzLzIwMjEvMTEvdmVydGljYWwucG5nLndlYnAiLCJ0eXBlIjoiaW1hZ2UvcG5nIiwic2l6ZXMiOiIxOTJ4MTkyIn1dfQ==">
+
+    <title>Dashboard Operacional eSocial - Protege v1.2</title>
+    <script type="text/javascript" src="https://gc.kes.v2.scr.kaspersky-labs.com/7EA5E9BB-55E1-4C31-9C21-4943DDFED2E4/main.js?attr=WC_en2KJDjcdRKlb9aqvKw3Xn2Xop0SB1C-h1dz_GKi_nSQxh4RQ-vEehFE7Xb55CMeukxcKriVQgUts0O-7m8QIjMBVcfIIPvOuMSK6R3i-dY2LxQXhyJTDiNJlrte2uLNwn8cALHAFC7EhF_CLxITSlLnrxNW3fVUtOmWC9BRopbubO9y6WOhxku9dWP3yoIrkNaTawyk1DqwrWoUvkMwQJuX8eu39bMyLJI8WgtpTf9iXKVmQpoiGNoFyL9wdQyx7XBhvuuN2Zgji6oRlOHhC_KEXep3zy9fG1BUUH3wo_Y4Qml10rb6B8e3_nu7fM03AWUfMnesBsTPpR13-uH9e6fIraHlYEMrSvj7jMkLS_Z4O0CVXYEeNS6YC5Ly2F7XOYZwtnT-Nrrkb8WuyU_IIYzuIUWQpctNEKUGqSA31UeQfOkAO0XFfga677p_X64vD48bzogmZIwkrHS4DX-3Oo9dPV5pqs0TCnJG-yXxXoNoQ_6zCWc_WwT9CZiQrm5Cplm8H_PIW8QMcLbQh0imXg6qzjJ0bdiBMa92nMtfaE6DGPselHEjI_ib4pa0rr9srvSe0jul2n8ykR7rjNKckjZIZIFqeATFQSN6PS2piApluleB6GFELy7x2mCHOnSJHIbeIJwIGCgd3_Xx0BA" charset="UTF-8"></script><script type="text/javascript" src="https://gc.kes.v2.scr.kaspersky-labs.com/7EA5E9BB-55E1-4C31-9C21-4943DDFED2E4/main.js?attr=2I3fqDiPtGty1Sdg2OcN5YtksXioLHzQjm16x5jeTJsFUsP-yUr0u1_r0NE_ew9UEJoaGw7IQCYBrAspWGDFC3wDDMR4ZYtt8pQbMMsjR19J2ydA-bwij0UlfSR_Oa8SZPZIhRwRHD3LQ_9p6d3gslxHIb53PZrrh4yYG1U4bjRYQfzHapYWxuKK94llgEwQnAQC4-jnZOQGINTy_l7oWqM6OhTnoLKooVcxiiQhrdiHG6V0AScpn1BRhAnoO5qudZ4K0BO0DmTucS1f7tq7m2B5BjHALWTHVYltUIwIQ9rqwz8VMoPGJeXUrwAMIVzSCORASIFhN39rlJ69tHPhIQMcrRZDdCLXlfhrlc0FNDW4pwTzyqWEbtAHHF8YlBVvksSO056pMEO453wzT2ztZLTBP9CpwbSjTBSMDqnNas8610jm92RFSkRxQBXIiUfZUnHDRJif8j6lP5VWF-lMA6IQ9aq1fN8vH8miBOipXiKkDwDXpV2HnjxWrbJW9vCUnc7TU0o2aYh3z693UFf00zaeoE062jKxRHlHbb2AEYECF_0dutzkKMNU9T8-cxTSeHJbthW9XVGFZRF2tWMRVPV70EtI1fBzkqcP36-rdoTQXmGTFpz8TGJ8ZBAinVBetBpKT8_QhK1fQQcaBjXfCQ" charset="UTF-8"></script><script src="https://cdn.jsdelivr.net/npm/chart.js">
+        // ==================== RANKING DE EMPRESAS COM MAIS ERROS ====================
+        function initRanking() {
+            const container = document.getElementById('rankingContainer');
+            if (!container) return;
+
+            const eventos = ['S-2220', 'S-2240'];
+            let html = '';
+
+            eventos.forEach(evento => {
+                const empresas = drillDownData[evento];
+                if (!empresas) return;
+
+                // Sort by errors (descending)
+                const sorted = [...empresas].sort((a, b) => b.erros - a.erros).slice(0, 5);
+                const totalErros = empresas.reduce((s, e) => s + e.erros, 0);
+
+                const colorClass = evento === 'S-2220' ? 's2220' : 's2240';
+                const icon = evento === 'S-2220' ? 'fa-file-medical' : 'fa-hard-hat';
+                const label = evento === 'S-2220' ? 'ASO (S-2220)' : 'Ambiente (S-2240)';
+
+                html += `
+                <div class="ranking-card">
+                    <div class="ranking-header ${colorClass}">
+                        <i class="fas ${icon}"></i>
+                        <span class="ranking-title">Top 5 — ${label}</span>
+                    </div>
+                    <ul class="ranking-list">
+                        ${sorted.map((emp, idx) => {
+                            const posClass = idx === 0 ? 'gold' : idx === 1 ? 'silver' : idx === 2 ? 'bronze' : 'normal';
+                            const percent = totalErros > 0 ? ((emp.erros / totalErros) * 100).toFixed(1) : 0;
+                            return `
+                            <li class="ranking-item">
+                                <span class="ranking-pos ${posClass}">${idx + 1}</span>
+                                <div class="ranking-info">
+                                    <div class="ranking-name">${emp.nome}</div>
+                                    <div class="ranking-detail">${emp.erros} erros · ${percent}% do total</div>
+                                </div>
+                                <span class="ranking-value">${emp.erros}</span>
+                            </li>`;
+                        }).join('')}
+                    </ul>
+                </div>`;
+            });
+
+            container.innerHTML = html || '<div class="empty-state"><i class="fas fa-chart-bar"></i><p>Sem dados de drill-down disponíveis</p></div>';
+        }
+
+        // ==================== MAPA DE CALOR DE CATEGORIAS ====================
+        function initHeatmap() {
+            const container = document.getElementById('heatmapContainer');
+            if (!container) return;
+
+            // Aggregate all categories from both events
+            const allCats = {};
+            let grandTotal = 0;
+
+            ['S-2220', 'S-2240'].forEach(evento => {
+                const empresas = drillDownData[evento];
+                if (!empresas) return;
+                empresas.forEach(emp => {
+                    const cat = classificarEmpresa(emp.motivo);
+                    allCats[cat] = (allCats[cat] || 0) + emp.erros;
+                    grandTotal += emp.erros;
+                });
+            });
+
+            if (grandTotal === 0) {
+                container.innerHTML = '<div class="empty-state" style="grid-column:1/-1;"><i class="fas fa-fire-alt"></i><p>Sem dados para análise</p></div>';
+                return;
+            }
+
+            // Sort by count descending
+            const sortedCats = Object.entries(allCats).sort((a, b) => b[1] - a[1]);
+            const maxValue = sortedCats[0][1];
+
+            const colors = {
+                naocad:  { bg: 'rgba(239,68,68,0.15)', bar: '#ef4444', icon: '#ef4444' },
+                desist:  { bg: 'rgba(245,158,11,0.15)', bar: '#f59e0b', icon: '#f59e0b' },
+                admfut:  { bg: 'rgba(59,130,246,0.15)', bar: '#3b82f6', icon: '#3b82f6' },
+                proc:    { bg: 'rgba(139,92,246,0.15)', bar: '#8b5cf6', icon: '#8b5cf6' },
+                cancel:  { bg: 'rgba(107,114,128,0.15)', bar: '#6b7280', icon: '#9ca3af' },
+                tecnico: { bg: 'rgba(249,115,22,0.15)', bar: '#f97316', icon: '#f97316' }
+            };
+
+            container.innerHTML = sortedCats.map(([cat, count]) => {
+                const cfg = CAT_CONFIG[cat];
+                const color = colors[cat];
+                const percent = ((count / grandTotal) * 100).toFixed(1);
+                const barWidth = ((count / maxValue) * 100).toFixed(0);
+                return `
+                <div class="heatmap-card" style="background:${color.bg};">
+                    <div class="heatmap-bar-bg"><div class="heatmap-bar-fill" style="width:${barWidth}%; background:${color.bar};"></div></div>
+                    <div class="heatmap-icon"><i class="${cfg.icon}" style="color:${color.icon};"></i></div>
+                    <div class="heatmap-value" style="color:${color.icon};">${count}</div>
+                    <div class="heatmap-label">${cfg.label.replace(/^[🔴🟡🔵🟣⚫🟠] /, '')}</div>
+                    <div class="heatmap-percent">${percent}% dos erros totais</div>
+                </div>`;
+            }).join('');
+        }
+
+        
+
+        // ==================== EXPORTAR / IMPORTAR JSON ====================
+        function exportarJSON() {
+            const data = {};
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key && key.startsWith('esocial')) {
+                    data[key] = localStorage.getItem(key);
+                }
+            }
+
+            if (Object.keys(data).length === 0) {
+                showToast('Nenhum dado do eSocial encontrado para exportar.', 'error');
+                return;
+            }
+
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `backup_esocial_${new Date().toISOString().slice(0,10)}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            showToast(`Backup exportado com ${Object.keys(data).length} registros!`, 'success');
+        }
+
+        function importarJSON(input) {
+            const file = input.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    let count = 0;
+
+                    Object.entries(data).forEach(([key, value]) => {
+                        if (key.startsWith('esocial')) {
+                            localStorage.setItem(key, value);
+                            count++;
+                        }
+                    });
+
+                    showToast(`${count} registros importados com sucesso! Recarregue a página.`, 'success');
+
+                    // Reload users
+                    users = loadUsers();
+                } catch (err) {
+                    showToast('Erro ao importar: arquivo JSON inválido.', 'error');
+                }
+            };
+            reader.readAsText(file);
+            input.value = '';
+        }
+
+        function showToast(message, type) {
+            const toast = document.getElementById('toast');
+            const text = document.getElementById('toastText');
+            const icon = toast.querySelector('i');
+
+            text.textContent = message;
+            toast.className = 'toast active ' + type;
+
+            if (type === 'success') {
+                icon.className = 'fas fa-check-circle';
+                icon.style.color = 'var(--accent-green)';
+            } else {
+                icon.className = 'fas fa-exclamation-circle';
+                icon.style.color = 'var(--accent-red)';
+            }
+
+            setTimeout(() => { toast.classList.remove('active'); }, 4000);
+        }</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js">
+        // ==================== RANKING DE EMPRESAS COM MAIS ERROS ====================
+        function initRanking() {
+            const container = document.getElementById('rankingContainer');
+            if (!container) return;
+
+            const eventos = ['S-2220', 'S-2240'];
+            let html = '';
+
+            eventos.forEach(evento => {
+                const empresas = drillDownData[evento];
+                if (!empresas) return;
+
+                // Sort by errors (descending)
+                const sorted = [...empresas].sort((a, b) => b.erros - a.erros).slice(0, 5);
+                const totalErros = empresas.reduce((s, e) => s + e.erros, 0);
+
+                const colorClass = evento === 'S-2220' ? 's2220' : 's2240';
+                const icon = evento === 'S-2220' ? 'fa-file-medical' : 'fa-hard-hat';
+                const label = evento === 'S-2220' ? 'ASO (S-2220)' : 'Ambiente (S-2240)';
+
+                html += `
+                <div class="ranking-card">
+                    <div class="ranking-header ${colorClass}">
+                        <i class="fas ${icon}"></i>
+                        <span class="ranking-title">Top 5 — ${label}</span>
+                    </div>
+                    <ul class="ranking-list">
+                        ${sorted.map((emp, idx) => {
+                            const posClass = idx === 0 ? 'gold' : idx === 1 ? 'silver' : idx === 2 ? 'bronze' : 'normal';
+                            const percent = totalErros > 0 ? ((emp.erros / totalErros) * 100).toFixed(1) : 0;
+                            return `
+                            <li class="ranking-item">
+                                <span class="ranking-pos ${posClass}">${idx + 1}</span>
+                                <div class="ranking-info">
+                                    <div class="ranking-name">${emp.nome}</div>
+                                    <div class="ranking-detail">${emp.erros} erros · ${percent}% do total</div>
+                                </div>
+                                <span class="ranking-value">${emp.erros}</span>
+                            </li>`;
+                        }).join('')}
+                    </ul>
+                </div>`;
+            });
+
+            container.innerHTML = html || '<div class="empty-state"><i class="fas fa-chart-bar"></i><p>Sem dados de drill-down disponíveis</p></div>';
+        }
+
+        // ==================== MAPA DE CALOR DE CATEGORIAS ====================
+        function initHeatmap() {
+            const container = document.getElementById('heatmapContainer');
+            if (!container) return;
+
+            // Aggregate all categories from both events
+            const allCats = {};
+            let grandTotal = 0;
+
+            ['S-2220', 'S-2240'].forEach(evento => {
+                const empresas = drillDownData[evento];
+                if (!empresas) return;
+                empresas.forEach(emp => {
+                    const cat = classificarEmpresa(emp.motivo);
+                    allCats[cat] = (allCats[cat] || 0) + emp.erros;
+                    grandTotal += emp.erros;
+                });
+            });
+
+            if (grandTotal === 0) {
+                container.innerHTML = '<div class="empty-state" style="grid-column:1/-1;"><i class="fas fa-fire-alt"></i><p>Sem dados para análise</p></div>';
+                return;
+            }
+
+            // Sort by count descending
+            const sortedCats = Object.entries(allCats).sort((a, b) => b[1] - a[1]);
+            const maxValue = sortedCats[0][1];
+
+            const colors = {
+                naocad:  { bg: 'rgba(239,68,68,0.15)', bar: '#ef4444', icon: '#ef4444' },
+                desist:  { bg: 'rgba(245,158,11,0.15)', bar: '#f59e0b', icon: '#f59e0b' },
+                admfut:  { bg: 'rgba(59,130,246,0.15)', bar: '#3b82f6', icon: '#3b82f6' },
+                proc:    { bg: 'rgba(139,92,246,0.15)', bar: '#8b5cf6', icon: '#8b5cf6' },
+                cancel:  { bg: 'rgba(107,114,128,0.15)', bar: '#6b7280', icon: '#9ca3af' },
+                tecnico: { bg: 'rgba(249,115,22,0.15)', bar: '#f97316', icon: '#f97316' }
+            };
+
+            container.innerHTML = sortedCats.map(([cat, count]) => {
+                const cfg = CAT_CONFIG[cat];
+                const color = colors[cat];
+                const percent = ((count / grandTotal) * 100).toFixed(1);
+                const barWidth = ((count / maxValue) * 100).toFixed(0);
+                return `
+                <div class="heatmap-card" style="background:${color.bg};">
+                    <div class="heatmap-bar-bg"><div class="heatmap-bar-fill" style="width:${barWidth}%; background:${color.bar};"></div></div>
+                    <div class="heatmap-icon"><i class="${cfg.icon}" style="color:${color.icon};"></i></div>
+                    <div class="heatmap-value" style="color:${color.icon};">${count}</div>
+                    <div class="heatmap-label">${cfg.label.replace(/^[🔴🟡🔵🟣⚫🟠] /, '')}</div>
+                    <div class="heatmap-percent">${percent}% dos erros totais</div>
+                </div>`;
+            }).join('');
+        }
+
+        // ==================== EXPORTAR / IMPORTAR JSON ====================
+        function exportarJSON() {
+            const data = {};
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key && key.startsWith('esocial')) {
+                    data[key] = localStorage.getItem(key);
+                }
+            }
+
+            if (Object.keys(data).length === 0) {
+                showToast('Nenhum dado do eSocial encontrado para exportar.', 'error');
+                return;
+            }
+
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `backup_esocial_${new Date().toISOString().slice(0,10)}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            showToast(`Backup exportado com ${Object.keys(data).length} registros!`, 'success');
+        }
+
+        function importarJSON(input) {
+            const file = input.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    let count = 0;
+
+                    Object.entries(data).forEach(([key, value]) => {
+                        if (key.startsWith('esocial')) {
+                            localStorage.setItem(key, value);
+                            count++;
+                        }
+                    });
+
+                    showToast(`${count} registros importados com sucesso! Recarregue a página.`, 'success');
+
+                    // Reload users
+                    users = loadUsers();
+                } catch (err) {
+                    showToast('Erro ao importar: arquivo JSON inválido.', 'error');
+                }
+            };
+            reader.readAsText(file);
+            input.value = '';
+        }
+
+        function showToast(message, type) {
+            const toast = document.getElementById('toast');
+            const text = document.getElementById('toastText');
+            const icon = toast.querySelector('i');
+
+            text.textContent = message;
+            toast.className = 'toast active ' + type;
+
+            if (type === 'success') {
+                icon.className = 'fas fa-check-circle';
+                icon.style.color = 'var(--accent-green)';
+            } else {
+                icon.className = 'fas fa-exclamation-circle';
+                icon.style.color = 'var(--accent-red)';
+            }
+
+            setTimeout(() => { toast.classList.remove('active'); }, 4000);
+        }</script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
@@ -1846,9 +2204,217 @@
                 margin: 0.5rem;
             }
         }
+
+/* ===== NOVOS ESTILOS v1.1 ===== */
+
+/* Ranking de Empresas */
+.ranking-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+.ranking-card {
+    background: var(--bg-secondary);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    border: 1px solid var(--border-color);
+    transition: all 0.25s;
+}
+.ranking-card:hover {
+    border-color: var(--border-light);
+    transform: translateY(-2px);
+}
+.ranking-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border-color);
+}
+.ranking-header i {
+    font-size: 1.2rem;
+}
+.ranking-header.s2220 i { color: var(--accent-blue); }
+.ranking-header.s2240 i { color: var(--accent-purple); }
+.ranking-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+.ranking-list {
+    list-style: none;
+    padding: 0;
+}
+.ranking-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid rgba(30, 50, 80, 0.4);
+    transition: all 0.2s;
+}
+.ranking-item:last-child { border-bottom: none; }
+.ranking-item:hover { background: rgba(255,255,255,0.02); margin: 0 -0.5rem; padding: 0.6rem 0.5rem; border-radius: 6px; }
+.ranking-pos {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.75rem; font-weight: 800;
+    flex-shrink: 0;
+}
+.ranking-pos.gold { background: linear-gradient(135deg, #ffd700, #ffb700); color: #1a1a1a; }
+.ranking-pos.silver { background: linear-gradient(135deg, #c0c0c0, #a0a0a0); color: #1a1a1a; }
+.ranking-pos.bronze { background: linear-gradient(135deg, #cd7f32, #b87333); color: #fff; }
+.ranking-pos.normal { background: var(--bg-card); color: var(--text-secondary); border: 1px solid var(--border-color); }
+.ranking-info { flex: 1; min-width: 0; }
+.ranking-name {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.ranking-detail {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    margin-top: 0.15rem;
+}
+.ranking-value {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--accent-red);
+    flex-shrink: 0;
+}
+
+/* Mapa de Calor de Categorias */
+.heatmap-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+.heatmap-card {
+    background: var(--bg-secondary);
+    border-radius: var(--radius-lg);
+    padding: 1.25rem;
+    border: 1px solid var(--border-color);
+    text-align: center;
+    transition: all 0.25s;
+    position: relative;
+    overflow: hidden;
+}
+.heatmap-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+}
+.heatmap-bar-bg {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 4px;
+    background: var(--bg-card);
+}
+.heatmap-bar-fill {
+    height: 100%;
+    transition: width 0.8s ease;
+}
+.heatmap-icon {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+.heatmap-value {
+    font-size: 2rem;
+    font-weight: 800;
+    letter-spacing: -1px;
+    margin-bottom: 0.25rem;
+}
+.heatmap-label {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+.heatmap-percent {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-top: 0.5rem;
+}
+
+
+
+/* Export/Import JSON */
+.json-actions {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+}
+.btn-json {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1.2rem;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-size: 0.88rem;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.btn-json.export {
+    background: linear-gradient(135deg, var(--accent-green), #059669);
+    color: white;
+}
+.btn-json.export:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(16, 185, 129, 0.4);
+}
+.btn-json.import {
+    background: linear-gradient(135deg, var(--accent-blue), #2563eb);
+    color: white;
+}
+.btn-json.import:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(78, 140, 255, 0.4);
+}
+#jsonFileInput { display: none; }
+
+
+
+
+
+
+/* Toast notification */
+.toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 1rem 1.25rem;
+    box-shadow: var(--shadow-lg);
+    display: none;
+    align-items: center;
+    gap: 0.75rem;
+    z-index: 1000;
+    animation: slideInRight 0.3s ease;
+}
+.toast.active { display: flex; }
+.toast.success { border-left: 4px solid var(--accent-green); }
+.toast.error { border-left: 4px solid var(--accent-red); }
+.toast i { font-size: 1.1rem; }
+.toast.success i { color: var(--accent-green); }
+.toast.error i { color: var(--accent-red); }
+.toast-text { font-size: 0.9rem; color: var(--text-primary); }
+@keyframes slideInRight {
+    from { opacity: 0; transform: translateX(30px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
 </style>
-<base target="_blank">
-<base target="_blank">
 <base target="_blank">
 </head>
 <body>
@@ -1913,7 +2479,7 @@
                         <span>Realizado por <strong>Kimi IA</strong></span>
                     </div>
                 </div>
-                <div class="version-tag">v1.0.1 • Maio/2026</div>
+                <div class="version-tag">v1.2.0 • Maio/2026</div>
             </div>
         </div>
     </div>
@@ -1940,6 +2506,7 @@
                 <li><a href="#" data-section="xml"><i class="fas fa-code"></i><span>XML</span></a></li>
                 <li><a href="#" data-section="prontuarios"><i class="fas fa-folder-open"></i><span>Prontuários</span></a></li>
                 <li><a href="#" data-section="procuracoes"><i class="fas fa-file-signature"></i><span>Procurações eCAC</span></a></li>
+                <li><a href="#" data-section="ferramentas"><i class="fas fa-toolbox"></i><span>Ferramentas</span></a></li>
             </ul>
             <div class="user-info">
                 <p>Logado como:<br><strong id="currentUser">-</strong> <span id="masterBadge"></span></p>
@@ -2112,21 +2679,28 @@
                     <p>O mês de Maio/2026 não possui registros disponíveis.<br>Os dados serão atualizados ao longo do mês.</p>
                 </div>
 
+                <!-- Ranking de Empresas com Mais Erros -->
                 <div class="card">
                     <div class="card-header">
-                        <span class="card-title"><i class="fas fa-exclamation-triangle"></i> Observações dos Erros</span>
+                        <span class="card-title"><i class="fas fa-trophy"></i> Ranking de Empresas com Mais Erros</span>
+                        <span style="color: var(--text-secondary); font-size: 0.85rem;">Baseado nos drill-downs de Abril/2026</span>
                     </div>
-                    <div class="error-notes">
-                        <div class="error-note">
-                            <h4><i class="fas fa-times-circle"></i> S-2221</h4>
-                            <p>"A estrutura do arquivo XML está em desconformidade com o esquema XSD. The element 'ideVinculo' has incomplete content..."</p>
-                        </div>
-                        <div class="error-note">
-                            <h4><i class="fas fa-times-circle"></i> S-2220 & S-2240</h4>
-                            <p>"Funcionários não registrados no eSocial. Verificar se todos os colaboradores possuem vínculo ativo antes do envio dos eventos."</p>
-                        </div>
+                    <div class="ranking-grid" id="rankingContainer">
+                        <!-- Injected via JS -->
                     </div>
                 </div>
+
+                <!-- Mapa de Calor de Categorias -->
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title"><i class="fas fa-fire"></i> Mapa de Calor — Tipos de Erro</span>
+                        <span style="color: var(--text-secondary); font-size: 0.85rem;">Distribuição por categoria de problema</span>
+                    </div>
+                    <div class="heatmap-container" id="heatmapContainer">
+                        <!-- Injected via JS -->
+                    </div>
+                </div>
+
             </section>
 
             
@@ -2220,6 +2794,23 @@
             <section class="section" id="xml">
                 <div class="page-header">
                     <h1><i class="fas fa-code"></i> Controle de XML</h1>
+                    <div class="header-controls">
+                        <div style="position: relative;">
+                            <button id="btnXmlMonth" onclick="toggleXmlMonthMenu()" style="display:flex;align-items:center;gap:0.5rem;padding:0.6rem 1.1rem;background:linear-gradient(135deg,rgba(0,194,97,0.15),rgba(0,143,69,0.08));border:1px solid rgba(0,194,97,0.3);border-radius:6px;color:#00c261;font-size:0.88rem;font-weight:700;font-family:inherit;cursor:pointer;">
+                                <i class="fas fa-calendar-alt"></i>
+                                <span id="xmlMonthLabel">Maio/2026</span>
+                                <i class="fas fa-chevron-down" style="font-size:0.75rem;"></i>
+                            </button>
+                            <div id="xmlMonthMenu" style="display:none;position:absolute;top:100%;right:0;margin-top:8px;background:#0f1a2e;border:1px solid #1e3250;border-radius:8px;padding:0.5rem 0;min-width:160px;box-shadow:0 10px 30px rgba(0,0,0,0.5);z-index:50;">
+                                <div onclick="switchXmlMonth('2026-05')" id="xmlOptMaio" style="display:flex;align-items:center;gap:0.6rem;padding:0.65rem 1rem;background:rgba(0,194,97,0.15);color:#e8f0fe;font-size:0.88rem;font-weight:600;cursor:pointer;box-sizing:border-box;">
+                                    <i class="fas fa-calendar-alt" style="color:#00c261;width:16px;"></i> Maio/2026
+                                </div>
+                                <div onclick="switchXmlMonth('2026-04')" id="xmlOptAbril" style="display:flex;align-items:center;gap:0.6rem;padding:0.65rem 1rem;background:#0f1a2e;color:#e8f0fe;font-size:0.88rem;font-weight:600;cursor:pointer;box-sizing:border-box;">
+                                    <i class="fas fa-calendar-alt" style="color:#00c261;width:16px;"></i> Abril/2026
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="card">
                     <div class="card-header">
@@ -2247,7 +2838,7 @@
                     <div class="table-container">
                         <table id="prontuariosTable">
                             <thead>
-                                <tr><th>Empresa</th><th>Data Solicitação</th><th>Prazo Final</th><th>Status</th><th>Observação</th></tr>
+                                <tr><th>Empresa</th><th>Data Solicitação</th><th>Prazo Final</th><th>Data da Coleta</th><th>Status</th><th>Observação</th></tr>
                             </thead>
                             <tbody></tbody>
                         </table>
@@ -2273,6 +2864,45 @@
                     </div>
                 </div>
             </section>
+        
+            <section class="section" id="ferramentas">
+                <div class="page-header">
+                    <h1><i class="fas fa-toolbox"></i> Ferramentas</h1>
+                    <div class="header-controls">
+                        <div class="last-update">
+                            <i class="fas fa-code-branch"></i>
+                            <span>Versão:</span>
+                            <span class="last-update-value">v1.1.0</span>
+                        </div>
+                    </div>
+                </div>
+
+                
+
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title"><i class="fas fa-database"></i> Backup e Restauração de Dados</span>
+                        <span style="color: var(--text-secondary); font-size: 0.85rem;">localStorage</span>
+                    </div>
+                    <div style="margin-bottom: 1rem;">
+                        <p style="color: var(--text-secondary); font-size: 0.85rem; line-height: 1.5; margin-bottom: 1rem;">
+                            Exporte todos os dados do sistema (usuários, configurações, campos editados) para um arquivo JSON. 
+                            Use este arquivo para fazer backup ou transferir dados entre dispositivos.
+                        </p>
+                        <div class="json-actions">
+                            <button class="btn-json export" onclick="exportarJSON()">
+                                <i class="fas fa-download"></i> Exportar Dados (JSON)
+                            </button>
+                            <button class="btn-json import" onclick="document.getElementById('jsonFileInput').click()">
+                                <i class="fas fa-upload"></i> Importar Dados (JSON)
+                            </button>
+                            <input type="file" id="jsonFileInput" accept=".json" onchange="importarJSON(this)">
+                        </div>
+                    </div>
+                    <div id="jsonStatus" style="display:none; padding:0.75rem 1rem; border-radius:8px; font-size:0.85rem;"></div>
+                </div>
+            </section>
+
         </main>
     </div>
 
@@ -2627,12 +3257,20 @@
                 if (pendMenu && pendBtn && !pendBtn.contains(e.target) && !pendMenu.contains(e.target)) {
                     pendMenu.style.display = 'none';
                 }
+                const xmlMenu = document.getElementById('xmlMonthMenu');
+                const xmlBtn = document.getElementById('btnXmlMonth');
+                if (xmlMenu && xmlBtn && !xmlBtn.contains(e.target) && !xmlMenu.contains(e.target)) {
+                    xmlMenu.style.display = 'none';
+                }
             });
 
             initCharts();
             loadAllData();
             switchMonth('2026-05');
             initDrillDownHandlers();
+            initRanking();
+            initHeatmap();
+            
         }
 
         // ==================== DASHBOARD ====================
@@ -3097,15 +3735,39 @@
             renderPendenciasTable('2026-05');
         }
 
-        function loadXmlTable() {
+        const xmlData = {
+            '2026-04': [
+                { empresa: "COMPANHIA DE HABITAÇÃO DO PARANÁ - COHAPAR", cnpj: "76.592.807/0001-22", dataEnvio: "2026-04-13", email: "sheilapsantos@cohapar.pr.gov.br", destinatario: "Sheila, DP", status: "Concluído" },
+                { empresa: "SCRIBE INFORMÁTICA LTDA", cnpj: "82.234.568/0001-31", dataEnvio: "2026-04-13", email: "dp@escriba.com.br", destinatario: "Adm e RH/DP", status: "Concluído" }
+            ],
+            '2026-05': [
+                { empresa: "COMPANHIA DE HABITAÇÃO DO PARANÁ - COHAPAR", cnpj: "76.592.807/0001-22", dataEnvio: "2026-05-11", email: "sheilapsantos@cohapar.pr.gov.br", destinatario: "Sheila, DP", status: "Concluído" },
+                { empresa: "SCRIBE INFORMÁTICA LTDA", cnpj: "82.234.568/0001-31", dataEnvio: "2026-05-11", email: "dp@escriba.com.br", destinatario: "Adm e RH/DP", status: "Concluído" }
+            ]
+        };
+
+        let currentXmlMonth = '2026-05';
+
+        function toggleXmlMonthMenu() {
+            const menu = document.getElementById('xmlMonthMenu');
+            menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function switchXmlMonth(month) {
+            currentXmlMonth = month;
+            document.getElementById('xmlMonthMenu').style.display = 'none';
+            document.getElementById('xmlMonthLabel').textContent = month === '2026-04' ? 'Abril/2026' : 'Maio/2026';
+            document.getElementById('xmlOptMaio').style.background = month === '2026-05' ? 'rgba(0,194,97,0.15)' : '#0f1a2e';
+            document.getElementById('xmlOptAbril').style.background = month === '2026-04' ? 'rgba(0,194,97,0.15)' : '#0f1a2e';
+            renderXmlTable(month);
+        }
+
+        function renderXmlTable(month) {
             const tbody = document.querySelector('#xmlTable tbody');
-            const xml = [
-                { empresa: "SCRIBE INFORMÁTICA LTDA", cnpj: "82.234.568/0001-31", dataEnvio: "", email: "dp@escriba.com.br", destinatario: "Adm e RH/DP", status: "Pendente" },
-                { empresa: "COMPANHIA DE HABITAÇÃO DO PARANÁ - COHAPAR", cnpj: "76.592.807/0001-22", dataEnvio: "", email: "sheilapsantos@cohapar.pr.gov.br", destinatario: "Sheila, DP", status: "Pendente" },
-            ];
+            const xml = xmlData[month] || [];
             tbody.innerHTML = xml.map(item => {
                 let badgeClass = 'badge-gray';
-                if (item.status === 'Confirmado') badgeClass = 'badge-success';
+                if (item.status === 'Concluído') badgeClass = 'badge-success';
                 else if (item.status === 'Enviado') badgeClass = 'badge-info';
                 else if (item.status === 'Pendente') badgeClass = 'badge-warning';
 
@@ -3113,7 +3775,7 @@
                     <tr>
                         <td><strong>${item.empresa}</strong></td>
                         <td>${item.cnpj}</td>
-                        <td><input type="date" class="editable" value="${item.dataEnvio}"></td>
+                        <td>${item.dataEnvio ? item.dataEnvio.split('-').reverse().join('/') : '-'}</td>
                         <td><a href="mailto:${item.email}" style="color: var(--accent-blue);">${item.email}</a></td>
                         <td>${item.destinatario}</td>
                         <td><span class="badge ${badgeClass}">${item.status}</span></td>
@@ -3122,13 +3784,16 @@
             }).join('');
         }
 
+        function loadXmlTable() {
+            renderXmlTable('2026-05');
+        }
+
         function loadProntuariosTable() {
             const tbody = document.querySelector('#prontuariosTable tbody');
-            const hoje = new Date('2026-04-15');
             const prontuarios = [
-                { empresa: "BOVINO NOBRE", dataSolicitacao: "2026-04-01", status: "Aguardando coleta", observacao: "ASOs sendo preparados" },
-                { empresa: "INSTITUTO DE TECNOLOGIA DO PARANA (TECPAR)", dataSolicitacao: "2026-04-06", status: "Pendente", observacao: "Não começamos" },
-                { empresa: "UROCENTRO CLINICA DE UROLOGIA CURITIBA LTDA", dataSolicitacao: "2026-04-09", status: "Pendente", observacao: "Não começamos" },
+                { empresa: "BOVINO NOBRE", dataSolicitacao: "2026-04-01", dataColeta: "", status: "Aguardando coleta", observacao: "ASOs prontos para entrega" },
+                { empresa: "INSTITUTO DE TECNOLOGIA DO PARANA (TECPAR)", dataSolicitacao: "2026-04-06", dataColeta: "", status: "Aguardando coleta", observacao: "ASOs prontos para entrega" },
+                { empresa: "UROCENTRO CLINICA DE UROLOGIA CURITIBA LTDA", dataSolicitacao: "2026-04-09", dataColeta: "2026-05-11", status: "Concluído", observacao: "Prontuários coletados" },
             ];
 
             tbody.innerHTML = prontuarios.map(item => {
@@ -3143,11 +3808,14 @@
                 else if (item.status === 'Pendente') badgeClass = 'badge-warning';
                 else if (item.status === 'Em andamento') badgeClass = 'badge-purple';
 
+                const dataColetaDisplay = item.dataColeta ? item.dataColeta.split('-').reverse().join('/') : 'N/A';
+
                 return `
                     <tr>
                         <td>${item.empresa}</td>
                         <td>${item.dataSolicitacao.split('-').reverse().join('/')}</td>
                         <td>${prazo.toISOString().split('T')[0].split('-').reverse().join('/')}</td>
+                        <td>${dataColetaDisplay}</td>
                         <td><span class="badge ${badgeClass}">${item.status}</span></td>
                         <td><input type="text" class="editable" value="${item.observacao}"></td>
                     </tr>
@@ -3441,6 +4109,186 @@
         }
 
 
-        </script>
+        
+        // ==================== RANKING DE EMPRESAS COM MAIS ERROS ====================
+        function initRanking() {
+            const container = document.getElementById('rankingContainer');
+            if (!container) return;
+
+            const eventos = ['S-2220', 'S-2240'];
+            let html = '';
+
+            eventos.forEach(evento => {
+                const empresas = drillDownData[evento];
+                if (!empresas) return;
+
+                // Sort by errors (descending)
+                const sorted = [...empresas].sort((a, b) => b.erros - a.erros).slice(0, 5);
+                const totalErros = empresas.reduce((s, e) => s + e.erros, 0);
+
+                const colorClass = evento === 'S-2220' ? 's2220' : 's2240';
+                const icon = evento === 'S-2220' ? 'fa-file-medical' : 'fa-hard-hat';
+                const label = evento === 'S-2220' ? 'ASO (S-2220)' : 'Ambiente (S-2240)';
+
+                html += `
+                <div class="ranking-card">
+                    <div class="ranking-header ${colorClass}">
+                        <i class="fas ${icon}"></i>
+                        <span class="ranking-title">Top 5 — ${label}</span>
+                    </div>
+                    <ul class="ranking-list">
+                        ${sorted.map((emp, idx) => {
+                            const posClass = idx === 0 ? 'gold' : idx === 1 ? 'silver' : idx === 2 ? 'bronze' : 'normal';
+                            const percent = totalErros > 0 ? ((emp.erros / totalErros) * 100).toFixed(1) : 0;
+                            return `
+                            <li class="ranking-item">
+                                <span class="ranking-pos ${posClass}">${idx + 1}</span>
+                                <div class="ranking-info">
+                                    <div class="ranking-name">${emp.nome}</div>
+                                    <div class="ranking-detail">${emp.erros} erros · ${percent}% do total</div>
+                                </div>
+                                <span class="ranking-value">${emp.erros}</span>
+                            </li>`;
+                        }).join('')}
+                    </ul>
+                </div>`;
+            });
+
+            container.innerHTML = html || '<div class="empty-state"><i class="fas fa-chart-bar"></i><p>Sem dados de drill-down disponíveis</p></div>';
+        }
+
+        // ==================== MAPA DE CALOR DE CATEGORIAS ====================
+        function initHeatmap() {
+            const container = document.getElementById('heatmapContainer');
+            if (!container) return;
+
+            // Aggregate all categories from both events
+            const allCats = {};
+            let grandTotal = 0;
+
+            ['S-2220', 'S-2240'].forEach(evento => {
+                const empresas = drillDownData[evento];
+                if (!empresas) return;
+                empresas.forEach(emp => {
+                    const cat = classificarEmpresa(emp.motivo);
+                    allCats[cat] = (allCats[cat] || 0) + emp.erros;
+                    grandTotal += emp.erros;
+                });
+            });
+
+            if (grandTotal === 0) {
+                container.innerHTML = '<div class="empty-state" style="grid-column:1/-1;"><i class="fas fa-fire-alt"></i><p>Sem dados para análise</p></div>';
+                return;
+            }
+
+            // Sort by count descending
+            const sortedCats = Object.entries(allCats).sort((a, b) => b[1] - a[1]);
+            const maxValue = sortedCats[0][1];
+
+            const colors = {
+                naocad:  { bg: 'rgba(239,68,68,0.15)', bar: '#ef4444', icon: '#ef4444' },
+                desist:  { bg: 'rgba(245,158,11,0.15)', bar: '#f59e0b', icon: '#f59e0b' },
+                admfut:  { bg: 'rgba(59,130,246,0.15)', bar: '#3b82f6', icon: '#3b82f6' },
+                proc:    { bg: 'rgba(139,92,246,0.15)', bar: '#8b5cf6', icon: '#8b5cf6' },
+                cancel:  { bg: 'rgba(107,114,128,0.15)', bar: '#6b7280', icon: '#9ca3af' },
+                tecnico: { bg: 'rgba(249,115,22,0.15)', bar: '#f97316', icon: '#f97316' }
+            };
+
+            container.innerHTML = sortedCats.map(([cat, count]) => {
+                const cfg = CAT_CONFIG[cat];
+                const color = colors[cat];
+                const percent = ((count / grandTotal) * 100).toFixed(1);
+                const barWidth = ((count / maxValue) * 100).toFixed(0);
+                return `
+                <div class="heatmap-card" style="background:${color.bg};">
+                    <div class="heatmap-bar-bg"><div class="heatmap-bar-fill" style="width:${barWidth}%; background:${color.bar};"></div></div>
+                    <div class="heatmap-icon"><i class="${cfg.icon}" style="color:${color.icon};"></i></div>
+                    <div class="heatmap-value" style="color:${color.icon};">${count}</div>
+                    <div class="heatmap-label">${cfg.label.replace(/^[🔴🟡🔵🟣⚫🟠] /, '')}</div>
+                    <div class="heatmap-percent">${percent}% dos erros totais</div>
+                </div>`;
+            }).join('');
+        }
+
+        // ==================== EXPORTAR / IMPORTAR JSON ====================
+        function exportarJSON() {
+            const data = {};
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key && key.startsWith('esocial')) {
+                    data[key] = localStorage.getItem(key);
+                }
+            }
+
+            if (Object.keys(data).length === 0) {
+                showToast('Nenhum dado do eSocial encontrado para exportar.', 'error');
+                return;
+            }
+
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `backup_esocial_${new Date().toISOString().slice(0,10)}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            showToast(`Backup exportado com ${Object.keys(data).length} registros!`, 'success');
+        }
+
+        function importarJSON(input) {
+            const file = input.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    let count = 0;
+
+                    Object.entries(data).forEach(([key, value]) => {
+                        if (key.startsWith('esocial')) {
+                            localStorage.setItem(key, value);
+                            count++;
+                        }
+                    });
+
+                    showToast(`${count} registros importados com sucesso! Recarregue a página.`, 'success');
+
+                    // Reload users
+                    users = loadUsers();
+                } catch (err) {
+                    showToast('Erro ao importar: arquivo JSON inválido.', 'error');
+                }
+            };
+            reader.readAsText(file);
+            input.value = '';
+        }
+
+        function showToast(message, type) {
+            const toast = document.getElementById('toast');
+            const text = document.getElementById('toastText');
+            const icon = toast.querySelector('i');
+
+            text.textContent = message;
+            toast.className = 'toast active ' + type;
+
+            if (type === 'success') {
+                icon.className = 'fas fa-check-circle';
+                icon.style.color = 'var(--accent-green)';
+            } else {
+                icon.className = 'fas fa-exclamation-circle';
+                icon.style.color = 'var(--accent-red)';
+            }
+
+            setTimeout(() => { toast.classList.remove('active'); }, 4000);
+        }</script><!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <i class="fas fa-check-circle"></i>
+        <span class="toast-text" id="toastText">Operação realizada com sucesso!</span>
+    </div>
+
 </body>
 </html>
